@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/UndoService/.vs/UndoService/v16
+/UndoService/UndoService/obj
