@@ -2,6 +2,32 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Peter Dongan</Authors>
+    <Company />
+    <PackageLicenseFile></PackageLicenseFile>
+    <Description>Simple generic undo/redo service. 
+Just instantiate it and invoke RecordState() to add to the history. 
+Optional size cap.</Description>
+    <Copyright>Peter Dongan</Copyright>
+    <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>undo redo momento service uwp standard portable</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <PackageReleaseNotes>Updated package details</PackageReleaseNotes>
+    <Version>1.0.1</Version>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LICENCE.txt" />
+  </ItemGroup>
 
 </Project>

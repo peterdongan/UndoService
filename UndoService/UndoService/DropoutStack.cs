@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Peter Dongan. All rights reserved.
-// Licensed under the MIT licence. See LICENCE file in the project root for full licence information.
-
-//based on https://stackoverflow.com/questions/384042/can-i-limit-the-depth-of-a-generic-stack
+// Licensed under the MIT licence. https://opensource.org/licenses/MIT
+// Project: https://github.com/peterdongan/UndoService
 
 namespace UndoService
-{ 
+{
+    //based on https://stackoverflow.com/questions/384042/can-i-limit-the-depth-of-a-generic-stack
     class DropoutStack<T> : IStack<T>
     {
         private T[] items;
