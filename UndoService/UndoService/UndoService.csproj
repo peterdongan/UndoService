@@ -7,17 +7,17 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>This is an open-source generic undo/redo service. There is an optional limit on the number of states stored. 
+    <Description>Generic undo service using delegates to access state. There is an optional limit on the number of states stored. 
 </Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>undo redo momento service open-source</PackageTags>
+    <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <PackageReleaseNotes>Updated package details</PackageReleaseNotes>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <PackageReleaseNotes>Namespace changed.</PackageReleaseNotes>
     <Version>1.0.2</Version>
   </PropertyGroup>
 
