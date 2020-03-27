@@ -2,7 +2,7 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
-namespace UndoService
+namespace StateManagement.DataStructures
 {
     //based on https://stackoverflow.com/questions/384042/can-i-limit-the-depth-of-a-generic-stack
     class DropoutStack<T> : IStack<T>

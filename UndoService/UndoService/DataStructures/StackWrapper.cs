@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace UndoService
+namespace StateManagement.DataStructures
 {
     class StackWrapper<T> : IStack<T>
     {

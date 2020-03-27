@@ -7,19 +7,18 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Simple generic undo/redo service. 
-Just instantiate it and invoke RecordState() to add to the history. 
-Optional size cap.</Description>
+    <Description>This is an open-source generic undo/redo service. There is an optional limit on the number of states stored. 
+</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>undo redo momento service uwp standard portable</PackageTags>
+    <PackageTags>undo redo momento service open-source</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <PackageReleaseNotes>Updated package details</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
