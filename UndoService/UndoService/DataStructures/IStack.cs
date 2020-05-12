@@ -4,7 +4,7 @@
 
 namespace StateManagement.DataStructures
 {
-    interface IStack<T>
+    public interface IStack<T>
     {
         int Count { get; }
 

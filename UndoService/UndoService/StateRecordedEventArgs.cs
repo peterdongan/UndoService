@@ -2,9 +2,13 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using StateManagement.DataStructures;
+using System;
+using System.Collections.Generic;
+
 namespace StateManagement
 {
-    public delegate void GetState<T>(out T state);
-    public delegate void SetState<T>(T state);
-    public delegate void StateRecordedEventHandler(object sender, StateRecordedEventArgs e);
+    public class StateRecordedEventArgs
+    {
+    }
 }

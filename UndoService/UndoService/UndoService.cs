@@ -12,14 +12,17 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UndoService<T> : IUndoService
+    public  class UndoService<T> : IUndoService
     {
-        private readonly GetState<T> GetState;
-        private readonly SetState<T> SetState;
-        private readonly IStack<T> _undoStack;
-        private readonly Stack<T> _redoStack;    //limited by undo stack capacity already
+        protected readonly GetState<T> GetState;
+        protected readonly SetState<T> SetState;
+        protected readonly IStack<T> _undoStack;
+        protected readonly Stack<T> _redoStack;    //limited by undo stack capacity already
         
-        private T _currentState;
+        protected T _currentState;
+
+        public event StateRecordedEventHandler StateRecorded;
+        public int Id { get; set; }
 
         public bool CanUndo
         {
@@ -79,12 +82,13 @@ namespace StateManagement
             _currentState = momento;
         }
 
-        public void RecordState()
+        public virtual void RecordState()
         {
             GetState(out T momento);
             _undoStack.Push(_currentState);
             _currentState = momento;
             _redoStack.Clear();
+            StateRecorded(this, new StateRecordedEventArgs());
         }
     }
 }

@@ -17,5 +17,9 @@ namespace StateManagement
         void Undo();
 
         void Redo();
+
+        event StateRecordedEventHandler StateRecorded;
+
+        int Id { get; set; }
     }
 }
