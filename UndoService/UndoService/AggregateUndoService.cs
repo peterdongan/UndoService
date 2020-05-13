@@ -46,8 +46,6 @@ namespace StateManagement
             }
         }
 
-        public int Id { get; set; }
-
         public void ClearStacks()
         {
             _undoStack.Clear();

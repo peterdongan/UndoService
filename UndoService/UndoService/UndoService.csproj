@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
-    <PackageReleaseNotes>AggregateUndoService added. This provides unified undo/redo across multiple UndoServices, which can track the state of different parts of your application.</PackageReleaseNotes>
+    <PackageReleaseNotes>AggregateUndoService added.</PackageReleaseNotes>
     <Version>2.0</Version>
   </PropertyGroup>
 
