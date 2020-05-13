@@ -38,9 +38,9 @@ namespace StateManagement
 
         public int Id { get; set; }
 
-        public AggregateUndoService(IUndoService[] subUndoServices)
+        public AggregateUndoService(List<IUndoService> subUndoServices)
         {
-            _undoServices = subUndoServices.ToList();
+            _undoServices = subUndoServices;
             _undoStack = new Stack<int>();
             _redoStack = new Stack<int>();
 
@@ -49,12 +49,6 @@ namespace StateManagement
                 _undoServices[i].StateRecorded += S_StateRecorded;
                 _undoServices[i].Id = i;
             }
-        }
-
-        private void S_StateRecorded(object sender, StateRecordedEventArgs e)
-        {
-            var serviceId = ((IUndoService)sender).Id;
-            _undoStack.Push(serviceId);
         }
 
         public void ClearStacks()
@@ -71,21 +65,47 @@ namespace StateManagement
         {
             if(!CanUndo)
             {
-                throw new Exception("Nothing to undo. Check CanUndo is true before invoking Undo().");
+                throw new EmptyStackException("Nothing to undo. Check CanUndo is true before invoking Undo().");
             }
+
             var lastService = _undoStack.Pop();
-            _undoServices[lastService].Undo();
+
+            //If the UndoService has a size cap, it might become empty. If it does then clear all the undo stacks
+            if (_undoServices[lastService].CanUndo)
+            {
+                _undoServices[lastService].Undo();
+                _redoStack.Push(lastService);
+            }
+            else
+            {
+                ClearUndoStacks();
+            }
         }
 
         public void Redo()
         {
             if (!CanRedo)
             {
-                throw new Exception("Nothing to redo. Check CanRedo is true before invoking Redo().");
+                throw new EmptyStackException("Nothing to redo. Check CanRedo is true before invoking Redo().");
             }
 
             var lastService = _redoStack.Pop();
             _undoServices[lastService].Redo();
+        }
+
+        private void S_StateRecorded(object sender, StateRecordedEventArgs e)
+        {
+            var serviceId = ((IUndoService)sender).Id;
+            _undoStack.Push(serviceId);
+        }
+
+        private void ClearUndoStacks()
+        {
+            _undoStack.Clear();
+            foreach (var s in _undoServices)
+            {
+                s.ClearUndoStack();
+            }
         }
 
     }

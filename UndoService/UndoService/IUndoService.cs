@@ -14,6 +14,8 @@ namespace StateManagement
 
         void ClearStacks();
 
+        void ClearUndoStack();
+
         void Undo();
 
         void Redo();

@@ -57,11 +57,16 @@ namespace StateManagement
             _redoStack.Clear();
         }
 
+        public void ClearUndoStack()
+        {
+            _undoStack.Clear();
+        }
+
         public void Undo()
         {
             if(!CanUndo)
             {
-                throw new Exception("Nothing to undo. Check CanUndo is true before invoking Undo().");
+                throw new EmptyStackException("Nothing to undo. Check CanUndo is true before invoking Undo().");
             }
             var momento = _undoStack.Pop();
             SetState(momento);
@@ -73,7 +78,7 @@ namespace StateManagement
         {
             if (!CanRedo)
             {
-                throw new Exception("Nothing to redo. Check CanRedo is true before invoking Redo().");
+                throw new EmptyStackException("Nothing to redo. Check CanRedo is true before invoking Redo().");
             }
 
             var momento = _redoStack.Pop();
