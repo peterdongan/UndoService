@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using StateManagement;
-using System.Collections.Generic;
 
 namespace UndoService.Test
 {
@@ -37,8 +36,8 @@ namespace UndoService.Test
         {
             _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
             _undoServiceForString = new UndoService<string>(GetStringState, SetStringState, 5);
-            var subServices = new List<IUndoService> { _undoServiceForInt, _undoServiceForString };
-            _aggregateService = new AggregateUndoService(subServices);
+            IUndoService[] subservices = { _undoServiceForInt, _undoServiceForString };
+            _aggregateService = new AggregateUndoService(subservices);
         }
 
         [Test]

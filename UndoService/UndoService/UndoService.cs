@@ -33,6 +33,9 @@ namespace StateManagement
 
         public event StateRecordedEventHandler StateRecorded;
         
+        /// <summary>
+        /// This is used by the AggregateUndoService to keep track of where changes were made.
+        /// </summary>
         public int Id { get; set; }
 
         public bool CanUndo

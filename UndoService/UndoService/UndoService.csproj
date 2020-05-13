@@ -7,7 +7,7 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo.</Description>
+    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests for examples of usage (a link to the repo is provided).</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
@@ -16,9 +16,7 @@
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
-    <PackageReleaseNotes>AggregateUndoService added. This provides unified undo/redo across multiple UndoServices, which can track the state of different parts of your application.
-
-Unit tests added.</PackageReleaseNotes>
+    <PackageReleaseNotes>AggregateUndoService added. This provides unified undo/redo across multiple UndoServices, which can track the state of different parts of your application.</PackageReleaseNotes>
     <Version>2.0</Version>
   </PropertyGroup>
 
