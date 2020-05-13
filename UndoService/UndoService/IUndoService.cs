@@ -6,6 +6,10 @@ namespace StateManagement
 {
     public interface IUndoService
     {
+        event StateRecordedEventHandler StateRecorded;
+
+        int Id { get; set; }
+
         bool CanUndo { get; }
 
         bool CanRedo { get; }
@@ -19,9 +23,5 @@ namespace StateManagement
         void Undo();
 
         void Redo();
-
-        event StateRecordedEventHandler StateRecorded;
-
-        int Id { get; set; }
     }
 }

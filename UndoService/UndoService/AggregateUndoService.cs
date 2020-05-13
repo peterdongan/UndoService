@@ -7,7 +7,8 @@ using System.Collections.Generic;
 namespace StateManagement
 {
     /// <summary>
-    /// Generic Undo Service using delegates to access state
+    /// Provides a unified Undo/Redo interface for multiple UndoServices.
+    /// Change tracking is still done by the individual child UndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService
@@ -16,6 +17,18 @@ namespace StateManagement
         private readonly Stack<int> _undoStack;
         private readonly Stack<int> _redoStack;
 
+        public AggregateUndoService(List<IUndoService> subUndoServices)
+        {
+            _undoServices = subUndoServices;
+            _undoStack = new Stack<int>();
+            _redoStack = new Stack<int>();
+
+            for (var i = 0; i < _undoServices.Count; i++)
+            {
+                _undoServices[i].StateRecorded += Subservice_StateRecorded;
+                _undoServices[i].Id = i;
+            }
+        }
 
         public bool CanUndo
         {
@@ -34,19 +47,6 @@ namespace StateManagement
         }
 
         public int Id { get; set; }
-
-        public AggregateUndoService(List<IUndoService> subUndoServices)
-        {
-            _undoServices = subUndoServices;
-            _undoStack = new Stack<int>();
-            _redoStack = new Stack<int>();
-
-            for (var i = 0; i < _undoServices.Count; i++)
-            {
-                _undoServices[i].StateRecorded += Subservice_StateRecorded;
-                _undoServices[i].Id = i;
-            }
-        }
 
         public void ClearStacks()
         {

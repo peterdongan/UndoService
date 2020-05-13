@@ -18,10 +18,21 @@ namespace StateManagement
         protected readonly SetState<T> SetState;
         protected readonly IStack<T> _undoStack;
         protected readonly Stack<T> _redoStack;    //limited by undo stack capacity already
-
+        
         protected T _currentState;
 
+        public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
+        {
+            GetState = getState ?? throw new ArgumentNullException(nameof(getState));
+            SetState = setState ?? throw new ArgumentNullException(nameof(setState));
+            var stackFactory = new StackFactory<T>();
+            _undoStack = stackFactory.MakeStack(cap);
+            GetState(out _currentState);
+            _redoStack = new Stack<T>();
+        }
+
         public event StateRecordedEventHandler StateRecorded;
+        
         public int Id { get; set; }
 
         public bool CanUndo
@@ -38,16 +49,6 @@ namespace StateManagement
             {
                 return _redoStack.Count > 0;
             }
-        }
-
-        public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
-        {
-            GetState = getState ?? throw new ArgumentNullException(nameof(getState));
-            SetState = setState ?? throw new ArgumentNullException(nameof(setState));
-            var stackFactory = new StackFactory<T>();
-            _undoStack = stackFactory.MakeStack(cap);
-            GetState(out _currentState);
-            _redoStack = new Stack<T>();
         }
 
         public void ClearStacks()
