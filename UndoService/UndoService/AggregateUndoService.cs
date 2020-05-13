@@ -69,16 +69,17 @@ namespace StateManagement
             }
 
             var lastService = _undoStack.Pop();
+            _undoServices[lastService].Undo();
+            _redoStack.Push(lastService);
 
-            //If the UndoService has a size cap, it might become empty. If it does then clear all the undo stacks
-            if (_undoServices[lastService].CanUndo)
+            //Check if the next undoservice has become empty. If it has, then empty all undo stacks.
+            if(_undoStack.Count>0)
             {
-                _undoServices[lastService].Undo();
-                _redoStack.Push(lastService);
-            }
-            else
-            {
-                ClearUndoStacks();
+                var nextService = _undoStack.Peek();
+                if(!_undoServices[nextService].CanUndo)
+                {
+                    ClearUndoStacks();
+                }
             }
         }
 

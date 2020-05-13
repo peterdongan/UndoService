@@ -35,8 +35,8 @@ namespace UndoService.Test
         [SetUp]
         public void Setup()
         {
-            _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 5);
-            _undoServiceForString = new UndoService<string>(GetStringState, SetStringState, 8);
+            _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
+            _undoServiceForString = new UndoService<string>(GetStringState, SetStringState, 5);
             var subServices = new List<IUndoService> { _undoServiceForInt, _undoServiceForString };
             _aggregateService = new AggregateUndoService(subServices);
         }
@@ -53,6 +53,105 @@ namespace UndoService.Test
 
             _undoServiceForInt.Redo();
             Assert.IsTrue(_statefulInt == 2);
+        }
+
+        [Test]
+        public void CapacityTest()
+        {
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 4;
+            _undoServiceForInt.RecordState();
+
+            _undoServiceForInt.Undo();
+            _undoServiceForInt.Undo();
+            _undoServiceForInt.Undo();
+            Assert.IsTrue(_statefulInt == 1);
+            Assert.IsFalse(_undoServiceForInt.CanUndo);
+
+            _undoServiceForInt.Redo();
+            _undoServiceForInt.Redo();
+            _undoServiceForInt.Redo();
+            Assert.IsTrue(_statefulInt == 4);
+        }
+        
+        [Test]
+        public void AggregateUndoServiceUndoRedoTest()
+        {
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulString = "One";
+            _undoServiceForString.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _undoServiceForInt.RecordState();
+            _statefulString = "Two";
+            _undoServiceForString.RecordState();
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 3);
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 2);
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 1);
+
+            _aggregateService.Redo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 2);
+
+            _aggregateService.Redo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 3);
+
+            _aggregateService.Redo();
+            Assert.IsTrue(_statefulString.Equals("Two"));
+            Assert.IsTrue(_statefulInt == 3);
+        }
+
+        [Test]
+        public void AggregateUndoServiceCapacityHandlingTest()
+        {
+            _statefulString = "One";
+            _undoServiceForString.RecordState();
+            _statefulString = "Two";
+            _undoServiceForString.RecordState();
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 4;
+            _undoServiceForInt.RecordState();
+            _statefulString = "Three";
+            _undoServiceForString.RecordState();
+
+            _aggregateService.Undo();
+            _aggregateService.Undo();
+            _aggregateService.Undo();
+            _aggregateService.Undo();
+            Assert.IsFalse(_aggregateService.CanUndo);
+            Assert.IsFalse(_undoServiceForInt.CanUndo);
+            Assert.IsFalse(_undoServiceForString.CanUndo);
+            Assert.IsTrue(_statefulInt == 1);
+            Assert.IsTrue(_statefulString.Equals("Two"));
+
+            _aggregateService.Redo();
+            _aggregateService.Redo();
+            _aggregateService.Redo();
+            _aggregateService.Redo();
+            Assert.IsTrue(_statefulInt == 4);
+            Assert.IsTrue(_statefulString.Equals("Three"));
         }
     }
 }
