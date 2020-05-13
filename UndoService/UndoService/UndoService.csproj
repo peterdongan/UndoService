@@ -7,18 +7,19 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Generic undo service using delegates to access state. There is an optional limit on the number of states stored. 
-</Description>
+    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo.</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
-    <PackageReleaseNotes>Namespace changed.</PackageReleaseNotes>
-    <Version>1.1</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <PackageReleaseNotes>AggregateUndoService added. This provides unified undo/redo across multiple UndoServices, which can track the state of different parts of your application.
+
+Unit tests added.</PackageReleaseNotes>
+    <Version>2.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
