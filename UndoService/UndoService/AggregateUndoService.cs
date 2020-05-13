@@ -2,10 +2,7 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
-using StateManagement.DataStructures;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StateManagement
 {
@@ -13,12 +10,12 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AggregateUndoService 
+    public class AggregateUndoService
     {
-        private List<IUndoService> _undoServices;
+        private readonly List<IUndoService> _undoServices;
         private readonly Stack<int> _undoStack;
-        private readonly Stack<int> _redoStack;    
-       
+        private readonly Stack<int> _redoStack;
+
 
         public bool CanUndo
         {
@@ -44,9 +41,9 @@ namespace StateManagement
             _undoStack = new Stack<int>();
             _redoStack = new Stack<int>();
 
-            for(var i =0; i< _undoServices.Count; i++)
+            for (var i = 0; i < _undoServices.Count; i++)
             {
-                _undoServices[i].StateRecorded += S_StateRecorded;
+                _undoServices[i].StateRecorded += Subservice_StateRecorded;
                 _undoServices[i].Id = i;
             }
         }
@@ -55,7 +52,7 @@ namespace StateManagement
         {
             _undoStack.Clear();
             _redoStack.Clear();
-            foreach(var s in _undoServices)
+            foreach (var s in _undoServices)
             {
                 s.ClearStacks();
             }
@@ -63,7 +60,7 @@ namespace StateManagement
 
         public void Undo()
         {
-            if(!CanUndo)
+            if (!CanUndo)
             {
                 throw new EmptyStackException("Nothing to undo. Check CanUndo is true before invoking Undo().");
             }
@@ -73,10 +70,10 @@ namespace StateManagement
             _redoStack.Push(lastService);
 
             //Check if the next undoservice has become empty. If it has, then empty all undo stacks.
-            if(_undoStack.Count>0)
+            if (_undoStack.Count > 0)
             {
                 var nextService = _undoStack.Peek();
-                if(!_undoServices[nextService].CanUndo)
+                if (!_undoServices[nextService].CanUndo)
                 {
                     ClearUndoStacks();
                 }
@@ -94,7 +91,7 @@ namespace StateManagement
             _undoServices[lastService].Redo();
         }
 
-        private void S_StateRecorded(object sender, StateRecordedEventArgs e)
+        private void Subservice_StateRecorded(object sender, StateRecordedEventArgs e)
         {
             var serviceId = ((IUndoService)sender).Id;
             _undoStack.Push(serviceId);

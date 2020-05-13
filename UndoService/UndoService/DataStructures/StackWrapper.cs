@@ -11,8 +11,8 @@ namespace StateManagement.DataStructures
         private readonly Stack<T> _stack;
 
         public int Count
-        { 
-            get { return _stack.Count; } 
+        {
+            get { return _stack.Count; }
         }
 
         public StackWrapper()

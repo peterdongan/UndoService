@@ -12,13 +12,13 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public  class UndoService<T> : IUndoService
+    public class UndoService<T> : IUndoService
     {
         protected readonly GetState<T> GetState;
         protected readonly SetState<T> SetState;
         protected readonly IStack<T> _undoStack;
         protected readonly Stack<T> _redoStack;    //limited by undo stack capacity already
-        
+
         protected T _currentState;
 
         public event StateRecordedEventHandler StateRecorded;
@@ -64,7 +64,7 @@ namespace StateManagement
 
         public void Undo()
         {
-            if(!CanUndo)
+            if (!CanUndo)
             {
                 throw new EmptyStackException("Nothing to undo. Check CanUndo is true before invoking Undo().");
             }

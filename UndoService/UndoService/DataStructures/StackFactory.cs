@@ -4,11 +4,11 @@
 
 namespace StateManagement.DataStructures
 {
-     class StackFactory<T>
+    class StackFactory<T>
     {
-        internal IStack<T> MakeStack (int? cap)
+        internal IStack<T> MakeStack(int? cap)
         {
-            if(cap == null)
+            if (cap == null)
             {
                 return new StackWrapper<T>();
             }

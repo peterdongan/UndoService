@@ -11,7 +11,7 @@ namespace UndoService.Test
         private UndoService<int> _undoServiceForInt;
         private string _statefulString;
         private int _statefulInt;
-        
+
         private void GetStringState(out string state)
         {
             state = _statefulString;
@@ -78,7 +78,7 @@ namespace UndoService.Test
             _undoServiceForInt.Redo();
             Assert.IsTrue(_statefulInt == 4);
         }
-        
+
         [Test]
         public void AggregateUndoServiceUndoRedoTest()
         {
