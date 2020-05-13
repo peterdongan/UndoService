@@ -1,3 +1,7 @@
+// Copyright (c) Peter Dongan. All rights reserved.
+// Licensed under the MIT licence. https://opensource.org/licenses/MIT
+// Project: https://github.com/peterdongan/UndoService
+
 using NUnit.Framework;
 using StateManagement;
 
@@ -8,7 +12,7 @@ namespace UndoService.Test
         private AggregateUndoService _aggregateService;
         private UndoService<string> _undoServiceForString;
         private UndoService<int> _undoServiceForInt;
-        private string _statefulString;
+        private string _statefulString;     //(In real use, more complex objects would be used to store state.)
         private int _statefulInt;
 
         private void GetStringState(out string state)
