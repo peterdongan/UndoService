@@ -10,6 +10,7 @@ namespace UndoService.Test
     public class UndoServiceTests
     {
         private AggregateUndoService _aggregateService;
+        private UndoService<int> _individualUndoService;    //No handler assigned to the event
         private UndoService<string> _undoServiceForString;
         private UndoService<int> _undoServiceForInt;
         private string _statefulString;     //(In real use, more complex objects would be used to store state.)
@@ -39,6 +40,7 @@ namespace UndoService.Test
         public void Setup()
         {
             _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
+            _individualUndoService = new UndoService<int>(GetIntState, SetIntState, 3);
             _undoServiceForString = new UndoService<string>(GetStringState, SetStringState, 5);
             IUndoService[] subservices = { _undoServiceForInt, _undoServiceForString };
             _aggregateService = new AggregateUndoService(subservices);
@@ -155,6 +157,21 @@ namespace UndoService.Test
             _aggregateService.Redo();
             Assert.IsTrue(_statefulInt == 4);
             Assert.IsTrue(_statefulString.Equals("Three"));
+        }
+
+        [Test]
+        public void NoEventHandlerTest()
+        {
+            _statefulInt = 1;
+            _individualUndoService.RecordState();
+            _statefulInt = 2;
+            _individualUndoService.RecordState();
+
+            _individualUndoService.Undo();
+            Assert.IsTrue(_statefulInt == 1);
+
+            _individualUndoService.Redo();
+            Assert.IsTrue(_statefulInt == 2);
         }
     }
 }

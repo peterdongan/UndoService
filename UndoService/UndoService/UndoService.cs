@@ -5,6 +5,7 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace StateManagement
 {
@@ -30,6 +31,7 @@ namespace StateManagement
             GetState(out _currentState);
             _redoStack = new Stack<T>();
         }
+
 
         public event StateRecordedEventHandler StateRecorded;
         
@@ -97,7 +99,11 @@ namespace StateManagement
             _undoStack.Push(_currentState);
             _currentState = momento;
             _redoStack.Clear();
-            StateRecorded(this, new StateRecordedEventArgs());
+            StateRecorded?.Invoke(this, new EventArgs());
         }
+
+
+
+
     }
 }

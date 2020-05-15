@@ -2,6 +2,7 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using System;
 using System.Collections.Generic;
 
 namespace StateManagement
@@ -89,7 +90,7 @@ namespace StateManagement
             _undoServices[lastService].Redo();
         }
 
-        private void Subservice_StateRecorded(object sender, StateRecordedEventArgs e)
+        private void Subservice_StateRecorded(object sender, EventArgs e)
         {
             var serviceId = ((IUndoService)sender).Id;
             _undoStack.Push(serviceId);
