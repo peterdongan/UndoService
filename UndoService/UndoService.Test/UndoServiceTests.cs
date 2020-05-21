@@ -46,6 +46,9 @@ namespace UndoService.Test
             _aggregateService = new AggregateUndoService(subservices);
         }
 
+        /// <summary>
+        /// Test undo/redo in a single UndoService
+        /// </summary>
         [Test]
         public void UndoRedoTest()
         {
@@ -60,6 +63,9 @@ namespace UndoService.Test
             Assert.IsTrue(_statefulInt == 2);
         }
 
+        /// <summary>
+        /// Test that capacity limits are applied to a single UndoService
+        /// </summary>
         [Test]
         public void CapacityTest()
         {
@@ -84,6 +90,9 @@ namespace UndoService.Test
             Assert.IsTrue(_statefulInt == 4);
         }
 
+        /// <summary>
+        /// Test undo/redo in an AggregateUndoService
+        /// </summary>
         [Test]
         public void AggregateUndoServiceUndoRedoTest()
         {
@@ -123,6 +132,9 @@ namespace UndoService.Test
             Assert.IsTrue(_statefulInt == 3);
         }
 
+        /// <summary>
+        /// Test that AggregateUndoService detects when one of its component UndoServices has nothing left in its undo stack, and that it makes that point the effective end of its own undo stack.
+        /// </summary>
         [Test]
         public void AggregateUndoServiceCapacityHandlingTest()
         {
@@ -159,6 +171,9 @@ namespace UndoService.Test
             Assert.IsTrue(_statefulString.Equals("Three"));
         }
 
+        /// <summary>
+        /// Test that individual UndoServices work without anything listening to the StateRecorded event.
+        /// </summary>
         [Test]
         public void NoEventHandlerTest()
         {
@@ -172,6 +187,66 @@ namespace UndoService.Test
 
             _individualUndoService.Redo();
             Assert.IsTrue(_statefulInt == 2);
+        }
+
+        /// <summary>
+        /// Test taht you can undo actions after redoing them in a single UndoService
+        /// </summary>
+        [Test]
+        public void RedoUndoSingleTest()
+        {
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _undoServiceForInt.Undo();
+            _undoServiceForInt.Redo();
+
+            Assert.IsTrue(_undoServiceForInt.CanUndo);
+
+            _undoServiceForInt.Undo();
+            Assert.IsTrue(_statefulInt == 1);
+
+        }
+
+        /// <summary>
+        /// Test that you can undo actions after redoing them in an AggregateUndoService.
+        /// </summary>
+        [Test]
+        public void RedoUndoAggregateTest()
+        {
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulString = "One";
+            _undoServiceForString.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _undoServiceForInt.RecordState();
+            _statefulString = "Two";
+            _undoServiceForString.RecordState();
+
+            _aggregateService.Undo();
+            _aggregateService.Undo();
+            _aggregateService.Undo();
+            _aggregateService.Redo();
+            _aggregateService.Redo();
+            _aggregateService.Redo();
+
+            Assert.IsTrue(_aggregateService.CanUndo);
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 3);
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 2);
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("One"));
+            Assert.IsTrue(_statefulInt == 1);
+
         }
     }
 }

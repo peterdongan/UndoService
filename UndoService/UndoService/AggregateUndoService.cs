@@ -88,6 +88,7 @@ namespace StateManagement
 
             var lastService = _redoStack.Pop();
             _undoServices[lastService].Redo();
+            _undoStack.Push(lastService);
         }
 
         private void Subservice_StateRecorded(object sender, EventArgs e)
