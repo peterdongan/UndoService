@@ -14,10 +14,14 @@
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
-    <PackageReleaseNotes>AggregateUndoService added.</PackageReleaseNotes>
-    <Version>2.0</Version>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
+    <PackageReleaseNotes>2.0.2 Fixed bug using Undo after Redo in an AggregateUndoService.
+2.0.1 Fixed bug recording state in an individual (standalone) UndoService.
+2.0.0 AggregateUndoService added.
+
+</PackageReleaseNotes>
+    <Version>2.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
