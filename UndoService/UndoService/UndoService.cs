@@ -102,8 +102,5 @@ namespace StateManagement
             StateRecorded?.Invoke(this, new EventArgs());
         }
 
-
-
-
     }
 }

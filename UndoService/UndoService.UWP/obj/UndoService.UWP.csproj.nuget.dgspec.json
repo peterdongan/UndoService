@@ -1,20 +1,22 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {}
+    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.UWP\\UndoService.UWP.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {
+    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.UWP\\UndoService.UWP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
-        "projectName": "UndoService.Test",
-        "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+        "projectUniqueName": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.UWP\\UndoService.UWP.csproj",
+        "projectName": "UndoService.UWP",
+        "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.UWP\\UndoService.UWP.csproj",
         "packagesPath": "C:\\Users\\Peter\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\obj\\",
+        "outputPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.UWP\\obj\\",
         "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
         ],
         "configFilePaths": [
           "C:\\Users\\Peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -22,65 +24,58 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "uap10.0.17763"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "uap10.0.17763": {
             "projectReferences": {
               "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj": {
                 "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj"
               }
             }
           }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "uap10.0.17763": {
           "dependencies": {
-            "Microsoft.NET.Test.Sdk": {
+            "Microsoft.NETCore.UniversalWindowsPlatform": {
               "target": "Package",
-              "version": "[16.4.0, )"
-            },
-            "NUnit3TestAdapter": {
-              "target": "Package",
-              "version": "[3.15.1, )"
-            },
-            "nunit": {
-              "target": "Package",
-              "version": "[3.12.0, )"
+              "version": "[6.2.10, )"
             }
           },
           "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
+            "net461"
           ],
           "assetTargetFallback": true,
-          "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.2, 3.1.2]"
-            }
-          ],
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "warn": true
+        }
+      },
+      "runtimes": {
+        "win10-arm": {
+          "#import": []
+        },
+        "win10-arm-aot": {
+          "#import": []
+        },
+        "win10-arm64-aot": {
+          "#import": []
+        },
+        "win10-x64": {
+          "#import": []
+        },
+        "win10-x64-aot": {
+          "#import": []
+        },
+        "win10-x86": {
+          "#import": []
+        },
+        "win10-x86-aot": {
+          "#import": []
         }
       }
     },

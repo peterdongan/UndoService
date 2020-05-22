@@ -4650,11 +4650,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Peter\\Source\\Repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+      "projectUniqueName": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
       "projectName": "UndoService.Test",
-      "projectPath": "C:\\Users\\Peter\\Source\\Repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+      "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
       "packagesPath": "C:\\Users\\Peter\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Peter\\Source\\Repos\\UndoService\\UndoService\\UndoService.Test\\obj\\",
+      "outputPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -4674,8 +4674,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Peter\\Source\\Repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj": {
-              "projectPath": "C:\\Users\\Peter\\Source\\Repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj"
+            "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj": {
+              "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj"
             }
           }
         }
