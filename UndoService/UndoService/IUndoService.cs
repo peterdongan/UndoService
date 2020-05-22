@@ -8,6 +8,8 @@ namespace StateManagement
     {
         event StateRecordedEventHandler StateRecorded;
 
+        event StateSetEventHandler StateSet;
+
         int Id { get; set; }
 
         bool CanUndo { get; }

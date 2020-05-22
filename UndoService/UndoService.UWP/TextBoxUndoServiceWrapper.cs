@@ -1,4 +1,8 @@
-﻿using StateManagement.DataStructures;
+﻿// Copyright (c) Peter Dongan. All rights reserved.
+// Licensed under the MIT licence. https://opensource.org/licenses/MIT
+// Project: https://github.com/peterdongan/UndoService
+
+using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +18,7 @@ namespace StateManagement.UWP
     /// If you are using a single UndoService to record application state, then you should not use this, but use TextBoxUndoBlocker directly on the TextBox.
     /// </summary>
     public class TextBoxUndoServiceWrapper : IUndoService
-    {
+    { 
         private readonly TextBox _textBox;
         private readonly UndoService<string> _undoService;
 
@@ -41,6 +45,19 @@ namespace StateManagement.UWP
             remove
             {
                 ((IUndoService)_undoService).StateRecorded -= value;
+            }
+        }
+
+        public event StateSetEventHandler StateSet
+        {
+            add
+            {
+                ((IUndoService)_undoService).StateSet += value;
+            }
+
+            remove
+            {
+                ((IUndoService)_undoService).StateSet -= value;
             }
         }
 
