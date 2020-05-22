@@ -21,6 +21,12 @@ namespace StateManagement.UWP
     { 
         private readonly TextBox _textBox;
         private readonly UndoService<string> _undoService;
+        private readonly TextBoxUndoBlocker _textBoxUndoBlocker;
+
+        /// <summary>
+        /// If the textbox is changed by the undoservice - used to avoid recording state changes 
+        /// </summary>
+        private bool _stateSetByUndoServiceFlag;
 
         public int Id { get => ((IUndoService)_undoService).Id; set => ((IUndoService)_undoService).Id = value; }
 
@@ -31,8 +37,27 @@ namespace StateManagement.UWP
         public TextBoxUndoServiceWrapper(TextBox textBox, int? cap)
         {
             _textBox = textBox;
+            _stateSetByUndoServiceFlag = false;
+            _textBoxUndoBlocker = new TextBoxUndoBlocker(textBox);
             _textBox.TextChanged += _textBox_TextChanged;
             _undoService = new UndoService<string>(GetState, SetState, cap);
+        }
+
+        /// <summary>
+        /// Record the state when the textbox content changes if it was not changed by the undoservice. This approach is obviously very broken as wedon't want to save the state on every keypress.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(_stateSetByUndoServiceFlag)
+            {
+                _stateSetByUndoServiceFlag = false;
+            }
+            else
+            {
+                RecordState();
+            }
         }
 
         public event StateRecordedEventHandler StateRecorded
@@ -59,12 +84,7 @@ namespace StateManagement.UWP
             {
                 ((IUndoService)_undoService).StateSet -= value;
             }
-        }
-
-        private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _textBox.ClearUndoRedoHistory();
-        }
+        }  
 
         private void GetState(out string state)
         {
