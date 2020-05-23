@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+GHK8b0+VM2I8Lqnxa9C3rqFQqxnrP6MG3Ba0pzYXxVcqje7a+BQosP0cdDIQ3raVON8vni+r019VQppwjoF5A==",
+  "dgSpecHash": "iyakpL/7nBdi5l8zyqlCfciued1GfFwiMunX+gzV8qTYM6JgjjMBvinVFAi06YnOwu48xureMIBGpZYnM0RDTg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Peter\\Source\\Repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+  "projectFilePath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Peter\\.nuget\\packages\\microsoft.codecoverage\\16.4.0\\microsoft.codecoverage.16.4.0.nupkg.sha512",
     "C:\\Users\\Peter\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
@@ -67,6 +67,7 @@
     "C:\\Users\\Peter\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Peter\\.nuget\\packages\\system.xml.xpath\\4.3.0\\system.xml.xpath.4.3.0.nupkg.sha512",
     "C:\\Users\\Peter\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.3.0\\system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\Peter\\.nuget\\packages\\undoservice\\2.0.2\\undoservice.2.0.2.nupkg.sha512",
     "C:\\Users\\Peter\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
   ],
   "logs": []

@@ -34,7 +34,8 @@ namespace StateManagement
 
 
         public event StateRecordedEventHandler StateRecorded;
-        
+        public event StateSetEventHandler StateSet;
+
         /// <summary>
         /// This is used by the AggregateUndoService to keep track of where changes were made.
         /// </summary>
@@ -78,6 +79,7 @@ namespace StateManagement
             SetState(momento);
             _redoStack.Push(_currentState);
             _currentState = momento;
+            StateSet?.Invoke(this, new EventArgs());
         }
 
         public void Redo()
@@ -91,6 +93,7 @@ namespace StateManagement
             SetState(momento);
             _undoStack.Push(_currentState);
             _currentState = momento;
+            StateSet?.Invoke(this, new EventArgs());
         }
 
         public virtual void RecordState()
@@ -101,9 +104,6 @@ namespace StateManagement
             _redoStack.Clear();
             StateRecorded?.Invoke(this, new EventArgs());
         }
-
-
-
 
     }
 }
