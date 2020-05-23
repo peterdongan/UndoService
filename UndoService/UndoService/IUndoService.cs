@@ -10,8 +10,6 @@ namespace StateManagement
 
         event StateSetEventHandler StateSet;
 
-        int Id { get; set; }
-
         bool CanUndo { get; }
 
         bool CanRedo { get; }

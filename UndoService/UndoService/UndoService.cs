@@ -13,7 +13,7 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UndoService<T> : IUndoService
+    public class UndoService<T> : ISubUndoService
     {
         protected readonly GetState<T> GetState;
         protected readonly SetState<T> SetState;
@@ -39,7 +39,7 @@ namespace StateManagement
         /// <summary>
         /// This is used by the AggregateUndoService to keep track of where changes were made.
         /// </summary>
-        public int Id { get; set; }
+        int ISubUndoService.Id { get; set; }
 
         public bool CanUndo
         {

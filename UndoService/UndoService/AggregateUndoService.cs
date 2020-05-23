@@ -14,18 +14,19 @@ namespace StateManagement
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService
     {
-        private readonly IUndoService[] _undoServices;
+        private readonly ISubUndoService[] _undoServices;
         private readonly Stack<int> _undoStack;
         private readonly Stack<int> _redoStack;
 
-        public AggregateUndoService(IUndoService[] subUndoServices)
+        public AggregateUndoService(IUndoService[] undoServices)
         {
-            _undoServices = subUndoServices;
+            _undoServices = new ISubUndoService[undoServices.Length];
             _undoStack = new Stack<int>();
             _redoStack = new Stack<int>();
 
             for (var i = 0; i < _undoServices.Length; i++)
             {
+                _undoServices[i] = (ISubUndoService)undoServices[i];
                 _undoServices[i].StateRecorded += Subservice_StateRecorded;
                 _undoServices[i].Id = i;
             }
@@ -93,7 +94,7 @@ namespace StateManagement
 
         private void Subservice_StateRecorded(object sender, EventArgs e)
         {
-            var serviceId = ((IUndoService)sender).Id;
+            var serviceId = ((ISubUndoService)sender).Id;
             _undoStack.Push(serviceId);
         }
 

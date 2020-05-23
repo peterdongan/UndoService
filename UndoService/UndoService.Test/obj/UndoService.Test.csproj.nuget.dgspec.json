@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {}
+    "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {
+    "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+        "projectUniqueName": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
         "projectName": "UndoService.Test",
-        "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
-        "packagesPath": "C:\\Users\\Peter\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService.Test\\obj\\",
+        "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+        "packagesPath": "C:\\Users\\peter\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -31,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj": {
-                "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj"
+              "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
+                "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj"
               }
             }
           }
@@ -69,37 +65,27 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.2, 3.1.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj": {
+    "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
       "version": "2.0.2",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj",
+        "projectUniqueName": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
         "projectName": "UndoService",
-        "projectPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\UndoService.csproj",
-        "packagesPath": "C:\\Users\\Peter\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Peter\\source\\repos\\UndoService\\UndoService\\UndoService\\obj\\",
+        "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
+        "packagesPath": "C:\\Users\\peter\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
@@ -139,7 +125,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
