@@ -7,7 +7,7 @@ using System;
 namespace StateManagement
 {
     /// <summary>
-    /// This is just a wrapper for UndoService that adds an index so AggregateUndoService can track which one it is.
+    /// This is just a wrapper for UndoService for when it's used in AggregateService. It adds an index so the parent AggregateUndoService can track which one it is.
     /// </summary>
     internal class SubUndoService : ISubUndoService
     {
@@ -18,14 +18,14 @@ namespace StateManagement
 
         private readonly IUndoService _undoService;
 
-        public SubUndoService(IUndoService undoService)
+        internal SubUndoService(IUndoService undoService)
         {
             _undoService = undoService;
 
-            _undoService.StateRecorded += _undoService_StateRecorded;
+            _undoService.StateRecorded += undoService_StateRecorded;
         }
 
-        private void _undoService_StateRecorded(object sender, EventArgs e)
+        private void undoService_StateRecorded(object sender, EventArgs e)
         {
             StateRecorded?.Invoke(this, new EventArgs());
         }
