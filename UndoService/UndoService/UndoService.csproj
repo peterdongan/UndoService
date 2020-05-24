@@ -9,23 +9,25 @@
     <PackageLicenseFile></PackageLicenseFile>
     <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests in the source repository for examples of how to use.</Description>
     <Copyright>Peter Dongan</Copyright>
-    <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
+    <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.0.2.0</AssemblyVersion>
-    <FileVersion>2.0.2.0</FileVersion>
-    <PackageReleaseNotes>2.0.2 Fixed bug using Undo after Redo in an AggregateUndoService.
-2.0.1 Fixed bug recording state in an individual (standalone) UndoService.
-2.0.0 AggregateUndoService added.
-
-</PackageReleaseNotes>
-    <Version>2.0.2</Version>
+    <AssemblyVersion>2.0.3.0</AssemblyVersion>
+    <FileVersion>2.0.3.0</FileVersion>
+    <PackageReleaseNotes>IUndoService.StateSet event added. This is intended to allow changed elements to be displayed in a UI in cases where they might not be currently visible when Undo/Redo is invoked.
+IUndoService.Id removed. This was used internally by AggregateUndoService. It should not have beeen part of the public interface as external changes to it could cause problems.</PackageReleaseNotes>
+    <Version>2.0.3-alpha</Version>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

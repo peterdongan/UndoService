@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {}
+    "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {
+    "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+        "projectUniqueName": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
         "projectName": "UndoService.Test",
-        "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+        "projectPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
         "packagesPath": "C:\\Users\\peter\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\obj\\",
+        "outputPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -27,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
-                "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj"
+              "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
+                "projectPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj"
               }
             }
           }
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
-      "version": "2.0.2",
+    "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
+      "version": "2.0.3-alpha",
       "restore": {
-        "projectUniqueName": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
+        "projectUniqueName": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
         "projectName": "UndoService",
-        "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
+        "projectPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
         "packagesPath": "C:\\Users\\peter\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\obj\\",
+        "outputPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\peter\\AppData\\Roaming\\NuGet\\NuGet.Config",

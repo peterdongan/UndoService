@@ -9,12 +9,12 @@ namespace StateManagement
     /// <summary>
     /// This is just a wrapper for UndoService for when it's used in AggregateService. It adds an index so the parent AggregateUndoService can track which one it is.
     /// </summary>
-    internal class SubUndoService : ISubUndoService
+    internal class SubUndoService 
     {
         /// <summary>
         /// This is used by the AggregateUndoService to keep track of where changes were made.
         /// </summary>
-        int ISubUndoService.Index { get; set; }
+        internal int Index { get; set; }
 
         private readonly IUndoService _undoService;
 
@@ -22,17 +22,17 @@ namespace StateManagement
         {
             _undoService = undoService;
 
-            _undoService.StateRecorded += undoService_StateRecorded;
+            _undoService.StateRecorded += UndoService_StateRecorded;
         }
 
-        private void undoService_StateRecorded(object sender, EventArgs e)
+        private void UndoService_StateRecorded(object sender, EventArgs e)
         {
             StateRecorded?.Invoke(this, new EventArgs());
         }
 
-        public event StateRecordedEventHandler StateRecorded;
+        internal event StateRecordedEventHandler StateRecorded;
 
-        public event StateSetEventHandler StateSet
+        internal event StateSetEventHandler StateSet
         {
             add
             {
@@ -44,19 +44,19 @@ namespace StateManagement
             }
         }
 
-        public bool CanUndo => _undoService.CanUndo;
+        internal bool CanUndo => _undoService.CanUndo;
 
-        public bool CanRedo => _undoService.CanRedo;
+        internal bool CanRedo => _undoService.CanRedo;
 
-        public void ClearStacks() => _undoService.ClearStacks();
+        internal void ClearStacks() => _undoService.ClearStacks();
 
-        public void ClearUndoStack() => _undoService.ClearUndoStack();
+        internal void ClearUndoStack() => _undoService.ClearUndoStack();
 
-        public void Undo() => _undoService.Undo();
+        internal void Undo() => _undoService.Undo();
 
-        public void Redo() => _undoService.Redo();
+        internal void Redo() => _undoService.Redo();
 
-        public virtual void RecordState() => _undoService.RecordState();
+        internal virtual void RecordState() => _undoService.RecordState();
 
     }
 }

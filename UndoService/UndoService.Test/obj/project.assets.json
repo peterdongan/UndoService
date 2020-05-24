@@ -1226,7 +1226,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
-      "UndoService/2.0.2": {
+      "UndoService/2.0.3-alpha": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "compile": {
@@ -4629,7 +4629,7 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "UndoService/2.0.2": {
+    "UndoService/2.0.3-alpha": {
       "type": "project",
       "path": "../UndoService/UndoService.csproj",
       "msbuildProject": "../UndoService/UndoService.csproj"
@@ -4639,7 +4639,7 @@
     ".NETCoreApp,Version=v3.1": [
       "Microsoft.NET.Test.Sdk >= 16.4.0",
       "NUnit3TestAdapter >= 3.15.1",
-      "UndoService >= 2.0.2",
+      "UndoService >= 2.0.3-alpha",
       "nunit >= 3.12.0"
     ]
   },
@@ -4649,11 +4649,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+      "projectUniqueName": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
       "projectName": "UndoService.Test",
-      "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
+      "projectPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
       "packagesPath": "C:\\Users\\peter\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService.Test\\obj\\",
+      "outputPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\peter\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -4669,8 +4669,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
-              "projectPath": "C:\\Users\\peter\\Source\\Repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj"
+            "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
+              "projectPath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj"
             }
           }
         }
