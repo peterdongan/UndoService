@@ -5,6 +5,8 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 
 namespace StateManagement
 {
@@ -14,12 +16,12 @@ namespace StateManagement
     /// <typeparam name="T"></typeparam>
     public class UndoService<T> : IUndoService
     {
-        protected readonly GetState<T> GetState;
-        protected readonly SetState<T> SetState;
-        protected readonly IStack<T> _undoStack;
-        protected readonly Stack<T> _redoStack;    //limited by undo stack capacity already
+        private readonly GetState<T> GetState;
+        private readonly SetState<T> SetState;
+        private readonly IStack<T> _undoStack;
+        private readonly Stack<T> _redoStack;    //limited by undo stack capacity already
 
-        protected T _currentState;
+        private T _currentState;
 
         public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
         {
@@ -67,8 +69,10 @@ namespace StateManagement
         {
             if (!CanUndo)
             {
-                throw new EmptyStackException("Nothing to undo. Check CanUndo is true before invoking Undo().");
+                var resourceManager = new ResourceManager(typeof(UndoService.Resources));
+                throw new EmptyStackException(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
             }
+
             var momento = _undoStack.Pop();
             SetState(momento);
             _redoStack.Push(_currentState);
@@ -80,7 +84,7 @@ namespace StateManagement
         {
             if (!CanRedo)
             {
-                throw new EmptyStackException("Nothing to redo. Check CanRedo is true before invoking Redo().");
+                throw new EmptyStackException();
             }
 
             var momento = _redoStack.Pop();

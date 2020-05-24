@@ -14,12 +14,13 @@
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.0.3.0</AssemblyVersion>
-    <FileVersion>2.0.3.0</FileVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <FileVersion>2.1.0.0</FileVersion>
     <PackageReleaseNotes>IUndoService.StateSet event added. This is intended to allow changed elements to be displayed in a UI in cases where they might not be currently visible when Undo/Redo is invoked.
-IUndoService.Id removed. This was used internally by AggregateUndoService. It should not have beeen part of the public interface as external changes to it could cause problems.</PackageReleaseNotes>
-    <Version>2.0.3-alpha</Version>
+IUndoService.Id removed. This was used internally by AggregateUndoService and external changes to it could have caused problems.</PackageReleaseNotes>
+    <Version>2.1.0-alpha</Version>
     <PackageIconUrl />
+    <NeutralLanguage>en-IE</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -32,6 +33,28 @@ IUndoService.Id removed. This was used internally by AggregateUndoService. It sh
 
   <ItemGroup>
     <None Remove="LICENCE.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

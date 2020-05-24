@@ -14,5 +14,13 @@ namespace StateManagement
         public EmptyStackException(string message) : base(message)
         {
         }
+
+        public EmptyStackException()
+        {
+        }
+
+        public EmptyStackException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

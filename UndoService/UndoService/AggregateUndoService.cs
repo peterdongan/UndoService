@@ -4,6 +4,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 
 namespace StateManagement
 {
@@ -20,6 +22,10 @@ namespace StateManagement
 
         public AggregateUndoService(IUndoService[] undoServices)
         {
+            if(undoServices == null)
+            {
+                throw new ArgumentNullException(nameof(undoServices));
+            }
             _subUndoServices = new SubUndoService[undoServices.Length];
             _undoStack = new Stack<int>();
             _redoStack = new Stack<int>();
@@ -62,7 +68,8 @@ namespace StateManagement
         {
             if (!CanUndo)
             {
-                throw new EmptyStackException("Nothing to undo. Check CanUndo is true before invoking Undo().");
+                var resourceManager = new ResourceManager(typeof(UndoService.Resources));
+                throw new EmptyStackException(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
             }
 
             var lastService = _undoStack.Pop();
@@ -84,7 +91,8 @@ namespace StateManagement
         {
             if (!CanRedo)
             {
-                throw new EmptyStackException("Nothing to redo. Check CanRedo is true before invoking Redo().");
+                var resourceManager = new ResourceManager(typeof(UndoService.Resources));
+                throw new EmptyStackException(resourceManager.GetString("RedoWithoutCanRedo", CultureInfo.CurrentCulture));
             }
 
             var lastService = _redoStack.Pop();

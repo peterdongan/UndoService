@@ -75,7 +75,7 @@
       }
     },
     "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj": {
-      "version": "2.0.3-alpha",
+      "version": "2.1.0-alpha",
       "restore": {
         "projectUniqueName": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService\\UndoService.csproj",
         "projectName": "UndoService",
@@ -108,6 +108,12 @@
       "frameworks": {
         "netstandard2.0": {
           "dependencies": {
+            "Microsoft.CodeAnalysis.FxCopAnalyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.9.6, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
