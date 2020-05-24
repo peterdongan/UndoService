@@ -5,7 +5,6 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace StateManagement
 {
@@ -13,13 +12,13 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UndoService<T> : ISubUndoService
+    public class UndoService<T> : IUndoService
     {
         protected readonly GetState<T> GetState;
         protected readonly SetState<T> SetState;
         protected readonly IStack<T> _undoStack;
         protected readonly Stack<T> _redoStack;    //limited by undo stack capacity already
-        
+
         protected T _currentState;
 
         public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
@@ -35,11 +34,6 @@ namespace StateManagement
 
         public event StateRecordedEventHandler StateRecorded;
         public event StateSetEventHandler StateSet;
-
-        /// <summary>
-        /// This is used by the AggregateUndoService to keep track of where changes were made.
-        /// </summary>
-        int ISubUndoService.Id { get; set; }
 
         public bool CanUndo
         {

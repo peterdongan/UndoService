@@ -6,6 +6,9 @@ namespace StateManagement
 {
     internal interface ISubUndoService : IUndoService
     {
-          int Id { get; set; }
+        /// <summary>
+        /// This is used by the AggregateUndoService to keep track of where changes were made.
+        /// </summary>
+        int Index { get; set; }
     }
 }

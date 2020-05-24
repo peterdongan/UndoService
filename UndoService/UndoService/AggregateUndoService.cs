@@ -14,21 +14,21 @@ namespace StateManagement
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService
     {
-        private readonly ISubUndoService[] _undoServices;
+        private readonly ISubUndoService[] _subUndoServices;
         private readonly Stack<int> _undoStack;
         private readonly Stack<int> _redoStack;
 
         public AggregateUndoService(IUndoService[] undoServices)
         {
-            _undoServices = new ISubUndoService[undoServices.Length];
+            _subUndoServices = new ISubUndoService[undoServices.Length];
             _undoStack = new Stack<int>();
             _redoStack = new Stack<int>();
 
-            for (var i = 0; i < _undoServices.Length; i++)
+            for (var i = 0; i < _subUndoServices.Length; i++)
             {
-                _undoServices[i] = (ISubUndoService)undoServices[i];
-                _undoServices[i].StateRecorded += Subservice_StateRecorded;
-                _undoServices[i].Id = i;
+                _subUndoServices[i] = new SubUndoService(undoServices[i]);
+                _subUndoServices[i].StateRecorded += Subservice_StateRecorded;
+                _subUndoServices[i].Index = i;
             }
         }
 
@@ -52,7 +52,7 @@ namespace StateManagement
         {
             _undoStack.Clear();
             _redoStack.Clear();
-            foreach (var s in _undoServices)
+            foreach (var s in _subUndoServices)
             {
                 s.ClearStacks();
             }
@@ -66,14 +66,14 @@ namespace StateManagement
             }
 
             var lastService = _undoStack.Pop();
-            _undoServices[lastService].Undo();
+            _subUndoServices[lastService].Undo();
             _redoStack.Push(lastService);
 
             //Check if the next undoservice has become empty. If it has, then empty all undo stacks.
             if (_undoStack.Count > 0)
             {
                 var nextService = _undoStack.Peek();
-                if (!_undoServices[nextService].CanUndo)
+                if (!_subUndoServices[nextService].CanUndo)
                 {
                     ClearUndoStacks();
                 }
@@ -88,20 +88,20 @@ namespace StateManagement
             }
 
             var lastService = _redoStack.Pop();
-            _undoServices[lastService].Redo();
+            _subUndoServices[lastService].Redo();
             _undoStack.Push(lastService);
         }
 
         private void Subservice_StateRecorded(object sender, EventArgs e)
         {
-            var serviceId = ((ISubUndoService)sender).Id;
+            var serviceId = ((ISubUndoService)sender).Index;
             _undoStack.Push(serviceId);
         }
 
         private void ClearUndoStacks()
         {
             _undoStack.Clear();
-            foreach (var s in _undoServices)
+            foreach (var s in _subUndoServices)
             {
                 s.ClearUndoStack();
             }
