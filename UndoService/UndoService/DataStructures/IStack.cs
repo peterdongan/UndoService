@@ -13,5 +13,7 @@ namespace StateManagement.DataStructures
         T Pop();
 
         void Clear();
+
+        T Peek();
     }
 }

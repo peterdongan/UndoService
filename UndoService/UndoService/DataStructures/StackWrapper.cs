@@ -34,5 +34,10 @@ namespace StateManagement.DataStructures
         {
             _stack.Clear();
         }
+
+        public T Peek()
+        {
+            return _stack.Peek();
+        }
     }
 }

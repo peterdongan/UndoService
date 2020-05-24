@@ -20,6 +20,7 @@ namespace StateManagement
         private readonly SetState<T> SetState;
         private readonly IStack<T> _undoStack;
         private readonly Stack<T> _redoStack;    //limited by undo stack capacity already
+        private readonly UndoServiceValidator<T> _undoServiceValidator;
 
         private T _currentState;
 
@@ -31,27 +32,15 @@ namespace StateManagement
             _undoStack = stackFactory.MakeStack(cap);
             GetState(out _currentState);
             _redoStack = new Stack<T>();
+            _undoServiceValidator = new UndoServiceValidator<T>(_undoStack, _redoStack);
         }
-
 
         public event StateRecordedEventHandler StateRecorded;
         public event StateSetEventHandler StateSet;
 
-        public bool CanUndo
-        {
-            get
-            {
-                return _undoStack.Count > 0;
-            }
-        }
+        public bool CanUndo => _undoServiceValidator.CanUndo;
 
-        public bool CanRedo
-        {
-            get
-            {
-                return _redoStack.Count > 0;
-            }
-        }
+        public bool CanRedo => _undoServiceValidator.CanRedo;
 
         public void ClearStacks()
         {
@@ -67,11 +56,7 @@ namespace StateManagement
 
         public void Undo()
         {
-            if (!CanUndo)
-            {
-                var resourceManager = new ResourceManager(typeof(UndoService.Resources));
-                throw new EmptyStackException(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
-            }
+            _undoServiceValidator.ValidateUndo();
 
             var momento = _undoStack.Pop();
             SetState(momento);
@@ -82,10 +67,7 @@ namespace StateManagement
 
         public void Redo()
         {
-            if (!CanRedo)
-            {
-                throw new EmptyStackException();
-            }
+            _undoServiceValidator.ValidateRedo();
 
             var momento = _redoStack.Pop();
             SetState(momento);

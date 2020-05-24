@@ -2,6 +2,7 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,11 +15,12 @@ namespace StateManagement
     /// Change tracking is still done by the individual child UndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AggregateUndoService
+    public class AggregateUndoService 
     {
         private readonly SubUndoService[] _subUndoServices;
-        private readonly Stack<int> _undoStack;
+        private readonly IStack<int> _undoStack;
         private readonly Stack<int> _redoStack;
+        private readonly UndoServiceValidator<int> _undoServiceValidator;
 
         public AggregateUndoService(IUndoService[] undoServices)
         {
@@ -27,7 +29,7 @@ namespace StateManagement
                 throw new ArgumentNullException(nameof(undoServices));
             }
             _subUndoServices = new SubUndoService[undoServices.Length];
-            _undoStack = new Stack<int>();
+            _undoStack = new StackWrapper<int>();
             _redoStack = new Stack<int>();
 
             for (var i = 0; i < _subUndoServices.Length; i++)
@@ -36,23 +38,13 @@ namespace StateManagement
                 _subUndoServices[i].StateRecorded += Subservice_StateRecorded;
                 _subUndoServices[i].Index = i;
             }
+
+            _undoServiceValidator = new UndoServiceValidator<int>(_undoStack, _redoStack);
         }
 
-        public bool CanUndo
-        {
-            get
-            {
-                return _undoStack.Count > 0;
-            }
-        }
+        public bool CanUndo => _undoServiceValidator.CanUndo;
 
-        public bool CanRedo
-        {
-            get
-            {
-                return _redoStack.Count > 0;
-            }
-        }
+        public bool CanRedo => _undoServiceValidator.CanRedo;
 
         public void ClearStacks()
         {
@@ -66,11 +58,7 @@ namespace StateManagement
 
         public void Undo()
         {
-            if (!CanUndo)
-            {
-                var resourceManager = new ResourceManager(typeof(UndoService.Resources));
-                throw new EmptyStackException(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
-            }
+            _undoServiceValidator.ValidateUndo();
 
             var lastService = _undoStack.Pop();
             _subUndoServices[lastService].Undo();
@@ -89,11 +77,7 @@ namespace StateManagement
 
         public void Redo()
         {
-            if (!CanRedo)
-            {
-                var resourceManager = new ResourceManager(typeof(UndoService.Resources));
-                throw new EmptyStackException(resourceManager.GetString("RedoWithoutCanRedo", CultureInfo.CurrentCulture));
-            }
+            _undoServiceValidator.ValidateRedo();
 
             var lastService = _redoStack.Pop();
             _subUndoServices[lastService].Redo();
