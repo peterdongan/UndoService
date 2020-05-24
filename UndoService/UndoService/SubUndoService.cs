@@ -9,13 +9,8 @@ namespace StateManagement
     /// <summary>
     /// This is just a wrapper for UndoService for when it's used in AggregateService. It adds an index so the parent AggregateUndoService can track which one it is.
     /// </summary>
-    internal class SubUndoService 
+    internal class SubUndoService
     {
-        /// <summary>
-        /// This is used by the AggregateUndoService to keep track of where changes were made.
-        /// </summary>
-        internal int Index { get; set; }
-
         private readonly IUndoService _undoService;
 
         internal SubUndoService(IUndoService undoService)
@@ -23,11 +18,6 @@ namespace StateManagement
             _undoService = undoService;
 
             _undoService.StateRecorded += UndoService_StateRecorded;
-        }
-
-        private void UndoService_StateRecorded(object sender, EventArgs e)
-        {
-            StateRecorded?.Invoke(this, new EventArgs());
         }
 
         internal event StateRecordedEventHandler StateRecorded;
@@ -44,6 +34,11 @@ namespace StateManagement
             }
         }
 
+        /// <summary>
+        /// This is used by the AggregateUndoService to keep track of where changes were made.
+        /// </summary>
+        internal int Index { get; set; }
+
         internal bool CanUndo => _undoService.CanUndo;
 
         internal bool CanRedo => _undoService.CanRedo;
@@ -58,5 +53,9 @@ namespace StateManagement
 
         internal virtual void RecordState() => _undoService.RecordState();
 
+        private void UndoService_StateRecorded(object sender, EventArgs e)
+        {
+            StateRecorded?.Invoke(this, new EventArgs());
+        }
     }
 }

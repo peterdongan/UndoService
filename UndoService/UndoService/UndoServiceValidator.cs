@@ -3,7 +3,6 @@
 // Project: https://github.com/peterdongan/UndoService
 
 using StateManagement.DataStructures;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
@@ -17,7 +16,7 @@ namespace StateManagement
     public class UndoServiceValidator<T>
     {
         private readonly IStack<T> _undoStack;
-        private readonly Stack<T> _redoStack; 
+        private readonly Stack<T> _redoStack;
 
         public UndoServiceValidator(IStack<T> undoStack, Stack<T> redoStack)
         {

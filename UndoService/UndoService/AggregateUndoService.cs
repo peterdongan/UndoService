@@ -5,8 +5,6 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Resources;
 
 namespace StateManagement
 {
@@ -15,7 +13,7 @@ namespace StateManagement
     /// Change tracking is still done by the individual child UndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AggregateUndoService 
+    public class AggregateUndoService
     {
         private readonly SubUndoService[] _subUndoServices;
         private readonly IStack<int> _undoStack;
@@ -24,7 +22,7 @@ namespace StateManagement
 
         public AggregateUndoService(IUndoService[] undoServices)
         {
-            if(undoServices == null)
+            if (undoServices == null)
             {
                 throw new ArgumentNullException(nameof(undoServices));
             }
