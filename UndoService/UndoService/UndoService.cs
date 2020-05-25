@@ -12,7 +12,7 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UndoService<T> : IUndoService
+    public class UndoService<T> : IUndoService, IStateTracker
     {
         private readonly GetState<T> GetState;
         private readonly SetState<T> SetState;
