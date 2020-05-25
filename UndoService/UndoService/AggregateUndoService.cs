@@ -10,7 +10,7 @@ namespace StateManagement
 {
     /// <summary>
     /// Provides a unified Undo/Redo interface for multiple UndoServices.
-    /// Change tracking is still done by the individual child UndoServices. Undo/Redo is done via this class.
+    /// Change tracking is still done by the individual child UndoServices. Undo/Redo must be done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService

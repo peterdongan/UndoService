@@ -40,6 +40,9 @@ namespace StateManagement
             }
         }
 
+        /// <summary>
+        /// Throws an exception if Undo() cannot be carried out.
+        /// </summary>
         public void ValidateUndo()
         {
             if (!CanUndo)
@@ -49,6 +52,9 @@ namespace StateManagement
             }
         }
 
+        /// <summary>
+        /// Throws an exception if Redo() cannot be carried out.
+        /// </summary>
         public void ValidateRedo()
         {
             if (!CanRedo)
