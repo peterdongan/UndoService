@@ -1,15 +1,3 @@
-IUndoService[] subservices = { _undoServiceForInt, _undoServiceForString };
-
-I want to use a public interface for SubService that only exposes the RecordState() method.
-I also want to have an internal interface that exposes all the IUndoService methods ann also an Index.
-It has to be a typed class so as I understand it I need to only use the interfaces if using them in a collection or a non-typed class or a method in a non-typed class.
-
-A public factory method:
-
-Instead of passing the services to the constructor, use an add() method to add them.
-That would actually work ok even if they added them after the service had been running.#
-
-
 # UndoService
 Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests for examples of usage. [https://github.com/peterdongan/UndoService](https://github.com/peterdongan/UndoService)
 
