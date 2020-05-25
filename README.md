@@ -1,12 +1,30 @@
+IUndoService[] subservices = { _undoServiceForInt, _undoServiceForString };
+
+I want to use a public interface for SubService that only exposes the RecordState() method.
+I also want to have an internal interface that exposes all the IUndoService methods ann also an Index.
+It has to be a typed class so as I understand it I need to only use the interfaces if using them in a collection or a non-typed class or a method in a non-typed class.
+
+A public factory method:
+
+Instead of passing the services to the constructor, use an add() method to add them.
+That would actually work ok even if they added them after the service had been running.#
+
+
 # UndoService
 Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests for examples of usage. [https://github.com/peterdongan/UndoService](https://github.com/peterdongan/UndoService)
 
 ## Usage
+Use UndoService to track the state on a single stack.
+
 To create an UndoService, set the type that is used to record the state. Pass the delegate methods that are used to get and set the state.
 
-To use an UndoService, invoke RecordState() after changing the state. Invoke Undo() and Redo() to undo and redo changes. CanUndo and CanRedo should be checked respectively before invoking these methods. (Note that you should invoke RecordState() **after** making changes, as opposed to before you make them.
+To use an UndoService, invoke RecordState() **after** making changes to the state. (Note that the initial state is recorded automatically when the UndoService is initialized.) Invoke Undo() and Redo() to undo and redo changes. Use CanUndo and CanRedo to enable/disable Undo/Redo commands in the UI.
 
-To use multiple UndoServices to track different parts of your application, use an AggregateUndoService. Pass an array of the different UndoServices to its constructor. In this case, RecordState() is still done by the UndoServices, but Undo() and Redo() must only be done via the AggregateUndoService.
+Use AggregateUndoService if you want to use different stacks to track the changes to different parts of your application. This uses an array of SubUndoServices. Each SubUndoService is used to record the state of a different part of the application.
+
+To create an AggregateUndoService, first create the SubUndoServices. To create a SubUndoService, use the static factory method CreateSubUndoService(...) in the SubUndoService class. The arguments are the same as for the UndoService constructor. 
+
+To use the AggregateUndoService, invoke RecordState() in the SubUndoServices to record changes. Invoke Undo/Redo etc on the AggregateService itself.
 
 
 ## UndoService Class
@@ -41,10 +59,10 @@ void ClearUndoStacks()
 ```
 
 ## AggregateUndoService Class
-This can be used with multiple UndoServices to manage Undo/Redo across separate segments of the application. In this case, the child UndoServices look after change tracking and Undo/Redo is done via the AggregateUndoService. Most of the members are similar to UndoService so they are not duplicated here.
+This can be used with multiple UndoServices to manage Undo/Redo across separate segments of the application. In this case, the child SubUndoServices look after change tracking and Undo/Redo is done via the AggregateUndoService. Most of the members are similar to UndoService so they are not duplicated here.
 
 ### AggregateUndoService Constructor
-Pass an array of the UndoServices that are used for different parts of the application.
+Pass an array of the SubUndoServices that are used for different parts of the application.
 
 ```csharp
 AggregateUndoService(IUndoService[] subUndoServices)
