@@ -1226,7 +1226,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
-      "UndoService/2.1.1-alpha": {
+      "UndoService/2.1.2-alpha": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "compile": {
@@ -4629,7 +4629,7 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "UndoService/2.1.1-alpha": {
+    "UndoService/2.1.2-alpha": {
       "type": "project",
       "path": "../UndoService/UndoService.csproj",
       "msbuildProject": "../UndoService/UndoService.csproj"
@@ -4639,7 +4639,7 @@
     ".NETCoreApp,Version=v3.1": [
       "Microsoft.NET.Test.Sdk >= 16.4.0",
       "NUnit3TestAdapter >= 3.15.1",
-      "UndoService >= 2.1.1-alpha",
+      "UndoService >= 2.1.2-alpha",
       "nunit >= 3.12.0"
     ]
   },

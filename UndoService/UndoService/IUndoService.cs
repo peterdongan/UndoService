@@ -4,7 +4,7 @@
 
 namespace StateManagement
 {
-    public interface IUndoService : IStateRecorder
+    public interface IUndoService : IStateTracker
     {
 
         bool CanUndo { get; }

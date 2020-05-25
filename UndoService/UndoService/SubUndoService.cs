@@ -9,7 +9,7 @@ namespace StateManagement
     /// <summary>
     /// This is used to track changes to a particular section of the application. It is used in conjunction with AggregateUndoService.
     /// </summary>
-    public class SubUndoService : IStateRecorder
+    public class SubUndoService : IStateTracker
     {
         private readonly IUndoService _undoService;
 

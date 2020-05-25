@@ -4,7 +4,7 @@
 
 namespace StateManagement
 {
-    public interface IStateRecorder
+    public interface IStateTracker
     {
         /// <summary>
         /// Occurs when Undo or Redo is performed.
