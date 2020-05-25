@@ -13,6 +13,8 @@ namespace UndoService.Test
         private UndoService<int> _individualUndoService;    //No handler assigned to the event
         private UndoService<string> _undoServiceForString;
         private UndoService<int> _undoServiceForInt;
+        private SubUndoService _subUndoServiceForString;
+        private SubUndoService _subUndoServiceForInt;
         private string _statefulString;     //(In real use, more complex objects would be used to store state.)
         private int _statefulInt;
 
@@ -42,7 +44,9 @@ namespace UndoService.Test
             _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
             _individualUndoService = new UndoService<int>(GetIntState, SetIntState, 3);
             _undoServiceForString = new UndoService<string>(GetStringState, SetStringState, 5);
-            IUndoService[] subservices = { _undoServiceForInt, _undoServiceForString };
+            _subUndoServiceForInt = SubUndoService.CreateSubUndoService<int>(GetIntState, SetIntState, 3);
+            _subUndoServiceForString = SubUndoService.CreateSubUndoService<string>(GetStringState, SetStringState, 3);
+            SubUndoService[] subservices = { _subUndoServiceForInt, _subUndoServiceForString };
             _aggregateService = new AggregateUndoService(subservices);
         }
 
@@ -97,15 +101,15 @@ namespace UndoService.Test
         public void AggregateUndoServiceUndoRedoTest()
         {
             _statefulInt = 1;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulString = "One";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
             _statefulInt = 2;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulInt = 3;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulString = "Two";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
 
             _aggregateService.Undo();
             Assert.IsTrue(_statefulString.Equals("One"));
@@ -139,27 +143,25 @@ namespace UndoService.Test
         public void AggregateUndoServiceCapacityHandlingTest()
         {
             _statefulString = "One";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
             _statefulString = "Two";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
             _statefulInt = 1;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulInt = 2;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulInt = 3;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulInt = 4;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulString = "Three";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
 
             _aggregateService.Undo();
             _aggregateService.Undo();
             _aggregateService.Undo();
             _aggregateService.Undo();
             Assert.IsFalse(_aggregateService.CanUndo);
-            Assert.IsFalse(_undoServiceForInt.CanUndo);
-            Assert.IsFalse(_undoServiceForString.CanUndo);
             Assert.IsTrue(_statefulInt == 1);
             Assert.IsTrue(_statefulString.Equals("Two"));
 
@@ -216,15 +218,15 @@ namespace UndoService.Test
         public void RedoUndoAggregateTest()
         {
             _statefulInt = 1;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulString = "One";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
             _statefulInt = 2;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulInt = 3;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
             _statefulString = "Two";
-            _undoServiceForString.RecordState();
+            _subUndoServiceForString.RecordState();
 
             _aggregateService.Undo();
             _aggregateService.Undo();

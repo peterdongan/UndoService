@@ -10,7 +10,7 @@ namespace StateManagement
 {
     /// <summary>
     /// Provides a unified Undo/Redo interface for multiple UndoServices.
-    /// Change tracking is still done by the individual child UndoServices. Undo/Redo must be done via this class.
+    /// Change tracking is still done by the individual child UndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService
@@ -20,25 +20,26 @@ namespace StateManagement
         private readonly Stack<int> _redoStack;
         private readonly UndoServiceValidator<int> _undoServiceValidator;
 
-        public AggregateUndoService(IUndoService[] undoServices)
+        public AggregateUndoService(SubUndoService[] subUndoServices)
         {
-            if (undoServices == null)
+            if (subUndoServices == null)
             {
-                throw new ArgumentNullException(nameof(undoServices));
+                throw new ArgumentNullException(nameof(subUndoServices));
             }
-            _subUndoServices = new SubUndoService[undoServices.Length];
+            _subUndoServices = subUndoServices;
             _undoStack = new StackWrapper<int>();
             _redoStack = new Stack<int>();
 
             for (var i = 0; i < _subUndoServices.Length; i++)
             {
-                _subUndoServices[i] = new SubUndoService(undoServices[i]);
                 _subUndoServices[i].StateRecorded += Subservice_StateRecorded;
                 _subUndoServices[i].Index = i;
             }
 
             _undoServiceValidator = new UndoServiceValidator<int>(_undoStack, _redoStack);
         }
+
+
 
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
