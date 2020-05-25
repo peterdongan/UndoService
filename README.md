@@ -47,13 +47,13 @@ void ClearUndoStacks()
 ```
 
 ## AggregateUndoService Class
-This can be used with multiple SubUndoServices to manage Undo/Redo across separate segments of the application. In this case, the child SubUndoServices look after change tracking and Undo/Redo is done via the AggregateUndoService. Most of the members are similar to UndoService so they are not duplicated here, nut it does not have a RecordState() method, as this is done by the individual SubUndoServices.
+This can be used with multiple SubUndoServices to manage Undo/Redo across separate segments of the application. The child SubUndoServices look after change tracking and Undo/Redo is done via the AggregateUndoService. The members are similar to UndoService, but it does not have a RecordState() method, as this is done by the individual SubUndoServices.
 
 ### AggregateUndoService Constructor
 Pass an array of the SubUndoServices that are used for different parts of the application.
 
 ```csharp
-AggregateUndoService(IUndoService[] subUndoServices)
+AggregateUndoService(SubUndoService[] subUndoServices)
 ```
 
 ## SubUndoService Class
