@@ -10,7 +10,7 @@ namespace StateManagement
 {
     /// <summary>
     /// Provides a unified Undo/Redo interface for multiple UndoServices.
-    /// Change tracking is still done by the individual child UndoServices. Undo/Redo is done via this class.
+    /// Change tracking is still done by the individual child SubUndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService
@@ -22,11 +22,8 @@ namespace StateManagement
 
         public AggregateUndoService(SubUndoService[] subUndoServices)
         {
-            if (subUndoServices == null)
-            {
-                throw new ArgumentNullException(nameof(subUndoServices));
-            }
-            _subUndoServices = subUndoServices;
+            _subUndoServices = subUndoServices ?? throw new ArgumentNullException(nameof(subUndoServices));
+            
             _undoStack = new StackWrapper<int>();
             _redoStack = new Stack<int>();
 
@@ -63,7 +60,7 @@ namespace StateManagement
             _subUndoServices[lastService].Undo();
             _redoStack.Push(lastService);
 
-            //Check if the next undoservice has become empty. If it has, then empty all undo stacks.
+            //Check if the next SubUndoService has become empty. If it has, then empty all undo stacks.
             if (_undoStack.Count > 0)
             {
                 var nextService = _undoStack.Peek();

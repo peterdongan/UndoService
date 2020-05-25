@@ -14,8 +14,8 @@
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
+    <AssemblyVersion>2.1.1.0</AssemblyVersion>
+    <FileVersion>2.1.1.0</FileVersion>
     <PackageReleaseNotes>SubUndoService class added. This is now used by AggregateUndoService instead of IUndoService.
 IUndoService.StateSet event added. This is intended to allow changed elements to be displayed in a UI in cases where they might not be currently visible when Undo/Redo is invoked.
 IUndoService.Id removed. This was exposed incorrectly and used interally by AggregateUndoService.

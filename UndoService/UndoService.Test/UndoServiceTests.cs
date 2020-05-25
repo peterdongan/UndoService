@@ -11,7 +11,6 @@ namespace UndoService.Test
     {
         private AggregateUndoService _aggregateService;
         private UndoService<int> _individualUndoService;    //No handler assigned to the event
-        private UndoService<string> _undoServiceForString;
         private UndoService<int> _undoServiceForInt;
         private SubUndoService _subUndoServiceForString;
         private SubUndoService _subUndoServiceForInt;
@@ -43,7 +42,6 @@ namespace UndoService.Test
         {
             _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
             _individualUndoService = new UndoService<int>(GetIntState, SetIntState, 3);
-            _undoServiceForString = new UndoService<string>(GetStringState, SetStringState, 5);
             _subUndoServiceForInt = SubUndoService.CreateSubUndoService<int>(GetIntState, SetIntState, 3);
             _subUndoServiceForString = SubUndoService.CreateSubUndoService<string>(GetStringState, SetStringState, 3);
             SubUndoService[] subservices = { _subUndoServiceForInt, _subUndoServiceForString };

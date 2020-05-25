@@ -4,12 +4,12 @@
 
 using System;
 
-namespace StateManagement
+namespace StateManagement 
 {
     /// <summary>
-    /// This is an UndoService that is used with an AggregateUndoService. Changes to state are recorded from this class, but all other operations are done via the parent AggregateService.
+    /// This is used to track changes to a particular section of the application. It is used in conjunction with AggregateUndoService.
     /// </summary>
-    public class SubUndoService
+    public class SubUndoService : IStateRecorder
     {
         private readonly IUndoService _undoService;
 
@@ -20,9 +20,9 @@ namespace StateManagement
             _undoService.StateRecorded += UndoService_StateRecorded;
         }
 
-        internal event StateRecordedEventHandler StateRecorded;
+        public event StateRecordedEventHandler StateRecorded;
 
-        internal event StateSetEventHandler StateSet
+        public event StateSetEventHandler StateSet
         {
             add
             {
