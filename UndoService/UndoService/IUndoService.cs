@@ -4,22 +4,8 @@
 
 namespace StateManagement
 {
-    public interface IUndoService : IStateTracker
+    public interface IUndoService : IStateTracker, IUndoRedo
     {
 
-        bool CanUndo { get; }
-
-        bool CanRedo { get; }
-
-        /// <summary>
-        /// Clear the Undo and Redo stacks.
-        /// </summary>
-        void ClearStacks();
-
-        void ClearUndoStack();
-
-        void Undo();
-
-        void Redo();
     }
 }

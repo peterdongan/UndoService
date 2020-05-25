@@ -74,7 +74,7 @@ namespace StateManagement
             StateSet?.Invoke(this, new EventArgs());
         }
 
-        public virtual void RecordState()
+        public void RecordState()
         {
             GetState(out T momento);
             _undoStack.Push(_currentState);

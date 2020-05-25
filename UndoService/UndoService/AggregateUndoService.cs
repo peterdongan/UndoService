@@ -13,15 +13,12 @@ namespace StateManagement
     /// Change tracking is still done by the individual child SubUndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AggregateUndoService : IUndoService
+    public class AggregateUndoService : IUndoRedo
     {
         private readonly SubUndoService[] _subUndoServices;
         private readonly IStack<int> _undoStack;
         private readonly Stack<int> _redoStack;
         private readonly UndoServiceValidator<int> _undoServiceValidator;
-
-        public event StateSetEventHandler StateSet;
-        public event StateRecordedEventHandler StateRecorded;
 
         public AggregateUndoService(SubUndoService[] subUndoServices)
         {
@@ -72,7 +69,6 @@ namespace StateManagement
                     ClearUndoStack();
                 }
             }
-            StateSet?.Invoke(this, new EventArgs());
         }
 
         public void Redo()
@@ -82,14 +78,12 @@ namespace StateManagement
             var lastService = _redoStack.Pop();
             _subUndoServices[lastService].Redo();
             _undoStack.Push(lastService);
-            StateSet?.Invoke(this, new EventArgs());
         }
 
         private void Subservice_StateRecorded(object sender, EventArgs e)
         {
             var serviceId = ((SubUndoService)sender).Index;
             _undoStack.Push(serviceId);
-            StateRecorded?.Invoke(this, new EventArgs());
         }
 
         public void ClearUndoStack()
@@ -99,11 +93,6 @@ namespace StateManagement
             {
                 s.ClearUndoStack();
             }
-        }
-
-        public void RecordState()
-        {
-            throw new Exception("State should be recorded in the SubUndoServices, not in the aggregate service itself");
         }
     }
 }

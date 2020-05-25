@@ -10,7 +10,7 @@ namespace UndoService.Test
     public class UndoServiceTests
     {
         private AggregateUndoService _aggregateService;
-        private UndoService<int> _individualUndoService;    //No handler assigned to the event
+        private UndoService<int> _individualUndoService;   
         private UndoService<int> _undoServiceForInt;
         private SubUndoService _subUndoServiceForString;
         private SubUndoService _subUndoServiceForInt;

@@ -4,6 +4,9 @@
 
 namespace StateManagement
 {
+    /// <summary>
+    /// Tracks changes to a part of the application for Undo/Redo
+    /// </summary>
     public interface IStateTracker
     {
         /// <summary>
@@ -14,7 +17,7 @@ namespace StateManagement
         event StateRecordedEventHandler StateRecorded;
 
         /// <summary>
-        /// Records the current state of the tracked objects.
+        /// Records the current state of the tracked objects and puts it on the undo stack.
         /// </summary>
         void RecordState();
 
