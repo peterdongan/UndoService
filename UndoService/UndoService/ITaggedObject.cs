@@ -4,8 +4,9 @@
 
 namespace StateManagement
 {
-    public interface ITaggedObject
+    public class StateRecord<T>
     {
-        object Tag { get; set; }
+        public object Tag { get; set; }
+        public T State { get; set; }
     }
 }

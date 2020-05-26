@@ -50,6 +50,8 @@ namespace StateManagement
 
         public void RecordState() => _undoService.RecordState();
 
+        public void RecordState(object tag) => _undoService.RecordState( tag);
+
         internal void ClearStacks() => _undoService.ClearStacks();
 
         internal void ClearUndoStack() => _undoService.ClearUndoStack();

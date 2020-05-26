@@ -17,21 +17,23 @@ namespace StateManagement
     {
         private readonly GetState<T> GetState;
         private readonly SetState<T> SetState;
-        private readonly IStack<T> _undoStack;
-        private readonly Stack<T> _redoStack;    //limited by undo stack capacity already
-        private readonly UndoServiceValidator<T> _undoServiceValidator;
+        private readonly IStack<StateRecord<T>> _undoStack;
+        private readonly Stack<StateRecord<T>> _redoStack;    //limited by undo stack capacity already
+        private readonly UndoServiceValidator<StateRecord<T>> _undoServiceValidator;
 
-        private T _currentState;
+        private StateRecord<T> _currentState;
 
         public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
         {
             GetState = getState ?? throw new ArgumentNullException(nameof(getState));
             SetState = setState ?? throw new ArgumentNullException(nameof(setState));
-            var stackFactory = new StackFactory<T>();
+            var stackFactory = new StackFactory<StateRecord<T>>();
             _undoStack = stackFactory.MakeStack(cap);
-            GetState(out _currentState);
-            _redoStack = new Stack<T>();
-            _undoServiceValidator = new UndoServiceValidator<T>(_undoStack, _redoStack);
+           // T currentState;
+            GetState(out T currentState);
+            _currentState = new StateRecord<T> { State = currentState };
+            _redoStack = new Stack<StateRecord<T>>();
+            _undoServiceValidator = new UndoServiceValidator<StateRecord<T>>(_undoStack, _redoStack);
         }
 
         public event StateRecordedEventHandler StateRecorded;
@@ -44,7 +46,8 @@ namespace StateManagement
         public void ClearStacks()
         {
             _undoStack.Clear();
-            GetState(out _currentState);
+            GetState(out T currentState);
+            _currentState = new StateRecord<T> { State = currentState };
             _redoStack.Clear();
         }
 
@@ -57,15 +60,14 @@ namespace StateManagement
         {
             _undoServiceValidator.ValidateUndo();
 
+            //If tagging is used, the part of the state that will be changed by this will be tagged in _currentState (the change there will be undone).
+            var args = new StateSetEventArgs { Tag = _currentState.Tag };
+
             var momento = _undoStack.Pop();
-            SetState(momento);
+            SetState(momento.State);
             _redoStack.Push(_currentState);
             _currentState = momento;
-            var args = new StateSetEventArgs();
-            if(typeof(T).GetInterfaces().Contains(typeof(ITaggedObject)))
-            {
-                args.Tag = ((ITaggedObject)momento).Tag;
-            }
+
             StateSet?.Invoke(this, args);
         }
 
@@ -74,25 +76,24 @@ namespace StateManagement
             _undoServiceValidator.ValidateRedo();
 
             var momento = _redoStack.Pop();
-            SetState(momento);
+            SetState(momento.State);
             _undoStack.Push(_currentState);
             _currentState = momento;
-            var args = new StateSetEventArgs();
-            if (typeof(T).GetInterfaces().Contains(typeof(ITaggedObject)))
-            {
-                args.Tag = ((ITaggedObject)momento).Tag;
-            }
+
+            //If tagging is used, the part of the state that will be changed by this will be tagged in momento (the change there will be applied).
+            var args = new StateSetEventArgs { Tag = momento.Tag };
+
             StateSet?.Invoke(this, args);
         }
 
-        public void RecordState()
+
+        public void RecordState(object tag = null)
         {
             GetState(out T momento);
             _undoStack.Push(_currentState);
-            _currentState = momento;
+            _currentState = new StateRecord<T> { State = momento, Tag = tag };
             _redoStack.Clear();
             StateRecorded?.Invoke(this, new EventArgs());
         }
-
     }
 }

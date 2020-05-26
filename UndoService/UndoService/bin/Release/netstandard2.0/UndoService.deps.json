@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "UndoService/2.1.4-alpha": {
+      "UndoService/2.1.5-alpha": {
         "dependencies": {
           "Microsoft.CodeAnalysis.FxCopAnalyzers": "2.9.6",
           "NETStandard.Library": "2.0.3"
@@ -37,7 +37,7 @@
     }
   },
   "libraries": {
-    "UndoService/2.1.4-alpha": {
+    "UndoService/2.1.5-alpha": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

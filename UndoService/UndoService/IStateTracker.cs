@@ -17,9 +17,10 @@ namespace StateManagement
         event StateRecordedEventHandler StateRecorded;
 
         /// <summary>
-        /// Records the current state of the tracked objects and puts it on the undo stack.
+        /// Records the current state of the tracked objects and puts it on the undo stack
         /// </summary>
-        void RecordState();
+        /// <param name="tag">An optional tag. StateSetEventArgs will include its value. Can be used to identify the section of the state being changed by Undo/Redo and focus the UI on it.</param>
+        void RecordState(object tag = null);
 
     }
 }
