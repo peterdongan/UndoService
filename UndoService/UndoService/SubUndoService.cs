@@ -48,9 +48,7 @@ namespace StateManagement
             return new SubUndoService(new UndoService<T>(getState, setState, cap));
         }
 
-        public void RecordState() => _undoService.RecordState();
-
-        public void RecordState(object tag) => _undoService.RecordState( tag);
+        public void RecordState(object tag = null) => _undoService.RecordState( tag);
 
         internal void ClearStacks() => _undoService.ClearStacks();
 
