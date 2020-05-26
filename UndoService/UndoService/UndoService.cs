@@ -5,6 +5,7 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StateManagement
 {
@@ -60,7 +61,12 @@ namespace StateManagement
             SetState(momento);
             _redoStack.Push(_currentState);
             _currentState = momento;
-            StateSet?.Invoke(this, new EventArgs());
+            var args = new StateSetEventArgs();
+            if(typeof(T).GetInterfaces().Contains(typeof(ITaggedObject)))
+            {
+                args.Tag = ((ITaggedObject)momento).Tag;
+            }
+            StateSet?.Invoke(this, args);
         }
 
         public void Redo()
@@ -71,7 +77,12 @@ namespace StateManagement
             SetState(momento);
             _undoStack.Push(_currentState);
             _currentState = momento;
-            StateSet?.Invoke(this, new EventArgs());
+            var args = new StateSetEventArgs();
+            if (typeof(T).GetInterfaces().Contains(typeof(ITaggedObject)))
+            {
+                args.Tag = ((ITaggedObject)momento).Tag;
+            }
+            StateSet?.Invoke(this, args);
         }
 
         public void RecordState()

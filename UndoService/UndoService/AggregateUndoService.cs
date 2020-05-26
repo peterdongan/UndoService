@@ -5,29 +5,30 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StateManagement
 {
     /// <summary>
-    /// Provides a unified Undo/Redo interface for multiple UndoServices.
-    /// Change tracking is still done by the individual child SubUndoServices. Undo/Redo is done via this class.
+    /// Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
+    /// Change tracking is done by the individual child SubUndoServices. Undo/Redo is done via this class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class AggregateUndoService : IUndoRedo
     {
-        private readonly SubUndoService[] _subUndoServices;
+        private readonly List<SubUndoService> _subUndoServices;
         private readonly IStack<int> _undoStack;
         private readonly Stack<int> _redoStack;
         private readonly UndoServiceValidator<int> _undoServiceValidator;
 
         public AggregateUndoService(SubUndoService[] subUndoServices)
         {
-            _subUndoServices = subUndoServices ?? throw new ArgumentNullException(nameof(subUndoServices));
+            _subUndoServices = subUndoServices.ToList() ?? throw new ArgumentNullException(nameof(subUndoServices));
             
             _undoStack = new StackWrapper<int>();
             _redoStack = new Stack<int>();
 
-            for (var i = 0; i < _subUndoServices.Length; i++)
+            for (var i = 0; i < _subUndoServices.Count; i++)
             {
                 _subUndoServices[i].StateRecorded += Subservice_StateRecorded;
                 _subUndoServices[i].Index = i;
@@ -36,11 +37,20 @@ namespace StateManagement
             _undoServiceValidator = new UndoServiceValidator<int>(_undoStack, _redoStack);
         }
 
-
-
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
         public bool CanRedo => _undoServiceValidator.CanRedo;
+
+        public void AddSubUndoService(SubUndoService subService)
+        {
+            if (subService == null)
+            {
+                throw new ArgumentNullException(nameof(subService));
+            }
+            subService.StateRecorded += Subservice_StateRecorded;
+            subService.Index = _subUndoServices.Count;
+            _subUndoServices.Add(subService);
+        }
 
         public void ClearStacks()
         {

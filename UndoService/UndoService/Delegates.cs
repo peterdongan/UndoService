@@ -9,5 +9,5 @@ namespace StateManagement
     public delegate void GetState<T>(out T state);
     public delegate void SetState<T>(T state);
     public delegate void StateRecordedEventHandler(object sender, EventArgs e);
-    public delegate void StateSetEventHandler(object sender, EventArgs e);
+    public delegate void StateSetEventHandler(object sender, StateSetEventArgs e);
 }
