@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AoPOzOyl88BW0am427tw9/d8Q9C9J3gy+ysMr/pf1xP37ksX3lgbVcVNhZIBGVQtM6Wl47NSm4HLaQrB6dD0XA==",
+  "dgSpecHash": "XzeDGMkumeG5spzeIGAy+LkUuUwheRrZ/TDJRwENdymdR59/+VFNQTIHBUCf7+GZJmI7f1RNbuNKNNRkhyHDrA==",
   "success": true,
   "projectFilePath": "C:\\Users\\peter\\source\\repos\\UndoService2\\UndoService\\UndoService.Test\\UndoService.Test.csproj",
   "expectedPackageFiles": [
@@ -66,8 +66,7 @@
     "C:\\Users\\peter\\.nuget\\packages\\system.xml.xdocument\\4.0.11\\system.xml.xdocument.4.0.11.nupkg.sha512",
     "C:\\Users\\peter\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\peter\\.nuget\\packages\\system.xml.xpath\\4.3.0\\system.xml.xpath.4.3.0.nupkg.sha512",
-    "C:\\Users\\peter\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.3.0\\system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\peter\\.nuget\\packages\\undoservice\\2.1.6-alpha\\undoservice.2.1.6-alpha.nupkg.sha512"
+    "C:\\Users\\peter\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.3.0\\system.xml.xpath.xmldocument.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }
