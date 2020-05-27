@@ -13,7 +13,7 @@ namespace StateManagement
     /// Generic Undo Service using delegates to access state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UndoService<T> : IUndoService, IStateTracker
+    public class UndoService<T> : IUndoService, IStateTracker, IUndoRedo
     {
         private readonly GetState<T> GetState;
         private readonly SetState<T> SetState;
@@ -61,7 +61,7 @@ namespace StateManagement
             _undoServiceValidator.ValidateUndo();
 
             //If tagging is used, the part of the state that will be changed by this will be tagged in _currentState (the change there will be undone).
-            var args = new StateSetEventArgs { Tag = _currentState.Tag };
+            var args = new StateSetEventArgs { Tag = _currentState.Tag, SettingAction = StateSetAction.Undo };
 
             var momento = _undoStack.Pop();
             SetState(momento.State);
@@ -81,7 +81,7 @@ namespace StateManagement
             _currentState = momento;
 
             //If tagging is used, the part of the state that will be changed by this will be tagged in momento (the change there will be applied).
-            var args = new StateSetEventArgs { Tag = momento.Tag };
+            var args = new StateSetEventArgs { Tag = momento.Tag, SettingAction = StateSetAction.Redo };
 
             StateSet?.Invoke(this, args);
         }

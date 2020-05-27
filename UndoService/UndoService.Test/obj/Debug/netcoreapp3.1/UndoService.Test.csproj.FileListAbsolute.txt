@@ -192,3 +192,5 @@ C:\Users\Peter\Source\Repos\UndoService\UndoService\UndoService.Test\obj\Debug\n
 C:\Users\Peter\Source\Repos\UndoService\UndoService\UndoService.Test\obj\Debug\netcoreapp3.1\UndoService.Test.dll
 C:\Users\Peter\Source\Repos\UndoService\UndoService\UndoService.Test\obj\Debug\netcoreapp3.1\UndoService.Test.pdb
 C:\Users\Peter\Source\Repos\UndoService\UndoService\UndoService.Test\obj\Debug\netcoreapp3.1\UndoService.Test.genruntimeconfig.cache
+C:\Users\peter\source\repos\UndoService2\UndoService\UndoService.Test\obj\Debug\netcoreapp3.1\UndoService.Test.csproj.CoreCompileInputs.cache
+C:\Users\peter\source\repos\UndoService2\UndoService\UndoService.Test\obj\Debug\netcoreapp3.1\UndoService.Test.genruntimeconfig.cache

@@ -10,6 +10,7 @@
       "UndoService/2.1.6-alpha": {
         "dependencies": {
           "Microsoft.CodeAnalysis.FxCopAnalyzers": "2.9.6",
+          "Microsoft.CodeQuality.Analyzers": "2.9.6",
           "NETStandard.Library": "2.0.3"
         },
         "runtime": {

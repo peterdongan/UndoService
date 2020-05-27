@@ -17,24 +17,43 @@ namespace StateManagement
     public class AggregateUndoService : IUndoRedo
     {
         private readonly List<SubUndoService> _subUndoServices;
-        private readonly IStack<int> _undoStack;
-        private readonly Stack<int> _redoStack;
+        private readonly IntStackWithDelete _undoStack;
+        private readonly IntStackWithDelete _redoStack;
         private readonly UndoServiceValidator<int> _undoServiceValidator;
+
+        /// <summary>
+        /// Used by the StateSet event handler on subservices to determine if the action was invoked from here.
+        /// </summary>
+        private bool _isInternallySettingState = false;
 
         public AggregateUndoService(SubUndoService[] subUndoServices)
         {
             _subUndoServices = subUndoServices.ToList() ?? throw new ArgumentNullException(nameof(subUndoServices));
             
-            _undoStack = new StackWrapper<int>();
-            _redoStack = new Stack<int>();
+            _undoStack = new IntStackWithDelete();
+            _redoStack = new IntStackWithDelete();
 
             for (var i = 0; i < _subUndoServices.Count; i++)
             {
                 _subUndoServices[i].StateRecorded += Subservice_StateRecorded;
+                _subUndoServices[i].StateSet += Subservice_StateSet;
                 _subUndoServices[i].Index = i;
             }
 
             _undoServiceValidator = new UndoServiceValidator<int>(_undoStack, _redoStack);
+        }
+
+        public event StateSetEventHandler StateSet;
+
+        private void Subservice_StateSet(object sender, StateSetEventArgs e)
+        {
+            if(!_isInternallySettingState)
+            {
+                var subserviceIndex = ((SubUndoService)sender).Index;
+                _undoStack.DeleteLast(subserviceIndex);
+                _redoStack.Push(subserviceIndex);
+            }
+            StateSet?.Invoke(this, e);
         }
 
         public bool CanUndo => _undoServiceValidator.CanUndo;
@@ -66,9 +85,13 @@ namespace StateManagement
         {
             _undoServiceValidator.ValidateUndo();
 
-            var lastService = _undoStack.Pop();
-            _subUndoServices[lastService].Undo();
-            _redoStack.Push(lastService);
+            var lastServiceIndex = _undoStack.Pop();
+
+            _isInternallySettingState = true;
+            _subUndoServices[lastServiceIndex].Undo();
+            _isInternallySettingState = false;
+
+            _redoStack.Push(lastServiceIndex);
 
             //Check if the next SubUndoService has become empty. If it has, then empty all undo stacks.
             if (_undoStack.Count > 0)
@@ -85,9 +108,11 @@ namespace StateManagement
         {
             _undoServiceValidator.ValidateRedo();
 
-            var lastService = _redoStack.Pop();
-            _subUndoServices[lastService].Redo();
-            _undoStack.Push(lastService);
+            var lastServiceIndex = _redoStack.Pop();
+            _isInternallySettingState = true;
+            _subUndoServices[lastServiceIndex].Redo();
+            _isInternallySettingState = false;
+            _undoStack.Push(lastServiceIndex);
         }
 
         private void Subservice_StateRecorded(object sender, EventArgs e)
@@ -104,5 +129,6 @@ namespace StateManagement
                 s.ClearUndoStack();
             }
         }
+
     }
 }

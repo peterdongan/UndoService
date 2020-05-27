@@ -4,7 +4,7 @@
 
 namespace StateManagement
 {
-    public interface IUndoService : IStateTracker, IUndoRedo
+    internal interface IUndoService : IStateTracker, IUndoRedo
     {
 
     }

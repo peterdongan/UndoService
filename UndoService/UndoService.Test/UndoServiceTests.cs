@@ -10,12 +10,14 @@ namespace UndoService.Test
     public class UndoServiceTests
     {
         private AggregateUndoService _aggregateService;
-        private UndoService<int> _individualUndoService;   
+        private UndoService<int> _individualUndoService;
         private UndoService<int> _undoServiceForInt;
         private SubUndoService _subUndoServiceForString;
         private SubUndoService _subUndoServiceForInt;
         private string _statefulString;     //(In real use, more complex objects would be used to store state.)
         private int _statefulInt;
+
+        private object _stateSetTag;
 
         private void GetStringState(out string state)
         {
@@ -248,5 +250,66 @@ namespace UndoService.Test
             Assert.IsTrue(_statefulInt == 1);
 
         }
+
+        [Test]
+        public void TestSubserviceUndo()
+        {
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _statefulString = "Two";
+            _subUndoServiceForString.RecordState();
+            _statefulString = "Three";
+            _subUndoServiceForString.RecordState();
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_statefulString.Equals("Two"));
+
+            _subUndoServiceForInt.Undo();
+            Assert.IsTrue(_statefulInt == 2);
+
+            _aggregateService.Redo();
+            Assert.IsTrue(_statefulInt == 3);
+            Assert.IsTrue(_statefulString.Equals("Two"));
+
+            _aggregateService.Redo();
+            Assert.IsTrue(_statefulString.Equals("Three"));
+
+        }
+
+        [Test]
+        public void TestTagging()
+        {
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState("The int was set.");
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState("The string was set.");
+            _aggregateService.StateSet += _aggregateService_StateSet;
+            
+            _aggregateService.Undo();
+            Assert.IsTrue(((string)_stateSetTag).Equals("The string was set."));   //Undo will change the string
+
+            _aggregateService.Undo();
+            Assert.IsTrue(((string)_stateSetTag).Equals("The int was set."));   //Undo will change the int.
+
+            _aggregateService.Redo();
+            Assert.IsTrue(((string)_stateSetTag).Equals("The int was set."));   //Redo will change the int.
+
+            _aggregateService.Redo();
+            Assert.IsTrue(((string)_stateSetTag).Equals("The string was set."));   //Redo will change the string
+
+        }
+
+        private void _aggregateService_StateSet(object sender, StateSetEventArgs e)
+        {
+            _stateSetTag = e.Tag;
+        }
+
+       
     }
 }
