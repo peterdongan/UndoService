@@ -8,5 +8,14 @@ using System.Text;
 
 namespace StateManagement
 {
-    public enum StateSetAction { Undo, Redo }
+    /// <summary>
+    /// The type of Action (Undo or Redo) that caused the state to be set
+    /// </summary>
+    public enum StateSetAction { 
+        /// <summary>
+        /// </summary>
+        Undo, 
+        /// <summary>
+        /// </summary>
+        Redo }
 }

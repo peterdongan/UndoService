@@ -44,13 +44,12 @@ namespace StateManagement
         /// <summary>
         /// Throws an exception if Undo() cannot be carried out.
         /// </summary>
-        /// <exception cref=Exception>Occurs if CanUndo is false. CanUndo should be used to enable/disable Undo commands.</exception>
-        public void ValidateUndo()
+       public void ValidateUndo()
         {
             if (!CanUndo)
             {
                 var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-                throw new Exception(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
+                throw new InvalidOperationException(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
             }
         }
 
@@ -62,7 +61,7 @@ namespace StateManagement
             if (!CanRedo)
             {
                 var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-                throw new Exception(resourceManager.GetString("RedoWithoutCanRedo", CultureInfo.CurrentCulture));
+                throw new InvalidOperationException(resourceManager.GetString("RedoWithoutCanRedo", CultureInfo.CurrentCulture));
             }
         }
     }

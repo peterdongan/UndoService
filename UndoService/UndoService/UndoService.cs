@@ -23,6 +23,12 @@ namespace StateManagement
 
         private StateRecord<T> _currentState;
 
+        /// <summary>
+        /// Create an UndoService.
+        /// </summary>
+        /// <param name="getState">Method to get the state of the tracked object</param>
+        /// <param name="setState">Method to set the state of the tracked object</param>
+        /// <param name="cap">Capacity of Undo history</param>
         public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
         {
             GetState = getState ?? throw new ArgumentNullException(nameof(getState));
@@ -36,13 +42,29 @@ namespace StateManagement
             _undoServiceValidator = new UndoServiceValidator<StateRecord<T>>(_undoStack, _redoStack);
         }
 
+        /// <summary>
+        /// Raised when RecordState() is executed.
+        /// </summary>
         public event StateRecordedEventHandler StateRecorded;
+
+        /// <summary>
+        /// Raised when an Undo or Redo is executed.
+        /// </summary>
         public event StateSetEventHandler StateSet;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool CanRedo => _undoServiceValidator.CanRedo;
 
+        /// <summary>
+        /// Clear both the Undo and Redo stacks.
+        /// </summary>
         public void ClearStacks()
         {
             _undoStack.Clear();
@@ -51,11 +73,17 @@ namespace StateManagement
             _redoStack.Clear();
         }
 
+        /// <summary>
+        /// Clear the Undo stack (but not the Redo stack).
+        /// </summary>
         public void ClearUndoStack()
         {
             _undoStack.Clear();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Undo()
         {
             _undoServiceValidator.ValidateUndo();
@@ -71,6 +99,9 @@ namespace StateManagement
             StateSet?.Invoke(this, args);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Redo()
         {
             _undoServiceValidator.ValidateRedo();
@@ -86,7 +117,10 @@ namespace StateManagement
             StateSet?.Invoke(this, args);
         }
 
-
+        /// <summary>
+        /// Record the current state of the tracked object and add it to the Undo stack.
+        /// </summary>
+        /// <param name="tag">A tag associated with the recorded state</param>
         public void RecordState(object tag = null)
         {
             GetState(out T momento);

@@ -8,6 +8,9 @@ using System.Text;
 
 namespace StateManagement
 {
+    /// <summary>
+    /// Event arguments for the StateSet event.
+    /// </summary>
     public class StateSetEventArgs : EventArgs
     {
         /// <summary>
@@ -15,6 +18,9 @@ namespace StateManagement
         /// </summary>
         public object Tag { get; set; }
 
+        /// <summary>
+        /// Indicates whether it was an Undo or a Redo action that raised the event
+        /// </summary>
         public StateSetAction SettingAction {get; set;}
         
     }

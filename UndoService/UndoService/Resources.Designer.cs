@@ -61,6 +61,15 @@ namespace StateManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot add an UndoService which has existing states recorded. Add it before its RecordState() method has been invoked or call its ClearStacks() method before adding it..
+        /// </summary>
+        internal static string AddingPopulatedSubserviceExceptionMessage {
+            get {
+                return ResourceManager.GetString("AddingPopulatedSubserviceExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing to redo. Check that CanRedo is true before invoking Redo()..
         /// </summary>
         internal static string RedoWithoutCanRedo {

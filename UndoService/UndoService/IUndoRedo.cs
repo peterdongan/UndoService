@@ -9,9 +9,14 @@ namespace StateManagement
     /// </summary>
     public interface IUndoRedo
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
         bool CanUndo { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         bool CanRedo { get; }
 
         /// <summary>
@@ -19,10 +24,19 @@ namespace StateManagement
         /// </summary>
         void ClearStacks();
 
+        /// <summary>
+        /// Clear the Undo stack (but not the redo stack).
+        /// </summary>
         void ClearUndoStack();
 
+        /// <summary>
+        /// 
+        /// </summary>
         void Undo();
 
+        /// <summary>
+        /// 
+        /// </summary>
         void Redo();
     }
 }

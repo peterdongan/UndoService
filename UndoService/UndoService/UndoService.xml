@@ -69,7 +69,7 @@
         </member>
         <member name="T:StateManagement.IUndoService">
             <summary>
-            Full UndoService interface. Implements IStateTracker and IUndoRedo
+            Full UndoService interface (inherits IStateTracker and IUndoRedo).
             </summary>
         </member>
         <member name="T:StateManagement.Resources">
@@ -86,6 +86,11 @@
             <summary>
               Overrides the current thread's CurrentUICulture property for all
               resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:StateManagement.Resources.AddingPopulatedSubserviceExceptionMessage">
+            <summary>
+              Looks up a localized string similar to Cannot add an UndoService which has existing states recorded. Add it before its RecordState() method has been invoked or call its ClearStacks() method before adding it..
             </summary>
         </member>
         <member name="P:StateManagement.Resources.RedoWithoutCanRedo">
@@ -105,7 +110,7 @@
         </member>
         <member name="T:StateManagement.SubUndoService">
             <summary>
-            This is used to track changes to a particular section of the application. It is used in conjunction with AggregateUndoService.
+            This is used to track changes to a particular section of the application. It is used in conjunction with UndoServiceAggregate.
             </summary>
         </member>
         <member name="P:StateManagement.SubUndoService.Index">
@@ -124,11 +129,29 @@
             Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
             Change tracking is done by the individual child UndoServices. 
             </summary>
-            <typeparam name="T"></typeparam>
         </member>
         <member name="F:StateManagement.UndoServiceAggregate._isInternallySettingState">
             <summary>
             Used by the StateSet event handler on subservices to determine if the action was invoked from here.
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.#ctor(StateManagement.IUndoService[])">
+            <summary>
+            Create an aggregate of UndoServices.
+            </summary>
+            <param name="subUndoServices"></param>
+        </member>
+        <member name="E:StateManagement.UndoServiceAggregate.StateSet">
+            <summary>
+            Raised when Undo or Redo is performed.
+            </summary>
+        </member>
+        <member name="P:StateManagement.UndoServiceAggregate.CanUndo">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:StateManagement.UndoServiceAggregate.CanRedo">
+            <summary>
             </summary>
         </member>
         <member name="M:StateManagement.UndoServiceAggregate.AddUndoService(StateManagement.IUndoService)">
@@ -137,13 +160,36 @@
             </summary>
             <param name="subService"></param>
         </member>
+        <member name="M:StateManagement.UndoServiceAggregate.ClearStacks">
+            <summary>
+            Clear the Undo and Redo stacks for this object and all its subservices.
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.Undo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.Redo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.ClearUndoStack">
+            <summary>
+            </summary>
+        </member>
         <member name="T:StateManagement.UndoServiceValidator`1">
             <summary>
             Validates Undo/Redo operations
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:StateManagement.UndoServiceValidator`1.ValidateUndo" -->
+        <member name="M:StateManagement.UndoServiceValidator`1.ValidateUndo">
+            <summary>
+            Throws an exception if Undo() cannot be carried out.
+            </summary>
+        </member>
         <member name="M:StateManagement.UndoServiceValidator`1.ValidateRedo">
             <summary>
             Throws an exception if Redo() cannot be carried out.

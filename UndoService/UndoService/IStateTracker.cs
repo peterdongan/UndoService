@@ -10,10 +10,13 @@ namespace StateManagement
     public interface IStateTracker
     {
         /// <summary>
-        /// Occurs when Undo or Redo is performed.
+        /// Raised when Undo or Redo is executed.
         /// </summary>
         event StateSetEventHandler StateSet;
 
+        /// <summary>
+        /// Raised when RecordState() is executed.
+        /// </summary>
         event StateRecordedEventHandler StateRecorded;
 
         /// <summary>

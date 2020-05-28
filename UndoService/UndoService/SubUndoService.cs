@@ -6,13 +6,8 @@ using System;
 
 namespace StateManagement 
 {
-    /* The current structure of this class achieves two things: It avoids being a generic so that be referred to without a type specified. The Index member is internal.
-     * If the project is updated to .net standard 2.1 or later then it will use c# 8.0, which allows internal members in interfaces.
-     * At that point it might be preferable to create an ISubUndoService interface with an internal Index member and to change this class to inherit from UndoService and implement that interface.
-     */
-
     /// <summary>
-    /// This is used to track changes to a particular section of the application. It is used in conjunction with AggregateUndoService.
+    /// This is used to track changes to a particular section of the application. It is used in conjunction with UndoServiceAggregate.
     /// </summary>
     internal class SubUndoService : IUndoService
     {
@@ -24,11 +19,6 @@ namespace StateManagement
 
             _undoService.StateRecorded += UndoService_StateRecorded;
             _undoService.StateSet += UndoService_StateSet;
-        }
-
-        private void UndoService_StateSet(object sender, StateSetEventArgs e)
-        {
-            StateSet?.Invoke(this, e);
         }
 
         public event StateRecordedEventHandler StateRecorded;
@@ -57,6 +47,11 @@ namespace StateManagement
         private void UndoService_StateRecorded(object sender, EventArgs e)
         {
             StateRecorded?.Invoke(this, e);
+        }
+
+        private void UndoService_StateSet(object sender, StateSetEventArgs e)
+        {
+            StateSet?.Invoke(this, e);
         }
     }
 }

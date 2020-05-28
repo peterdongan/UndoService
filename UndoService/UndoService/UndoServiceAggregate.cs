@@ -5,7 +5,9 @@
 using StateManagement.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 
 namespace StateManagement
 {
@@ -13,7 +15,6 @@ namespace StateManagement
     /// Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
     /// Change tracking is done by the individual child UndoServices. 
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class UndoServiceAggregate : IUndoRedo
     {
         private readonly List<SubUndoService> _subUndoServices;
@@ -26,11 +27,20 @@ namespace StateManagement
         /// </summary>
         private bool _isInternallySettingState = false;
 
+        /// <summary>
+        /// Create an aggregate of UndoServices.
+        /// </summary>
+        /// <param name="subUndoServices"></param>
         public UndoServiceAggregate(IUndoService[] subUndoServices)
         {
             _undoStack = new IntStackWithDelete();
             _redoStack = new IntStackWithDelete();
             _subUndoServices = new List<SubUndoService>();
+
+            if(subUndoServices == null)
+            {
+                throw new ArgumentNullException(nameof(subUndoServices));
+            }
 
             for (var i = 0; i < subUndoServices.Length; i++)
             {
@@ -40,6 +50,9 @@ namespace StateManagement
             _undoServiceValidator = new UndoServiceValidator<int>(_undoStack, _redoStack);
         }
 
+        /// <summary>
+        /// Raised when Undo or Redo is performed.
+        /// </summary>
         public event StateSetEventHandler StateSet;
 
         private void Subservice_StateSet(object sender, StateSetEventArgs e)
@@ -53,8 +66,12 @@ namespace StateManagement
             StateSet?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// </summary>
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
+        /// <summary>
+        /// </summary>
         public bool CanRedo => _undoServiceValidator.CanRedo;
 
         /// <summary>
@@ -67,6 +84,11 @@ namespace StateManagement
             {
                 throw new ArgumentNullException(nameof(subService));
             }
+            if(subService.CanRedo || subService.CanRedo)
+            {
+                var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
+                throw new Exception(resourceManager.GetString("AddingPopulatedSubserviceExceptionMessage", CultureInfo.CurrentCulture));
+            }
             var nextSubService = new SubUndoService(subService);
             nextSubService.StateRecorded += Subservice_StateRecorded;
             nextSubService.StateSet += Subservice_StateSet;
@@ -74,6 +96,9 @@ namespace StateManagement
             _subUndoServices.Add(nextSubService);
         }
 
+        /// <summary>
+        /// Clear the Undo and Redo stacks for this object and all its subservices.
+        /// </summary>
         public void ClearStacks()
         {
             _undoStack.Clear();
@@ -84,6 +109,9 @@ namespace StateManagement
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Undo()
         {
             _undoServiceValidator.ValidateUndo();
@@ -107,6 +135,9 @@ namespace StateManagement
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Redo()
         {
             _undoServiceValidator.ValidateRedo();
@@ -124,6 +155,8 @@ namespace StateManagement
             _undoStack.Push(serviceId);
         }
 
+        /// <summary>
+        /// </summary>
         public void ClearUndoStack()
         {
             _undoStack.Clear();

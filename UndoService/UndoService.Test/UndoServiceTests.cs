@@ -19,26 +19,6 @@ namespace UndoService.Test
 
         private object _stateSetTag;
 
-        private void GetStringState(out string state)
-        {
-            state = _statefulString;
-        }
-
-        private void SetStringState(string value)
-        {
-            _statefulString = value;
-        }
-
-        private void GetIntState(out int state)
-        {
-            state = _statefulInt;
-        }
-
-        private void SetIntState(int value)
-        {
-            _statefulInt = value;
-        }
-
         [SetUp]
         public void Setup()
         {
@@ -302,7 +282,12 @@ namespace UndoService.Test
 
             _aggregateService.Redo();
             Assert.IsTrue(((string)_stateSetTag).Equals("The string was set."));   //Redo will change the string
+        }
 
+        [Test]
+        public void AddSuberviceTest()
+        {
+            //
         }
 
         private void AggregateService_StateSet(object sender, StateSetEventArgs e)
@@ -310,6 +295,24 @@ namespace UndoService.Test
             _stateSetTag = e.Tag;
         }
 
-       
+        private void GetStringState(out string state)
+        {
+            state = _statefulString;
+        }
+
+        private void SetStringState(string value)
+        {
+            _statefulString = value;
+        }
+
+        private void GetIntState(out int state)
+        {
+            state = _statefulInt;
+        }
+
+        private void SetIntState(int value)
+        {
+            _statefulInt = value;
+        }
     }
 }
