@@ -192,7 +192,7 @@ namespace UndoService.Test
         }
 
         /// <summary>
-        /// Test taht you can undo actions after redoing them in a single UndoService
+        /// Test that you can undo actions after redoing them in a single UndoService
         /// </summary>
         [Test]
         public void RedoUndoSingleTest()

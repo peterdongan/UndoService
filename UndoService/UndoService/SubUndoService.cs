@@ -14,7 +14,7 @@ namespace StateManagement
     /// <summary>
     /// This is used to track changes to a particular section of the application. It is used in conjunction with AggregateUndoService.
     /// </summary>
-    public class SubUndoService : IStateTracker
+    public class SubUndoService : IUndoService
     {
         private readonly IUndoService _undoService;
 
@@ -51,9 +51,9 @@ namespace StateManagement
 
         public void RecordState(object tag = null) => _undoService.RecordState( tag);
 
-        internal void ClearStacks() => _undoService.ClearStacks();
+        public void ClearStacks() => _undoService.ClearStacks();
 
-        internal void ClearUndoStack() => _undoService.ClearUndoStack();
+        public void ClearUndoStack() => _undoService.ClearUndoStack();
 
         public void Undo() => _undoService.Undo();
 
