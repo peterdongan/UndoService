@@ -122,7 +122,7 @@
         <member name="T:StateManagement.UndoServiceAggregate">
             <summary>
             Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
-            Change tracking is done by the individual child SubUndoServices. 
+            Change tracking is done by the individual child UndoServices. 
             </summary>
             <typeparam name="T"></typeparam>
         </member>

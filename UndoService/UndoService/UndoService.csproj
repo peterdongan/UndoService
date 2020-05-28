@@ -14,18 +14,17 @@
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.1.9.0</AssemblyVersion>
-    <FileVersion>2.1.9.0</FileVersion>
-    <PackageReleaseNotes>
-AggregateUndoService renamed UndoServiceAggregate. This is because it doesn't implement IUndoService, which is counter-intuitive under the original name. UndoServices added to it</PackageReleaseNotes>
-    <Version>2.1.9-alpha</Version>
+    <AssemblyVersion>2.1.11.0</AssemblyVersion>
+    <FileVersion>2.1.11.0</FileVersion>
+    <PackageReleaseNotes>AggregateUndoService renamed UndoServiceAggregate. This is because it doesn't implement IUndoService, which is counter-intuitive under the original name.</PackageReleaseNotes>
+    <Version>2.1.11-alpha</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>C:\Users\peter\source\repos\UndoService2\UndoService\UndoService\UndoService.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
