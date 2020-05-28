@@ -18,9 +18,9 @@ namespace StateManagement
     {
         private readonly IUndoService _undoService;
 
-        internal SubUndoService(IUndoService undoService)
+        public SubUndoService(IUndoService undoService)
         {
-            _undoService = undoService;
+            _undoService = undoService ?? throw new NullReferenceException();
 
             _undoService.StateRecorded += UndoService_StateRecorded;
             _undoService.StateSet += UndoService_StateSet;

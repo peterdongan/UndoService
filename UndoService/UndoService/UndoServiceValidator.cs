@@ -3,6 +3,7 @@
 // Project: https://github.com/peterdongan/UndoService
 
 using StateManagement.DataStructures;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
@@ -13,12 +14,12 @@ namespace StateManagement
     /// Validates Undo/Redo operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class UndoServiceValidator<T>
+    internal class UndoServiceValidator<T>
     {
         private readonly IStack<T> _undoStack;
         private readonly Stack<T> _redoStack;
 
-        public UndoServiceValidator(IStack<T> undoStack, Stack<T> redoStack)
+        internal UndoServiceValidator(IStack<T> undoStack, Stack<T> redoStack)
         {
             _undoStack = undoStack;
             _redoStack = redoStack;
@@ -43,12 +44,13 @@ namespace StateManagement
         /// <summary>
         /// Throws an exception if Undo() cannot be carried out.
         /// </summary>
+        /// <exception cref=Exception>Occurs if CanUndo is false. CanUndo should be used to enable/disable Undo commands.</exception>
         public void ValidateUndo()
         {
             if (!CanUndo)
             {
                 var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-                throw new EmptyStackException(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
+                throw new Exception(resourceManager.GetString("UndoWithoutCanUndo", CultureInfo.CurrentCulture));
             }
         }
 
@@ -60,7 +62,7 @@ namespace StateManagement
             if (!CanRedo)
             {
                 var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-                throw new EmptyStackException(resourceManager.GetString("RedoWithoutCanRedo", CultureInfo.CurrentCulture));
+                throw new Exception(resourceManager.GetString("RedoWithoutCanRedo", CultureInfo.CurrentCulture));
             }
         }
     }

@@ -5,7 +5,7 @@
 namespace StateManagement
 {
     /// <summary>
-    /// Performs Undo/redo actions.
+    /// Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
     /// </summary>
     public interface IUndoRedo
     {

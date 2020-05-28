@@ -5,7 +5,7 @@
 namespace StateManagement
 {
     /// <summary>
-    /// Tracks changes to a part of the application for Undo/Redo
+    /// Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
     /// </summary>
     public interface IStateTracker
     {
@@ -19,7 +19,7 @@ namespace StateManagement
         /// <summary>
         /// Records the current state of the tracked objects and puts it on the undo stack
         /// </summary>
-        /// <param name="tag">An optional tag. StateSetEventArgs will include its value. Can be used to identify the section of the state being changed by Undo/Redo and focus the UI on it.</param>
+        /// <param name="tag">When the tracked object is reverted to this state, a StateSet event will be thrown with this as a property in its arguments. </param>
         void RecordState(object tag = null);
 
     }

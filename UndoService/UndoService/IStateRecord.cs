@@ -4,7 +4,7 @@
 
 namespace StateManagement
 {
-    public class StateRecord<T>
+    internal class StateRecord<T>
     {
         public object Tag { get; set; }
         public T State { get; set; }

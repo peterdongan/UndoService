@@ -8,7 +8,7 @@ namespace StateManagement.DataStructures
     /// Interface to allow using Stacks or Dropout stacks interchangeably. (Dropout stacks are used where a capacity limit needs to be applied.)
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IStack<T>
+    interface IStack<T>
     {
         int Count { get; }
 

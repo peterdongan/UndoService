@@ -4,7 +4,10 @@
 
 namespace StateManagement
 {
-    internal interface IUndoService : IStateTracker, IUndoRedo
+    /// <summary>
+    /// Full UndoService interface. Implements IStateTracker and IUndoRedo
+    /// </summary>
+    public interface IUndoService : IStateTracker, IUndoRedo
     {
 
     }

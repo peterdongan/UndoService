@@ -60,6 +60,10 @@ namespace StateManagement
 
         public bool CanRedo => _undoServiceValidator.CanRedo;
 
+        /// <summary>
+        /// Include a new SubUndoService in the aggregated Undo/Redo stack.
+        /// </summary>
+        /// <param name="subService"></param>
         public void AddSubUndoService(SubUndoService subService)
         {
             if (subService == null)

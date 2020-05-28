@@ -289,7 +289,7 @@ namespace UndoService.Test
             _subUndoServiceForInt.RecordState("The int was set.");
             _statefulString = "One";
             _subUndoServiceForString.RecordState("The string was set.");
-            _aggregateService.StateSet += _aggregateService_StateSet;
+            _aggregateService.StateSet += AggregateService_StateSet;
             
             _aggregateService.Undo();
             Assert.IsTrue(((string)_stateSetTag).Equals("The string was set."));   //Undo will change the string
@@ -305,7 +305,7 @@ namespace UndoService.Test
 
         }
 
-        private void _aggregateService_StateSet(object sender, StateSetEventArgs e)
+        private void AggregateService_StateSet(object sender, StateSetEventArgs e)
         {
             _stateSetTag = e.Tag;
         }
