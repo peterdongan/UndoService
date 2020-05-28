@@ -16,7 +16,8 @@
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
     <AssemblyVersion>2.1.9.0</AssemblyVersion>
     <FileVersion>2.1.9.0</FileVersion>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>
+AggregateUndoService renamed UndoServiceAggregate. This is because it doesn't implement IUndoService, which is counter-intuitive under the original name. UndoServices added to it</PackageReleaseNotes>
     <Version>2.1.9-alpha</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>

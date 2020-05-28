@@ -4,24 +4,6 @@
         <name>UndoService</name>
     </assembly>
     <members>
-        <member name="T:StateManagement.AggregateUndoService">
-            <summary>
-            Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
-            Change tracking is done by the individual child SubUndoServices. Undo/Redo is done via this class.
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
-        <member name="F:StateManagement.AggregateUndoService._isInternallySettingState">
-            <summary>
-            Used by the StateSet event handler on subservices to determine if the action was invoked from here.
-            </summary>
-        </member>
-        <member name="M:StateManagement.AggregateUndoService.AddSubUndoService(StateManagement.SubUndoService)">
-            <summary>
-            Include a new SubUndoService in the aggregated Undo/Redo stack.
-            </summary>
-            <param name="subService"></param>
-        </member>
         <member name="T:StateManagement.DataStructures.IntStackWithDelete">
             <summary>
             Stack<Int> with DeleteLast(int) method added.</Int>
@@ -136,6 +118,24 @@
             Generic Undo Service using delegates to access state
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:StateManagement.UndoServiceAggregate">
+            <summary>
+            Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
+            Change tracking is done by the individual child SubUndoServices. 
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:StateManagement.UndoServiceAggregate._isInternallySettingState">
+            <summary>
+            Used by the StateSet event handler on subservices to determine if the action was invoked from here.
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.AddUndoService(StateManagement.IUndoService)">
+            <summary>
+            Include a new SubUndoService in the aggregated Undo/Redo stack.
+            </summary>
+            <param name="subService"></param>
         </member>
         <member name="T:StateManagement.UndoServiceValidator`1">
             <summary>

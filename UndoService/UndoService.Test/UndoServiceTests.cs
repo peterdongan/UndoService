@@ -9,11 +9,11 @@ namespace UndoService.Test
 {
     public class UndoServiceTests
     {
-        private AggregateUndoService _aggregateService;
+        private UndoServiceAggregate _aggregateService;
         private UndoService<int> _individualUndoService;
         private UndoService<int> _undoServiceForInt;
-        private SubUndoService _subUndoServiceForString;
-        private SubUndoService _subUndoServiceForInt;
+        private IUndoService _subUndoServiceForString;
+        private IUndoService _subUndoServiceForInt;
         private string _statefulString;     //(In real use, more complex objects would be used to store state.)
         private int _statefulInt;
 
@@ -44,10 +44,10 @@ namespace UndoService.Test
         {
             _undoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
             _individualUndoService = new UndoService<int>(GetIntState, SetIntState, 3);
-            _subUndoServiceForInt = SubUndoService.CreateSubUndoService<int>(GetIntState, SetIntState, 3);
-            _subUndoServiceForString = SubUndoService.CreateSubUndoService<string>(GetStringState, SetStringState, 3);
-            SubUndoService[] subservices = { _subUndoServiceForInt, _subUndoServiceForString };
-            _aggregateService = new AggregateUndoService(subservices);
+            _subUndoServiceForInt = new UndoService<int>(GetIntState, SetIntState, 3);
+            _subUndoServiceForString = new UndoService<string>(GetStringState, SetStringState, 3);
+            IUndoService[] subservices = { _subUndoServiceForInt, _subUndoServiceForString };
+            _aggregateService = new UndoServiceAggregate(subservices);
         }
 
         /// <summary>
