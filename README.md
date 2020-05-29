@@ -18,9 +18,9 @@ To use an UndoService, invoke RecordState() **after** making changes to the stat
 To use the UndoServiceAggregate, invoke RecordState() in the child UndoServices to record changes. Generally undo and redo would be done via the UndoServiceAggregate. However, you can also do so in the child UndoServices directly to undo the last changes to specific elements.
 
 ## Public interfaces
-IStateTracker is used to record changes to state.
-IUndoRedo is used to execute Undo and Redo operations.
-IUndoService is used to do both.
+* IStateTracker is used to record changes to state.
+* IUndoRedo is used to execute Undo and Redo operations.
+* IUndoService is used to do both.
 
 ## LICENCE
 
