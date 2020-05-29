@@ -7,7 +7,7 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. This approach requires minimal plumbing. Multiple services may be used for different parts of the application and aggregated together. This reduces the memory imprint and allows undo to be performed interchangeably at an application- or object-level. See the unit tests in the source repository for examples of how to use.</Description>
+    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It requires minimal plumbing to set up. Multiple services may be used for different parts of an application and aggregated together. This reduces the memory imprint and facilitates modular design. See the unit tests in the source repository for examples of how to use.</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
