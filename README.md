@@ -22,6 +22,55 @@ To use the UndoServiceAggregate, invoke RecordState() in the child UndoServices 
 * IUndoRedo is used to execute Undo and Redo operations.
 * IUndoService is used to do both.
 
+```
+    /// <summary>
+    /// Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
+    /// </summary>
+    public interface IStateTracker
+    {
+        /// <summary>
+        /// Raised when Undo or Redo is executed.
+        /// </summary>
+        event StateSetEventHandler StateSet;
+
+        /// <summary>
+        /// Raised when RecordState() is executed.
+        event StateRecordedEventHandler StateRecorded;
+
+        /// <summary>
+        /// Records the current state of the tracked objects and puts it on the undo stack
+        /// </summary>
+        /// <param name="tag">When the tracked object is reverted to this state, a StateSet event will be thrown with this as a property in its arguments. </param>
+        void RecordState(object tag = null);
+    }
+```
+
+```
+    /// <summary>
+    /// Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
+    /// </summary>
+    public interface IUndoRedo
+    {
+        bool CanUndo { get; }
+        
+        bool CanRedo { get; }
+
+        /// <summary>
+        /// Clear the Undo and Redo stacks.
+        /// </summary>
+        void ClearStacks();
+
+        /// <summary>
+        /// Clear the Undo stack (but not the redo stack).
+        /// </summary>
+        void ClearUndoStack();
+
+        void Undo();
+
+        void Redo();
+    }
+```
+
 ## LICENCE
 
 MIT
