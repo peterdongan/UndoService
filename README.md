@@ -22,7 +22,7 @@ To use the UndoServiceAggregate, invoke RecordState() in the child UndoServices 
 * IUndoRedo is used to execute Undo and Redo operations.
 * IUndoService is used to do both.
 
-```
+```csharp
     /// <summary>
     /// Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
     /// </summary>
@@ -46,7 +46,7 @@ To use the UndoServiceAggregate, invoke RecordState() in the child UndoServices 
     }
 ```
 
-```
+```csharp
     /// <summary>
     /// Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
     /// </summary>
