@@ -35,6 +35,7 @@ To use the UndoServiceAggregate, invoke RecordState() in the child UndoServices 
 
         /// <summary>
         /// Raised when RecordState() is executed.
+        /// </summary>
         event StateRecordedEventHandler StateRecorded;
 
         /// <summary>
