@@ -1,5 +1,5 @@
 # UndoService
-Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests for examples of usage. [https://github.com/peterdongan/UndoService](https://github.com/peterdongan/UndoService)
+Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests for examples of usage. 
 
 ## Features
 * Multiple undo/redo stacks can be used concurrently, reducing memory imprint.
@@ -75,7 +75,7 @@ To create an UndoServiceAggregate, pass a collection of UndoServices. To use it,
 Copyright 2020 Peter Dongan. Free to use under the [MIT licence](https://licenses.nuget.org/MIT).
 
 ## Links
-* [Project](https://peterdongan.github.io/UndoService/)
+* [Home](https://peterdongan.github.io/UndoService/)
 * [Repo](https://github.com/peterdongan/UndoService)
 * [Nuget Package](https://www.nuget.org/packages/UndoService)
 
