@@ -1,6 +1,7 @@
 # UndoService
 Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests for examples of usage. 
 
+
 ## Features
 * Multiple undo/redo stacks can be used concurrently, reducing memory imprint.
 * Undo/Redo can be performed interchangeably on the state of the application whole or on specific parts.
@@ -8,12 +9,14 @@ Simple undo/redo service based on the momento pattern. It uses delegates to acce
 * Optional cap on the size of Undo stacks.
 * Recorded states can be tagged. Tag values are present in the arguments of the StateSet event, which is raised on Undo or Redo.
 
+
 ## Usage
 The simplest approach is to use a single UndoService for application state. Alternatively you can use separate UndoServices for different sections in conjunction with an UndoServiceAggregate. This means that the whole of the application state does not need to be recorded on each change.
 
 To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() **after** making changes to the state. (Note that the initial state is recorded automatically when the UndoService is initialized.) Invoke Undo() and Redo() to undo and redo changes. Use CanUndo and CanRedo to enable/disable Undo/Redo commands.
 
 To create an UndoServiceAggregate, pass a collection of UndoServices. To use it, invoke RecordState() in the child UndoServices to record changes. Generally undo and redo would be done via the UndoServiceAggregate. However, you can also do so in the child UndoServices directly to undo the last changes to specific elements.
+
 
 ## Public interfaces
 * IStateTracker is used to record changes to state. Implemented by UndoService.
@@ -69,6 +72,7 @@ To create an UndoServiceAggregate, pass a collection of UndoServices. To use it,
         void Redo();
     }
 ```
+
 
 ## Links
 * [Home](https://peterdongan.github.io/UndoService/)
