@@ -72,5 +72,5 @@ To create an UndoServiceAggregate, pass a collection of UndoServices. To use it,
 
 ## Licence
 
-Copyright 2020 Peter Dongan. Free to use under the [MIT licence](https://licenses.nuget.org/MIT)
+Copyright 2020 Peter Dongan. Free to use under the [MIT licence](https://licenses.nuget.org/MIT).
 
