@@ -29,7 +29,6 @@ To create an UndoService, pass the delegate methods that are used to get and set
         /// This is the method to get the state of the tracked object, which will be passed as a delegate to the UndoService.
         /// If you have existing methods to access state, you can probably just put them in a wrapper to match the delegate signature.
         /// </summary>
-        /// <param name="state"></param>
         private void GetStringState(out string state)
         {
             state = _statefulString;
@@ -38,7 +37,6 @@ To create an UndoService, pass the delegate methods that are used to get and set
         /// <summary>
         /// Method to set the state, conforming to the delegate signature.
         /// </summary>
-        /// <param name="value"></param>
         private void SetStringState(string value)
         {
             _statefulString = value;
