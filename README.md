@@ -136,6 +136,8 @@ To create an UndoServiceAggregate, pass it an IUndoService array. To use it, inv
         }
 ```
 
+Refer to the unit test project in the source repository for examples of other features.
+
 ## Public Interfaces
 * IStateTracker is used to record changes to state. It is implemented by UndoService.
 * IUndoRedo is used to execute Undo and Redo operations. It is implemented by UndoService and UndoServiceAggregate.
@@ -180,7 +182,6 @@ To create an UndoServiceAggregate, pass it an IUndoService array. To use it, inv
     }
 ```
 
-Refer to the unit test project in the source repository for examples of other features.
 
 ## Links
 * [Home](https://peterdongan.github.io/UndoService/)
