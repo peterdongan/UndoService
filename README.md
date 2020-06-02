@@ -1,5 +1,5 @@
 # UndoService
-This is a simple undo/redo service based on the momento pattern. There is generally no requirement to write custom classes or methods, as it uses generic stacks to store state and delegate methods to access it. It can track changes to different parts of an application individually, while using one unified interface for performing undo/redo. 
+This is a simple undo/redo service based on the momento pattern. It generally doesn't require custom classes or methods, as it uses generic stacks to store state and delegate methods to access it. It can track changes to different parts of an application individually, while using one unified interface for performing undo/redo. 
 
 
 ## Features
@@ -22,7 +22,7 @@ To create an UndoService, pass the delegate methods that are used to get and set
         // We will demonstrate change tracking on this string. 
         private string _statefulString;     
         
-        // This is the method to get the state of the tracked object, which will be passed as a delegate to the UndoService.
+        // This is the method to get the state of the tracked object.
         // (If you have an existing method, you can just put it in a wrapper to match the delegate signature.)
         private void GetStringState(out string state)
         {
