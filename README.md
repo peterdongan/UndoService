@@ -143,9 +143,7 @@ To create an UndoServiceAggregate, pass it an IUndoService array. To use it, inv
 
 ### IStateTracker
 ```csharp
-    /// <summary>
-    /// Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
-    /// </summary>
+    // Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
     public interface IStateTracker
     {
         // Raised when Undo or Redo is executed.
