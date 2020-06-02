@@ -21,13 +21,13 @@ To create an UndoService, pass the delegate methods that are used to get and set
     public class SimpleUndoServiceExample
     {
         /// <summary>
-        /// We will demonstrate change tracking on this string. (You can track more complex objects, as long as you have methods to get and set their state.)
+        /// We will demonstrate change tracking on this string. 
         /// </summary>
-        private string _statefulString;     // (You can track changes of more complex objects.)
+        private string _statefulString;     
 
         /// <summary>
         /// This is the method to get the state of the tracked object, which will be passed as a delegate to the UndoService.
-        /// If you have existing methods to access state, you can probably just put them in a wrapper to match the delegate signature.
+        /// If you have an existing method, you can just put it in a wrapper to match the delegate signature.
         /// </summary>
         private void GetStringState(out string state)
         {
@@ -105,8 +105,8 @@ public class SimpleUndoServiceAggregateExample
 
 
            /*
-            * The UndoServiceAggregate provides a unified interface for performing undo/redo on the different tracked objects.
-            * (You can also perform Undo/Redo on the individual services, which will undo the last change on the corresponding object.)
+            * The Undo() method of the Aggregate will undo the last change made in its children.
+            * You can also Undo() the last change to a specific object by using the Undo method of the associated UndoService.
             */
             serviceAggregate.Undo();
             Assert.IsTrue(_statefulString.Equals("One"));
