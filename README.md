@@ -1,5 +1,5 @@
 # UndoService
-This is a simple undo/redo service based on the momento pattern. It generally doesn't require custom classes or methods, as it uses generic stacks to store state and delegate methods to access it. It can track changes to different parts of an application individually, while using one unified interface for performing undo/redo. 
+This is a simple undo/redo service based on the momento pattern. It generally doesn't require custom classes or methods, as it uses generic stacks to store state and delegate methods to access it. It can track changes to different parts of an application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. 
 
 
 ## Features
