@@ -7,7 +7,7 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It requires minimal plumbing to set up. Multiple services may be used for different parts of an application and aggregated together. This reduces the memory imprint and facilitates modular design. See the unit tests in the source repository for examples of how to use.</Description>
+    <Description>This is a simple undo/redo service based on the momento pattern. It generally doesn't require custom classes or methods, as it uses generic stacks to store state and delegate methods to access it. It can track changes to different parts of an application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design.</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
@@ -16,8 +16,10 @@
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
     <AssemblyVersion>2.1.11.0</AssemblyVersion>
     <FileVersion>2.1.11.0</FileVersion>
-    <PackageReleaseNotes>AggregateUndoService renamed UndoServiceAggregate. This is because it doesn't implement IUndoService, which is counter-intuitive under the original name.</PackageReleaseNotes>
-    <Version>2.1.11-alpha</Version>
+    <PackageReleaseNotes>* AggregateUndoService renamed UndoServiceAggregate.
+* Recorded states can now be tagged. Tag values are present in the arguments of the StateSet event, which is raised on Undo or Redo.
+* Undo/Redo can now be performed interchangeably on the state of the application whole or on specific parts.</PackageReleaseNotes>
+    <Version>2.1.11</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>

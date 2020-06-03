@@ -24,6 +24,11 @@ namespace StateManagement
         private StateRecord<T> _currentState;
 
         /// <summary>
+        /// Number of changes made. 
+        /// </summary>
+        private int _changeCount;
+
+        /// <summary>
         /// Create an UndoService.
         /// </summary>
         /// <param name="getState">Method to get the state of the tracked object</param>
@@ -40,6 +45,7 @@ namespace StateManagement
             _currentState = new StateRecord<T> { State = currentState };
             _redoStack = new Stack<StateRecord<T>>();
             _undoServiceValidator = new UndoServiceValidator<StateRecord<T>>(_undoStack, _redoStack);
+            _changeCount = 0;
         }
 
         /// <summary>
@@ -53,14 +59,26 @@ namespace StateManagement
         public event StateSetEventHandler StateSet;
 
         /// <summary>
-        /// 
+        /// Number of changes made since Service was created or counter was reset.
         /// </summary>
-        public bool CanUndo => _undoServiceValidator.CanUndo;
+        public int ChangeCount
+        {
+            get
+            {
+                return Math.Abs(_changeCount);
+            }
+        }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool CanUndo => _undoServiceValidator.CanUndo;
 
         /// <summary>
         /// 
         /// </summary>
         public bool CanRedo => _undoServiceValidator.CanRedo;
+
 
         /// <summary>
         /// Clear both the Undo and Redo stacks.
@@ -95,8 +113,16 @@ namespace StateManagement
             SetState(momento.State);
             _redoStack.Push(_currentState);
             _currentState = momento;
-
+            _changeCount--;
             StateSet?.Invoke(this, args);
+        }
+
+        /// <summary>
+        /// Reset ChangeCount to 0.
+        /// </summary>
+        public void ResetChangeCount()
+        {
+            _changeCount = 0;
         }
 
         /// <summary>
@@ -114,6 +140,8 @@ namespace StateManagement
             //If tagging is used, the part of the state that will be changed by this will be tagged in momento (the change there will be applied).
             var args = new StateSetEventArgs { Tag = momento.Tag, SettingAction = StateSetAction.Redo };
 
+            _changeCount++;
+
             StateSet?.Invoke(this, args);
         }
 
@@ -126,8 +154,18 @@ namespace StateManagement
             GetState(out T momento);
             _undoStack.Push(_currentState);
             _currentState = new StateRecord<T> { State = momento, Tag = tag };
-            _redoStack.Clear();
             StateRecorded?.Invoke(this, new EventArgs());
+
+            if(_redoStack.Count > 0)
+            {
+                _redoStack.Clear();
+                _changeCount = 1;
+            }
+            else
+            {
+                _changeCount++;
+            }
+
         }
     }
 }

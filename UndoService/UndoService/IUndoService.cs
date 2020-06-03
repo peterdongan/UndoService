@@ -5,9 +5,9 @@
 namespace StateManagement
 {
     /// <summary>
-    /// Full UndoService interface (inherits IStateTracker and IUndoRedo).
+    /// Full UndoService interface (inherits IStateTracker, IChangeCounter and IUndoRedo).
     /// </summary>
-    public interface IUndoService : IStateTracker, IUndoRedo
+    public interface IUndoService : IStateTracker, IUndoRedo, IChangeCounter
     {
 
     }

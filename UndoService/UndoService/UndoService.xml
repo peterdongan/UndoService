@@ -41,6 +41,35 @@
             <typeparam name="T">The type used to record the object state</typeparam>
             <param name="state"></param>
         </member>
+        <member name="T:StateManagement.StateRecordedEventHandler">
+            <summary>
+            
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:StateManagement.StateSetEventHandler">
+            <summary>
+            Handler for StateSet event, which is raised when Undo() or Redo() is executed.
+            </summary>
+            <param name="sender"></param>
+            <param name="e">StateSetEventArgs. This indicates whether it was a Redo or Undo action that raised the event, and the value of the tag if one given to the recorded state</param>
+        </member>
+        <member name="T:StateManagement.IChangeCounter">
+            <summary>
+            Counts the number of state changes made to an object
+            </summary>
+        </member>
+        <member name="P:StateManagement.IChangeCounter.ChangeCount">
+            <summary>
+            Number of changes made
+            </summary>
+        </member>
+        <member name="M:StateManagement.IChangeCounter.ResetChangeCount">
+            <summary>
+            Reset ChangeCount
+            </summary>
+        </member>
         <member name="T:StateManagement.IStateTracker">
             <summary>
             Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
@@ -48,7 +77,12 @@
         </member>
         <member name="E:StateManagement.IStateTracker.StateSet">
             <summary>
-            Occurs when Undo or Redo is performed.
+            Raised when Undo or Redo is executed.
+            </summary>
+        </member>
+        <member name="E:StateManagement.IStateTracker.StateRecorded">
+            <summary>
+            Raised when RecordState() is executed.
             </summary>
         </member>
         <member name="M:StateManagement.IStateTracker.RecordState(System.Object)">
@@ -62,14 +96,39 @@
             Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
             </summary>
         </member>
+        <member name="P:StateManagement.IUndoRedo.CanUndo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:StateManagement.IUndoRedo.CanRedo">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:StateManagement.IUndoRedo.ClearStacks">
             <summary>
             Clear the Undo and Redo stacks.
             </summary>
         </member>
+        <member name="M:StateManagement.IUndoRedo.ClearUndoStack">
+            <summary>
+            Clear the Undo stack (but not the redo stack).
+            </summary>
+        </member>
+        <member name="M:StateManagement.IUndoRedo.Undo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.IUndoRedo.Redo">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:StateManagement.IUndoService">
             <summary>
-            Full UndoService interface (inherits IStateTracker and IUndoRedo).
+            Full UndoService interface (inherits IStateTracker, IChangeCounter and IUndoRedo).
             </summary>
         </member>
         <member name="T:StateManagement.Resources">
@@ -93,6 +152,11 @@
               Looks up a localized string similar to Cannot add an UndoService which has existing states recorded. Add it before its RecordState() method has been invoked or call its ClearStacks() method before adding it..
             </summary>
         </member>
+        <member name="P:StateManagement.Resources.AddUndoServiceWithChanges">
+            <summary>
+              Looks up a localized string similar to You cannot add an UndoService to an Aggregate if the service&apos;s ChangeCount is not zero. If.
+            </summary>
+        </member>
         <member name="P:StateManagement.Resources.RedoWithoutCanRedo">
             <summary>
               Looks up a localized string similar to Nothing to redo. Check that CanRedo is true before invoking Redo()..
@@ -103,9 +167,32 @@
               Looks up a localized string similar to Nothing to undo. Check that CanUndo is true before invoking Undo()..
             </summary>
         </member>
+        <member name="T:StateManagement.StateSetAction">
+            <summary>
+            The type of Action (Undo or Redo) that caused the state to be set
+            </summary>
+        </member>
+        <member name="F:StateManagement.StateSetAction.Undo">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:StateManagement.StateSetAction.Redo">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:StateManagement.StateSetEventArgs">
+            <summary>
+            Event arguments for the StateSet event.
+            </summary>
+        </member>
         <member name="P:StateManagement.StateSetEventArgs.Tag">
             <summary>
             If the state object implements TaggedObject, then this will be its Tag. If it does not, then this will be null.
+            </summary>
+        </member>
+        <member name="P:StateManagement.StateSetEventArgs.SettingAction">
+            <summary>
+            Indicates whether it was an Undo or a Redo action that raised the event
             </summary>
         </member>
         <member name="T:StateManagement.SubUndoService">
@@ -123,6 +210,75 @@
             Generic Undo Service using delegates to access state
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:StateManagement.UndoService`1._changeCount">
+            <summary>
+            Number of changes made. 
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.#ctor(StateManagement.GetState{`0},StateManagement.SetState{`0},System.Nullable{System.Int32})">
+            <summary>
+            Create an UndoService.
+            </summary>
+            <param name="getState">Method to get the state of the tracked object</param>
+            <param name="setState">Method to set the state of the tracked object</param>
+            <param name="cap">Capacity of Undo history</param>
+        </member>
+        <member name="E:StateManagement.UndoService`1.StateRecorded">
+            <summary>
+            Raised when RecordState() is executed.
+            </summary>
+        </member>
+        <member name="E:StateManagement.UndoService`1.StateSet">
+            <summary>
+            Raised when an Undo or Redo is executed.
+            </summary>
+        </member>
+        <member name="P:StateManagement.UndoService`1.ChangeCount">
+            <summary>
+            Number of changes made since Service was created or counter was reset.
+            </summary>
+        </member>
+        <member name="P:StateManagement.UndoService`1.CanUndo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:StateManagement.UndoService`1.CanRedo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.ClearStacks">
+            <summary>
+            Clear both the Undo and Redo stacks.
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.ClearUndoStack">
+            <summary>
+            Clear the Undo stack (but not the Redo stack).
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.Undo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.ResetChangeCount">
+            <summary>
+            Reset ChangeCount to 0.
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.Redo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.RecordState(System.Object)">
+            <summary>
+            Record the current state of the tracked object and add it to the Undo stack.
+            </summary>
+            <param name="tag">A tag associated with the recorded state</param>
         </member>
         <member name="T:StateManagement.UndoServiceAggregate">
             <summary>
@@ -146,12 +302,22 @@
             Raised when Undo or Redo is performed.
             </summary>
         </member>
+        <member name="P:StateManagement.UndoServiceAggregate.ChangeCount">
+            <summary>
+            Number of changes made since 
+            </summary>
+        </member>
         <member name="P:StateManagement.UndoServiceAggregate.CanUndo">
             <summary>
             </summary>
         </member>
         <member name="P:StateManagement.UndoServiceAggregate.CanRedo">
             <summary>
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.ResetChangeCount">
+            <summary>
+            Reset change count to zero.
             </summary>
         </member>
         <member name="M:StateManagement.UndoServiceAggregate.AddUndoService(StateManagement.IUndoService)">

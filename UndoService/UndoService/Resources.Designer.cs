@@ -70,6 +70,15 @@ namespace StateManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot add an UndoService to an Aggregate if the service&apos;s ChangeCount is not zero. If.
+        /// </summary>
+        internal static string AddUndoServiceWithChanges {
+            get {
+                return ResourceManager.GetString("AddUndoServiceWithChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing to redo. Check that CanRedo is true before invoking Redo()..
         /// </summary>
         internal static string RedoWithoutCanRedo {

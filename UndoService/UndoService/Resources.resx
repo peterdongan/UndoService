@@ -120,6 +120,9 @@
   <data name="AddingPopulatedSubserviceExceptionMessage" xml:space="preserve">
     <value>Cannot add an UndoService which has existing states recorded. Add it before its RecordState() method has been invoked or call its ClearStacks() method before adding it.</value>
   </data>
+  <data name="AddUndoServiceWithChanges" xml:space="preserve">
+    <value>You cannot add an UndoService to an Aggregate if the service's ChangeCount is not zero. If</value>
+  </data>
   <data name="RedoWithoutCanRedo" xml:space="preserve">
     <value>Nothing to redo. Check that CanRedo is true before invoking Redo().</value>
   </data>

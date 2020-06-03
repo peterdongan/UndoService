@@ -15,7 +15,7 @@ namespace StateManagement
     /// Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
     /// Change tracking is done by the individual child UndoServices. 
     /// </summary>
-    public class UndoServiceAggregate : IUndoRedo
+    public class UndoServiceAggregate : IUndoRedo, IChangeCounter
     {
         private readonly List<SubUndoService> _subUndoServices;
         private readonly IntStackWithDelete _undoStack;
@@ -67,12 +67,34 @@ namespace StateManagement
         }
 
         /// <summary>
+        /// Number of changes made since 
+        /// </summary>
+        public int ChangeCount
+        {
+            get
+            {
+                return _subUndoServices.Sum(x => x.ChangeCount);
+            }
+        }
+
+        /// <summary>
         /// </summary>
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
         /// <summary>
         /// </summary>
         public bool CanRedo => _undoServiceValidator.CanRedo;
+
+        /// <summary>
+        /// Reset change count to zero.
+        /// </summary>
+        public void ResetChangeCount()
+        {
+            foreach(var s in _subUndoServices)
+            {
+                s.ResetChangeCount();
+            }
+        }
 
         /// <summary>
         /// Include a new SubUndoService in the aggregated Undo/Redo stack.
@@ -84,9 +106,16 @@ namespace StateManagement
             {
                 throw new ArgumentNullException(nameof(subService));
             }
+
+            var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
+
+            if (subService.ChangeCount != 0)
+            {
+                throw new InvalidOperationException(resourceManager.GetString("AddUndoServiceWithChanges", CultureInfo.CurrentCulture));
+            }
+
             if(subService.CanRedo || subService.CanRedo)
             {
-                var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
                 throw new Exception(resourceManager.GetString("AddingPopulatedSubserviceExceptionMessage", CultureInfo.CurrentCulture));
             }
             var nextSubService = new SubUndoService(subService);

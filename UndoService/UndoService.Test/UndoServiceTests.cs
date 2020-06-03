@@ -290,6 +290,63 @@ namespace UndoService.Test
             //Add a service to an aggregate after recording state with existing services (verify this works ok)
         }
 
+        [Test]
+        public void ChangeCounterTest()
+        {
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 4;
+            _undoServiceForInt.RecordState();
+
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
+
+            _undoServiceForInt.Undo();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 3);
+
+            _undoServiceForInt.Redo();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
+
+            _undoServiceForInt.ResetChangeCount();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 0);
+
+            _undoServiceForInt.Undo();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 1);
+
+        }
+
+        [Test]
+        public void AggregateChangeCounterTest()
+        {
+            _statefulInt = 1;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _undoServiceForInt.RecordState();
+            _statefulInt = 4;
+            _undoServiceForInt.RecordState();
+
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
+
+            _undoServiceForInt.Undo();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 3);
+
+            _undoServiceForInt.Redo();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
+
+            _undoServiceForInt.ResetChangeCount();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 0);
+
+            _undoServiceForInt.Undo();
+            Assert.IsTrue(_undoServiceForInt.ChangeCount == 1);
+
+        }
+
+
         private void AggregateService_StateSet(object sender, StateSetEventArgs e)
         {
             _stateSetTag = e.Tag;
