@@ -34,7 +34,7 @@ namespace StateManagement
 
         public bool CanRedo => _undoService.CanRedo;
 
-        public int ChangeCount => _undoService.ChangeCount;
+        public bool IsStateChanged => _undoService.IsStateChanged;
 
         public void RecordState(object tag = null) => _undoService.RecordState( tag);
 
@@ -46,7 +46,7 @@ namespace StateManagement
 
         public void Redo() => _undoService.Redo();
 
-        public void ResetChangeCount() => _undoService.ResetChangeCount();
+        public void ClearIsChangedFlag() => _undoService.ClearIsChangedFlag();
 
         private void UndoService_StateRecorded(object sender, EventArgs e)
         {

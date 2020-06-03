@@ -2,8 +2,11 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using System;
+
 namespace StateManagement
 {
+    [Obsolete]
     /// <summary>
     /// Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
     /// </summary>

@@ -291,58 +291,58 @@ namespace UndoService.Test
         }
 
         [Test]
-        public void ChangeCounterTest()
+        public void IsChangedTest()
         {
-            _statefulInt = 1;
-            _undoServiceForInt.RecordState();
-            _statefulInt = 2;
-            _undoServiceForInt.RecordState();
-            _statefulInt = 3;
-            _undoServiceForInt.RecordState();
-            _statefulInt = 4;
-            _undoServiceForInt.RecordState();
+            var trackedObject = new StatefulClass { TheString = "One", TheInt = 1 };
+            var undoService = new UndoService<StatefulClassDto>(trackedObject.GetData, trackedObject.SetData, null);
+            Assert.IsTrue(!undoService.IsStateChanged);
 
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
-
-            _undoServiceForInt.Undo();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 3);
-
-            _undoServiceForInt.Redo();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
-
-            _undoServiceForInt.ResetChangeCount();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 0);
-
-            _undoServiceForInt.Undo();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 1);
+            trackedObject.TheString = "Two";
+            undoService.RecordState();
+            Assert.IsTrue(undoService.IsStateChanged);
+            undoService.Undo();
+            Assert.IsTrue(!undoService.IsStateChanged);
+            undoService.Redo();
+            Assert.IsTrue(undoService.IsStateChanged);
+            undoService.ClearIsChangedFlag();
+            Assert.IsTrue(!undoService.IsStateChanged);
+            undoService.Undo();
+            Assert.IsTrue(undoService.IsStateChanged);
+            undoService.Redo();
+            Assert.IsTrue(!undoService.IsStateChanged);
 
         }
 
         [Test]
-        public void AggregateChangeCounterTest()
+        public void AggregateIsChangedTest()
         {
+            Assert.IsTrue(!_aggregateService.IsStateChanged);
+            
             _statefulInt = 1;
-            _undoServiceForInt.RecordState();
-            _statefulInt = 2;
-            _undoServiceForInt.RecordState();
-            _statefulInt = 3;
-            _undoServiceForInt.RecordState();
-            _statefulInt = 4;
-            _undoServiceForInt.RecordState();
+            _subUndoServiceForInt.RecordState();
+            Assert.IsTrue(_aggregateService.IsStateChanged);
 
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
 
-            _undoServiceForInt.Undo();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 3);
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _subUndoServiceForInt.Undo();
+            Assert.IsTrue(_aggregateService.IsStateChanged);
 
-            _undoServiceForInt.Redo();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 4);
+            _aggregateService.Undo();
+            Assert.IsTrue(!_aggregateService.IsStateChanged);
 
-            _undoServiceForInt.ResetChangeCount();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 0);
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _aggregateService.ClearIsChangedFlag();
+            Assert.IsTrue(!_aggregateService.IsStateChanged);
 
-            _undoServiceForInt.Undo();
-            Assert.IsTrue(_undoServiceForInt.ChangeCount == 1);
+            _aggregateService.Undo();
+            Assert.IsTrue(_aggregateService.IsStateChanged);
+
+            _aggregateService.Redo();
+            Assert.IsTrue(!_aggregateService.IsStateChanged);
 
         }
 

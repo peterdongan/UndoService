@@ -2,8 +2,11 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using System;
+
 namespace StateManagement
 {
+    [Obsolete]
     /// <summary>
     /// Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
     /// </summary>

@@ -15,7 +15,7 @@ namespace StateManagement
     /// Provides a unified Undo/Redo interface for multiple Undo SubUndoServices.
     /// Change tracking is done by the individual child UndoServices. 
     /// </summary>
-    public class UndoServiceAggregate : IUndoRedo, IChangeCounter
+    public class UndoServiceAggregate : IUndoRedo
     {
         private readonly List<SubUndoService> _subUndoServices;
         private readonly IntStackWithDelete _undoStack;
@@ -66,14 +66,11 @@ namespace StateManagement
             StateSet?.Invoke(this, e);
         }
 
-        /// <summary>
-        /// Number of changes made since 
-        /// </summary>
-        public int ChangeCount
+        public bool IsStateChanged
         {
             get
             {
-                return _subUndoServices.Sum(x => x.ChangeCount);
+                return _subUndoServices.Any(x => x.IsStateChanged);
             }
         }
 
@@ -84,17 +81,6 @@ namespace StateManagement
         /// <summary>
         /// </summary>
         public bool CanRedo => _undoServiceValidator.CanRedo;
-
-        /// <summary>
-        /// Reset change count to zero.
-        /// </summary>
-        public void ResetChangeCount()
-        {
-            foreach(var s in _subUndoServices)
-            {
-                s.ResetChangeCount();
-            }
-        }
 
         /// <summary>
         /// Include a new SubUndoService in the aggregated Undo/Redo stack.
@@ -108,11 +94,6 @@ namespace StateManagement
             }
 
             var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-
-            if (subService.ChangeCount != 0)
-            {
-                throw new InvalidOperationException(resourceManager.GetString("AddUndoServiceWithChanges", CultureInfo.CurrentCulture));
-            }
 
             if(subService.CanRedo || subService.CanRedo)
             {
@@ -192,6 +173,14 @@ namespace StateManagement
             foreach (var s in _subUndoServices)
             {
                 s.ClearUndoStack();
+            }
+        }
+
+        public void ClearIsChangedFlag()
+        {
+            foreach(var s in _subUndoServices)
+            {
+                s.ClearIsChangedFlag();
             }
         }
 

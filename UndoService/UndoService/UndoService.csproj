@@ -7,19 +7,18 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>This is a simple undo/redo service based on the momento pattern. It generally doesn't require custom classes or methods, as it uses generic stacks to store state and delegate methods to access it. It can track changes to different parts of an application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design.</Description>
+    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. This approach requires minimal plumbing. Multiple services may be used for different parts of the application and aggregated together. This reduces the memory imprint and allows undo to be performed interchangeably at an application- or object-level. See the unit tests in the source repository for examples of how to use.</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.1.11.0</AssemblyVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
     <FileVersion>2.1.11.0</FileVersion>
-    <PackageReleaseNotes>* AggregateUndoService renamed UndoServiceAggregate.
-* Recorded states can now be tagged. Tag values are present in the arguments of the StateSet event, which is raised on Undo or Redo.
-* Undo/Redo can now be performed interchangeably on the state of the application whole or on specific parts.</PackageReleaseNotes>
-    <Version>2.1.11</Version>
+    <PackageReleaseNotes>* IsStateChanged flag added.
+* IStateTracker and IUndoRedo marked as obsolete.</PackageReleaseNotes>
+    <Version>2.2.0-alpha</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>

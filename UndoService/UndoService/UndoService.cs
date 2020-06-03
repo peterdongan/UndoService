@@ -20,6 +20,7 @@ namespace StateManagement
         private readonly IStack<StateRecord<T>> _undoStack;
         private readonly Stack<StateRecord<T>> _redoStack;    //limited by undo stack capacity already
         private readonly UndoServiceValidator<StateRecord<T>> _undoServiceValidator;
+        private T _originalState;
 
         private StateRecord<T> _currentState;
 
@@ -42,6 +43,7 @@ namespace StateManagement
             _undoStack = stackFactory.MakeStack(cap);
            // T currentState;
             GetState(out T currentState);
+            _originalState = currentState;
             _currentState = new StateRecord<T> { State = currentState };
             _redoStack = new Stack<StateRecord<T>>();
             _undoServiceValidator = new UndoServiceValidator<StateRecord<T>>(_undoStack, _redoStack);
@@ -59,20 +61,24 @@ namespace StateManagement
         public event StateSetEventHandler StateSet;
 
         /// <summary>
-        /// Number of changes made since Service was created or counter was reset.
+        /// 
         /// </summary>
-        public int ChangeCount
+        public bool CanUndo => _undoServiceValidator.CanUndo;
+
+        public bool IsStateChanged
         {
             get
             {
-                return Math.Abs(_changeCount);
+                if (_currentState.State == null)
+                {
+                    return (_originalState != null);
+                }
+                else
+                {
+                    return (!_currentState.State.Equals(_originalState));
+                }
             }
         }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool CanUndo => _undoServiceValidator.CanUndo;
 
         /// <summary>
         /// 
@@ -99,6 +105,11 @@ namespace StateManagement
             _undoStack.Clear();
         }
 
+        public void ClearIsChangedFlag()
+        {
+            _originalState = _currentState.State;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -115,14 +126,6 @@ namespace StateManagement
             _currentState = momento;
             _changeCount--;
             StateSet?.Invoke(this, args);
-        }
-
-        /// <summary>
-        /// Reset ChangeCount to 0.
-        /// </summary>
-        public void ResetChangeCount()
-        {
-            _changeCount = 0;
         }
 
         /// <summary>
