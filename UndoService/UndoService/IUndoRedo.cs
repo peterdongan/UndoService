@@ -6,9 +6,8 @@ using System;
 
 namespace StateManagement
 {
-    [Obsolete]
     /// <summary>
-    /// Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
+    /// Performs Undo/redo actions. Used in conjunction with an IStateTracker.
     /// </summary>
     public interface IUndoRedo
     {
@@ -21,6 +20,16 @@ namespace StateManagement
         /// 
         /// </summary>
         bool CanRedo { get; }
+
+        /// <summary>
+        /// Indicates whether the state was changed from its original state or the last time ClearIsChangedFlag was invoked.
+        /// </summary>
+        bool IsStateChanged { get; }
+
+        /// <summary>
+        /// Resest the IsStateChanged flag to false.
+        /// </summary>
+        void ClearIsChangedFlag();
 
         /// <summary>
         /// Clear the Undo and Redo stacks.

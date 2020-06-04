@@ -25,11 +25,6 @@ namespace StateManagement
         private StateRecord<T> _currentState;
 
         /// <summary>
-        /// Number of changes made. 
-        /// </summary>
-        private int _changeCount;
-
-        /// <summary>
         /// Create an UndoService.
         /// </summary>
         /// <param name="getState">Method to get the state of the tracked object</param>
@@ -47,7 +42,6 @@ namespace StateManagement
             _currentState = new StateRecord<T> { State = currentState };
             _redoStack = new Stack<StateRecord<T>>();
             _undoServiceValidator = new UndoServiceValidator<StateRecord<T>>(_undoStack, _redoStack);
-            _changeCount = 0;
         }
 
         /// <summary>
@@ -65,6 +59,9 @@ namespace StateManagement
         /// </summary>
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
+        /// <summary>
+        /// Indicates whether the state was changed from its original state or the last time ClearIsChangedFlag was invoked.
+        /// </summary>
         public bool IsStateChanged
         {
             get
@@ -105,6 +102,9 @@ namespace StateManagement
             _undoStack.Clear();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ClearIsChangedFlag()
         {
             _originalState = _currentState.State;
@@ -124,7 +124,6 @@ namespace StateManagement
             SetState(momento.State);
             _redoStack.Push(_currentState);
             _currentState = momento;
-            _changeCount--;
             StateSet?.Invoke(this, args);
         }
 
@@ -143,8 +142,6 @@ namespace StateManagement
             //If tagging is used, the part of the state that will be changed by this will be tagged in momento (the change there will be applied).
             var args = new StateSetEventArgs { Tag = momento.Tag, SettingAction = StateSetAction.Redo };
 
-            _changeCount++;
-
             StateSet?.Invoke(this, args);
         }
 
@@ -162,12 +159,8 @@ namespace StateManagement
             if(_redoStack.Count > 0)
             {
                 _redoStack.Clear();
-                _changeCount = 1;
             }
-            else
-            {
-                _changeCount++;
-            }
+
 
         }
     }

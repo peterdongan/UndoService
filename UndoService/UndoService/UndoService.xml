@@ -55,21 +55,31 @@
             <param name="sender"></param>
             <param name="e">StateSetEventArgs. This indicates whether it was a Redo or Undo action that raised the event, and the value of the tag if one given to the recorded state</param>
         </member>
-        <member name="E:StateManagement.IStateTracker.StateSet">
+        <member name="T:StateManagement.IStateRecorder">
+            <summary>
+            Records changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
+            </summary>
+        </member>
+        <member name="E:StateManagement.IStateRecorder.StateSet">
             <summary>
             Raised when Undo or Redo is executed.
             </summary>
         </member>
-        <member name="E:StateManagement.IStateTracker.StateRecorded">
+        <member name="E:StateManagement.IStateRecorder.StateRecorded">
             <summary>
             Raised when RecordState() is executed.
             </summary>
         </member>
-        <member name="M:StateManagement.IStateTracker.RecordState(System.Object)">
+        <member name="M:StateManagement.IStateRecorder.RecordState(System.Object)">
             <summary>
             Records the current state of the tracked objects and puts it on the undo stack
             </summary>
             <param name="tag">When the tracked object is reverted to this state, a StateSet event will be thrown with this as a property in its arguments. </param>
+        </member>
+        <member name="T:StateManagement.IUndoRedo">
+            <summary>
+            Performs Undo/redo actions, but not state recording.
+            </summary>
         </member>
         <member name="P:StateManagement.IUndoRedo.CanUndo">
             <summary>
@@ -79,6 +89,16 @@
         <member name="P:StateManagement.IUndoRedo.CanRedo">
             <summary>
             
+            </summary>
+        </member>
+        <member name="P:StateManagement.IUndoRedo.IsStateChanged">
+            <summary>
+            Indicates whether the state was changed from its original state or the last time ClearIsChangedFlag was invoked.
+            </summary>
+        </member>
+        <member name="M:StateManagement.IUndoRedo.ClearIsChangedFlag">
+            <summary>
+            Resest the IsStateChanged flag to false.
             </summary>
         </member>
         <member name="M:StateManagement.IUndoRedo.ClearStacks">
@@ -103,7 +123,7 @@
         </member>
         <member name="T:StateManagement.IUndoService">
             <summary>
-            Full UndoService interface (inherits IStateTracker, IChangeCounter and IUndoRedo).
+            Performs Undo/Redo operations and state recording
             </summary>
         </member>
         <member name="E:StateManagement.IUndoService.StateSet">
@@ -114,36 +134,6 @@
         <member name="E:StateManagement.IUndoService.StateRecorded">
             <summary>
             Raised when RecordState() is executed.
-            </summary>
-        </member>
-        <member name="P:StateManagement.IUndoService.CanUndo">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:StateManagement.IUndoService.CanRedo">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:StateManagement.IUndoService.ClearStacks">
-            <summary>
-            Clear the Undo and Redo stacks.
-            </summary>
-        </member>
-        <member name="M:StateManagement.IUndoService.ClearUndoStack">
-            <summary>
-            Clear the Undo stack (but not the redo stack).
-            </summary>
-        </member>
-        <member name="M:StateManagement.IUndoService.Undo">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:StateManagement.IUndoService.Redo">
-            <summary>
-            
             </summary>
         </member>
         <member name="M:StateManagement.IUndoService.RecordState(System.Object)">
@@ -232,11 +222,6 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="F:StateManagement.UndoService`1._changeCount">
-            <summary>
-            Number of changes made. 
-            </summary>
-        </member>
         <member name="M:StateManagement.UndoService`1.#ctor(StateManagement.GetState{`0},StateManagement.SetState{`0},System.Nullable{System.Int32})">
             <summary>
             Create an UndoService.
@@ -260,6 +245,11 @@
             
             </summary>
         </member>
+        <member name="P:StateManagement.UndoService`1.IsStateChanged">
+            <summary>
+            Indicates whether the state was changed from its original state or the last time ClearIsChangedFlag was invoked.
+            </summary>
+        </member>
         <member name="P:StateManagement.UndoService`1.CanRedo">
             <summary>
             
@@ -273,6 +263,11 @@
         <member name="M:StateManagement.UndoService`1.ClearUndoStack">
             <summary>
             Clear the Undo stack (but not the Redo stack).
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.ClearIsChangedFlag">
+            <summary>
+            
             </summary>
         </member>
         <member name="M:StateManagement.UndoService`1.Undo">

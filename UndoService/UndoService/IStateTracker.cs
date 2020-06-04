@@ -6,9 +6,8 @@ using System;
 
 namespace StateManagement
 {
-    [Obsolete]
     /// <summary>
-    /// Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
+    /// Records state changes.
     /// </summary>
     public interface IStateTracker
     {
