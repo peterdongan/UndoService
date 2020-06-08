@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,29 +7,61 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests in the source repository for examples of how to use.</Description>
+    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. This approach requires minimal plumbing. Multiple services may be used for different parts of the application and aggregated together. This reduces the memory imprint and allows undo to be performed interchangeably at an application- or object-level. See the unit tests in the source repository for examples of how to use.</Description>
     <Copyright>Peter Dongan</Copyright>
-    <PackageProjectUrl>https://github.com/peterdongan/UndoService</PackageProjectUrl>
+    <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.0.2.0</AssemblyVersion>
-    <FileVersion>2.0.2.0</FileVersion>
-    <PackageReleaseNotes>2.0.2 Fixed bug using Undo after Redo in an AggregateUndoService.
-2.0.1 Fixed bug recording state in an individual (standalone) UndoService.
-2.0.0 AggregateUndoService added.
-
-</PackageReleaseNotes>
-    <Version>2.0.2</Version>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.1.11.0</FileVersion>
+    <PackageReleaseNotes>* IsStateChanged flag added.
+* IStateTracker and IUndoRedo marked as obsolete.</PackageReleaseNotes>
+    <Version>2.2.0-alpha</Version>
+    <PackageIconUrl />
+    <NeutralLanguage>en-IE</NeutralLanguage>
+    <RootNamespace>StateManagement</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>C:\Users\peter\source\repos\UndoService2\UndoService\UndoService\UndoService.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <DocumentationFile>C:\Users\peter\source\repos\UndoService2\UndoService\UndoService\UndoService.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="LICENCE.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

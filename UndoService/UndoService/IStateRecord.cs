@@ -4,10 +4,9 @@
 
 namespace StateManagement
 {
-    /// <summary>
-    /// Performs Undo/Redo operations and state recording
-    /// </summary>
-    public interface IUndoService : IUndoRedo, IStateTracker
+    internal class StateRecord<T>
     {
+        public object Tag { get; set; }
+        public T State { get; set; }
     }
 }

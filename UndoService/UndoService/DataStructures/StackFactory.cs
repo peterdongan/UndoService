@@ -10,7 +10,7 @@ namespace StateManagement.DataStructures
         {
             if (cap == null)
             {
-                return new StackWrapper<T>();
+                return new StandardStack<T>();
             }
             else
             {

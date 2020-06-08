@@ -2,22 +2,15 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using System.Collections.Generic;
+
 namespace StateManagement.DataStructures
 {
     /// <summary>
-    /// Interface to allow using Stacks or Dropout stacks interchangeably. (Dropout stacks are used where a capacity limit needs to be applied.)
+    /// This is just the standard c# stack marked as implementing IStack
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    interface IStack<T>
-    {
-        int Count { get; }
-
-        void Push(T item);
-
-        T Pop();
-
-        void Clear();
-
-        T Peek();
+    class StandardStack<T> : Stack<T>, IStack<T>
+    { 
     }
 }

@@ -44,5 +44,11 @@ namespace StateManagement.DataStructures
             Count--;
             return items[top];
         }
+
+        public T Peek()
+        {
+            top = (items.Length + top - 1) % items.Length;
+            return items[top];
+        }
     }
 }
