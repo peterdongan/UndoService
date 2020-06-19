@@ -129,7 +129,14 @@ namespace StateManagement
             var lastServiceIndex = _undoStack.Pop();
 
             _isInternallySettingState = true;
-            _subUndoServices[lastServiceIndex].Undo();
+            try
+            {
+                _subUndoServices[lastServiceIndex].Undo();
+            }
+            catch
+            {
+                throw new Exception("Undo failed in subservice when aggregate expected it to succeed.");
+            }
             _isInternallySettingState = false;
 
             _redoStack.Push(lastServiceIndex);
@@ -154,7 +161,14 @@ namespace StateManagement
 
             var lastServiceIndex = _redoStack.Pop();
             _isInternallySettingState = true;
-            _subUndoServices[lastServiceIndex].Redo();
+            try
+            {
+                _subUndoServices[lastServiceIndex].Redo();
+            }
+            catch
+            {
+                throw new Exception("Redo failed in subservice when aggregate expected it to succeed.");
+            }
             _isInternallySettingState = false;
             _undoStack.Push(lastServiceIndex);
         }
