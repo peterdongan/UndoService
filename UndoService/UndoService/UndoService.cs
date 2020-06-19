@@ -30,7 +30,7 @@ namespace StateManagement
         /// <param name="getState">Method to get the state of the tracked object</param>
         /// <param name="setState">Method to set the state of the tracked object</param>
         /// <param name="cap">Capacity of Undo history</param>
-        public UndoService(GetState<T> getState, SetState<T> setState, int? cap)
+        public UndoService(GetState<T> getState, SetState<T> setState, int? cap = null)
         {
             GetState = getState ?? throw new ArgumentNullException(nameof(getState));
             SetState = setState ?? throw new ArgumentNullException(nameof(setState));

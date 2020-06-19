@@ -3,7 +3,7 @@
 // Project: https://github.com/peterdongan/UndoService
 
 using NUnit.Framework;
-using StateManagement;
+using StateManagement
 
 namespace UndoService.Test
 {
