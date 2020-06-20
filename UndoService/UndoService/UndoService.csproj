@@ -16,7 +16,8 @@
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
     <AssemblyVersion>2.2.1.0</AssemblyVersion>
     <FileVersion>2.2.1.0</FileVersion>
-    <PackageReleaseNotes>IsStateChanged flag added.</PackageReleaseNotes>
+    <PackageReleaseNotes>IsStateChanged flag added.
+Informative exception messages added.</PackageReleaseNotes>
     <Version>2.2.1-alpha</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>

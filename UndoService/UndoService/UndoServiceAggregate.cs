@@ -136,7 +136,7 @@ namespace StateManagement
             catch
             {
                 var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-                throw new Exception(resourceManager.GetString("SubServiceUndoFailure");
+                throw new InvalidOperationException(resourceManager.GetString("SubServiceUndoFailure"));
             }
             _isInternallySettingState = false;
 
@@ -169,7 +169,7 @@ namespace StateManagement
             catch
             {
                 var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
-                throw new Exception(resourceManager.GetString("SubServiceRedoFailure");
+                throw new InvalidOperationException(resourceManager.GetString("SubServiceRedoFailure"));
             }
             _isInternallySettingState = false;
             _undoStack.Push(lastServiceIndex);
