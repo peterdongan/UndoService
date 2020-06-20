@@ -88,6 +88,24 @@ namespace StateManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Redo failed in subservice when aggregate expected it to succeed. This can happen if you clear the redo stack directly on the UndoService while it is part of an aggregate..
+        /// </summary>
+        internal static string SubServiceRedoFailure {
+            get {
+                return ResourceManager.GetString("SubServiceRedoFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo failed in subservice when aggregate expected it to succeed. This can happen if you clear the undo stack directly on the UndoService while it is part of an aggregate..
+        /// </summary>
+        internal static string SubServiceUndoFailure {
+            get {
+                return ResourceManager.GetString("SubServiceUndoFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing to undo. Check that CanUndo is true before invoking Undo()..
         /// </summary>
         internal static string UndoWithoutCanUndo {
