@@ -143,7 +143,8 @@ If you run into problems, check the following:
 
 * Invoke RecordState() after making changes, rather than before.
 * Don't invoke RecordState() in the delegate method that sets the state. Otherwise Redo() will add an extra state. (For example, don't call RecordState() a property's set accessor, and then use that set accessor in the SetData delegate method.)
-* Don't clear the stacks directly in an UndoService that is part of an UndoServiceAggregate. This can result in an exception trying to Undo/Redo.
+
+If you run into problems that aren't resolved by the above, please raise an issue or send an email.
 
 ## Public Interfaces
 * IStateTracker is used to record changes to state. It is implemented by UndoService.
