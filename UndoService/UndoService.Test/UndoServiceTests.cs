@@ -4,6 +4,7 @@
 
 using NUnit.Framework;
 using StateManagement;
+using System;
 
 namespace UndoService.Test
 {
@@ -344,6 +345,71 @@ namespace UndoService.Test
             _aggregateService.Redo();
             Assert.IsTrue(!_aggregateService.IsStateChanged);
 
+        }
+
+
+        
+        [Test]
+        public void DirectStackClearExceptionTest()
+        {
+
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "Two";
+            _subUndoServiceForString.RecordState();
+            _aggregateService.ClearStacks();
+
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "Two";
+            _subUndoServiceForString.RecordState();
+            _aggregateService.ClearUndoStack();
+
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "Two";
+            _subUndoServiceForString.RecordState();
+            _aggregateService.ClearRedoStack();
+
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _subUndoServiceForInt.RecordState();
+            _statefulString = "Two";
+
+            bool exceptionWasThrown = false;
+            try
+            {
+                _subUndoServiceForString.ClearStacks();
+            }
+            catch (InvalidOperationException e)
+            {
+                Assert.IsTrue(e.Message.Equals("A clear stack method was invoked directly on an UndoService that is part of an UndoServiceAggregate. Invoke the clear stack methods on the UndoServiceAggregate instead."));
+                exceptionWasThrown = true;
+            }
+            Assert.IsTrue(exceptionWasThrown);
         }
 
 

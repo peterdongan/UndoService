@@ -30,4 +30,6 @@ namespace StateManagement
     /// <param name="sender"></param>
     /// <param name="e">StateSetEventArgs. This indicates whether it was a Redo or Undo action that raised the event, and the value of the tag if one given to the recorded state</param>
     public delegate void StateSetEventHandler(object sender, StateSetEventArgs e);
+
+    public delegate void StackClearInvokedEventHandler(object sender, EventArgs e);
 }

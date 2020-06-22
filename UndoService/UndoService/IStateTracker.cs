@@ -22,6 +22,11 @@ namespace StateManagement
         event StateRecordedEventHandler StateRecorded;
 
         /// <summary>
+        /// Raised when a public method to clear one or both of the undo and redo stacks is invoked.
+        /// </summary>
+        event StackClearInvokedEventHandler ClearStackInvoked;
+
+        /// <summary>
         /// Records the current state of the tracked objects and puts it on the undo stack
         /// </summary>
         /// <param name="tag">When the tracked object is reverted to this state, a StateSet event will be thrown with this as a property in its arguments. </param>

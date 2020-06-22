@@ -55,6 +55,11 @@ namespace StateManagement
         public event StateSetEventHandler StateSet;
 
         /// <summary>
+        /// Raised when one or both of the undo and redo stacks is cleared.
+        /// </summary>
+        public event StackClearInvokedEventHandler ClearStackInvoked;
+
+        /// <summary>
         /// 
         /// </summary>
         public bool CanUndo => _undoServiceValidator.CanUndo;
@@ -92,6 +97,7 @@ namespace StateManagement
             GetState(out T currentState);
             _currentState = new StateRecord<T> { State = currentState };
             _redoStack.Clear();
+            ClearStackInvoked?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -100,7 +106,18 @@ namespace StateManagement
         public void ClearUndoStack()
         {
             _undoStack.Clear();
+            ClearStackInvoked?.Invoke(this, new EventArgs());
         }
+
+        /// <summary>
+        /// Clear the Redo stack (but not the Undo stack).
+        /// </summary>
+        public void ClearRedoStack()
+        {
+            _redoStack.Clear();
+            ClearStackInvoked?.Invoke(this, new EventArgs());
+        }
+
 
         /// <summary>
         /// 
@@ -160,8 +177,6 @@ namespace StateManagement
             {
                 _redoStack.Clear();
             }
-
-
         }
     }
 }

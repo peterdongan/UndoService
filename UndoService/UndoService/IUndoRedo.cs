@@ -42,6 +42,11 @@ namespace StateManagement
         void ClearUndoStack();
 
         /// <summary>
+        /// Clear the redo stack (but not the undo stack). This is done automatically when RecordState() is invoked.
+        /// </summary>
+        void ClearRedoStack();
+
+        /// <summary>
         /// 
         /// </summary>
         void Undo();

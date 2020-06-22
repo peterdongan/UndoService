@@ -21,6 +21,11 @@ namespace StateManagement
         private readonly IntStackWithDelete _undoStack;
         private readonly IntStackWithDelete _redoStack;
         private readonly UndoServiceValidator<int> _undoServiceValidator;
+        
+        /// <summary>
+        /// Semaphgore counting the number of clear stack methods invoked.
+        /// </summary>
+        private int _clearStackInvocationsCount;
 
         /// <summary>
         /// Used by the StateSet event handler on subservices to determine if the action was invoked from here.
@@ -36,6 +41,7 @@ namespace StateManagement
             _undoStack = new IntStackWithDelete();
             _redoStack = new IntStackWithDelete();
             _subUndoServices = new List<SubUndoService>();
+            _clearStackInvocationsCount = 0;
 
             if(subUndoServices == null)
             {
@@ -66,6 +72,9 @@ namespace StateManagement
             StateSet?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsStateChanged
         {
             get
@@ -102,9 +111,21 @@ namespace StateManagement
             var nextSubService = new SubUndoService(subService);
             nextSubService.StateRecorded += Subservice_StateRecorded;
             nextSubService.StateSet += Subservice_StateSet;
+            nextSubService.ClearStackInvoked += NextSubService_ClearStackInvoked;
             nextSubService.Index = _subUndoServices.Count;
             _subUndoServices.Add(nextSubService);
         }
+
+        private void NextSubService_ClearStackInvoked(object sender, EventArgs e)
+        {
+            if(_clearStackInvocationsCount <1)
+            {
+                var err = new InvalidOperationException("A clear stack method was invoked directly on an UndoService that is part of an UndoServiceAggregate. Invoke the clear stack methods on the UndoServiceAggregate instead.");
+                throw err;
+            }
+            _clearStackInvocationsCount--;
+        }
+
 
         /// <summary>
         /// Clear the Undo and Redo stacks for this object and all its subservices.
@@ -115,6 +136,7 @@ namespace StateManagement
             _redoStack.Clear();
             foreach (var s in _subUndoServices)
             {
+                _clearStackInvocationsCount++;
                 s.ClearStacks();
             }
         }
@@ -173,10 +195,17 @@ namespace StateManagement
             _undoStack.Push(lastServiceIndex);
         }
 
-        private void Subservice_StateRecorded(object sender, EventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ClearRedoStack()
         {
-            var serviceId = ((SubUndoService)sender).Index;
-            _undoStack.Push(serviceId);
+            _redoStack.Clear();
+            foreach (var s in _subUndoServices)
+            {
+                _clearStackInvocationsCount++;
+                s.ClearRedoStack();
+            }
         }
 
         /// <summary>
@@ -186,6 +215,7 @@ namespace StateManagement
             _undoStack.Clear();
             foreach (var s in _subUndoServices)
             {
+                _clearStackInvocationsCount++;
                 s.ClearUndoStack();
             }
         }
@@ -195,6 +225,16 @@ namespace StateManagement
             foreach(var s in _subUndoServices)
             {
                 s.ClearIsChangedFlag();
+            }
+        }
+
+        private void Subservice_StateRecorded(object sender, EventArgs e)
+        {
+            var serviceId = ((SubUndoService)sender).Index;
+            _undoStack.Push(serviceId);
+            if (_redoStack.Count > 0)
+            {
+                ClearRedoStack();
             }
         }
 

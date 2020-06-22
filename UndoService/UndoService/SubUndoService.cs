@@ -19,11 +19,19 @@ namespace StateManagement
 
             _undoService.StateRecorded += UndoService_StateRecorded;
             _undoService.StateSet += UndoService_StateSet;
+            _undoService.ClearStackInvoked += _undoService_ClearStackInvoked;
+        }
+
+        private void _undoService_ClearStackInvoked(object sender, EventArgs e)
+        {
+            ClearStackInvoked?.Invoke(this, e);
         }
 
         public event StateRecordedEventHandler StateRecorded;
 
         public event StateSetEventHandler StateSet;
+
+        public event StackClearInvokedEventHandler ClearStackInvoked;
 
         /// <summary>
         /// This is used by the AggregateUndoService to keep track of where changes were made.
@@ -39,6 +47,8 @@ namespace StateManagement
         public void RecordState(object tag = null) => _undoService.RecordState( tag);
 
         public void ClearStacks() => _undoService.ClearStacks();
+
+        public void ClearRedoStack() => _undoService.ClearRedoStack();
 
         public void ClearUndoStack() => _undoService.ClearUndoStack();
 
@@ -56,6 +66,11 @@ namespace StateManagement
         private void UndoService_StateSet(object sender, StateSetEventArgs e)
         {
             StateSet?.Invoke(this, e);
+        }
+
+        private void UndoService_StackCleared(object sender, EventArgs e)
+        {
+            ClearStackInvoked?.Invoke(this, e);
         }
     }
 }
