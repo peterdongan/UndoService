@@ -16,7 +16,6 @@ namespace StateManagement
         public SubUndoService(IUndoService undoService)
         {
             _undoService = undoService ?? throw new NullReferenceException();
-
             _undoService.StateRecorded += UndoService_StateRecorded;
             _undoService.StateSet += UndoService_StateSet;
             _undoService.ClearStackInvoked += _undoService_ClearStackInvoked;

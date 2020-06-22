@@ -126,6 +126,12 @@
   <data name="RedoWithoutCanRedo" xml:space="preserve">
     <value>Nothing to redo. Check that CanRedo is true before invoking Redo().</value>
   </data>
+  <data name="SubServiceRedoFailure" xml:space="preserve">
+    <value>Redo failed in subservice when aggregate expected it to succeed. This can happen if you clear the redo stack directly on the UndoService while it is part of an aggregate.</value>
+  </data>
+  <data name="SubServiceUndoFailure" xml:space="preserve">
+    <value>Undo failed in subservice when aggregate expected it to succeed. This can happen if you clear the undo stack directly on the UndoService while it is part of an aggregate.</value>
+  </data>
   <data name="UndoWithoutCanUndo" xml:space="preserve">
     <value>Nothing to undo. Check that CanUndo is true before invoking Undo().</value>
   </data>

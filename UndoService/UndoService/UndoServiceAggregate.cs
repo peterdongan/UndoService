@@ -157,7 +157,8 @@ namespace StateManagement
             }
             catch
             {
-                throw new Exception("Undo failed in subservice when aggregate expected it to succeed.");
+                var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
+                throw new InvalidOperationException(resourceManager.GetString("SubServiceUndoFailure"));
             }
             _isInternallySettingState = false;
 
@@ -189,7 +190,8 @@ namespace StateManagement
             }
             catch
             {
-                throw new Exception("Redo failed in subservice when aggregate expected it to succeed.");
+                var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
+                throw new InvalidOperationException(resourceManager.GetString("SubServiceRedoFailure"));
             }
             _isInternallySettingState = false;
             _undoStack.Push(lastServiceIndex);

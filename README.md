@@ -138,6 +138,13 @@ To create an UndoServiceAggregate, pass it an IUndoService array. To use it, inv
 
 Refer to the unit test project in the source repository for examples of other features.
 
+### Checklist
+If you run into problems, check the following:
+
+* Invoke RecordState() after making changes, rather than before.
+* Don't invoke RecordState() in the delegate method that sets the state. Otherwise Redo() will add an extra state. (For example, don't call RecordState() a property's set accessor, and then use that set accessor in the SetData delegate method.)
+* Don't clear the stacks directly in an UndoService that is part of an UndoServiceAggregate. This can result in an exception trying to Undo/Redo.
+
 ## Public Interfaces
 * IStateTracker is used to record changes to state. It is implemented by UndoService.
 * IUndoRedo is used to execute Undo and Redo operations. It is implemented by UndoService and UndoServiceAggregate.
