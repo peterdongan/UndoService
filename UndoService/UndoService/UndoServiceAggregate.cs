@@ -61,17 +61,6 @@ namespace StateManagement
         /// </summary>
         public event StateSetEventHandler StateSet;
 
-        private void Subservice_StateSet(object sender, StateSetEventArgs e)
-        {
-            if(!_isInternallySettingState)
-            {
-                var subserviceIndex = ((SubUndoService)sender).Index;
-                _undoStack.DeleteLast(subserviceIndex);
-                _redoStack.Push(subserviceIndex);
-            }
-            StateSet?.Invoke(this, e);
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -115,17 +104,6 @@ namespace StateManagement
             nextSubService.Index = _subUndoServices.Count;
             _subUndoServices.Add(nextSubService);
         }
-
-        private void NextSubService_ClearStackInvoked(object sender, EventArgs e)
-        {
-            if(_clearStackInvocationsCount <1)
-            {
-                var err = new InvalidOperationException("A clear stack method was invoked directly on an UndoService that is part of an UndoServiceAggregate. Invoke the clear stack methods on the UndoServiceAggregate instead.");
-                throw err;
-            }
-            _clearStackInvocationsCount--;
-        }
-
 
         /// <summary>
         /// Clear the Undo and Redo stacks for this object and all its subservices.
@@ -239,6 +217,29 @@ namespace StateManagement
                 ClearRedoStack();
             }
         }
+
+        private void NextSubService_ClearStackInvoked(object sender, EventArgs e)
+        {
+            if (_clearStackInvocationsCount < 1)
+            {
+                var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
+                var err = new InvalidOperationException(resourceManager.GetString("ClearStackDirectlyOnSubservice", CultureInfo.CurrentCulture));
+                throw err;
+            }
+            _clearStackInvocationsCount--;
+        }
+
+        private void Subservice_StateSet(object sender, StateSetEventArgs e)
+        {
+            if (!_isInternallySettingState)
+            {
+                var subserviceIndex = ((SubUndoService)sender).Index;
+                _undoStack.DeleteLast(subserviceIndex);
+                _redoStack.Push(subserviceIndex);
+            }
+            StateSet?.Invoke(this, e);
+        }
+
 
     }
 }

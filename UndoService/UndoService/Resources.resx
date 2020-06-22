@@ -123,14 +123,17 @@
   <data name="AddUndoServiceWithChanges" xml:space="preserve">
     <value>You cannot add an UndoService to an Aggregate if the service's ChangeCount is not zero. If</value>
   </data>
+  <data name="ClearStackDirectlyOnSubservice" xml:space="preserve">
+    <value>A clear stack method was invoked directly on an UndoService that is part of an UndoServiceAggregate. Invoke the clear stack methods on the UndoServiceAggregate instead.</value>
+  </data>
   <data name="RedoWithoutCanRedo" xml:space="preserve">
     <value>Nothing to redo. Check that CanRedo is true before invoking Redo().</value>
   </data>
   <data name="SubServiceRedoFailure" xml:space="preserve">
-    <value>Redo failed in subservice when aggregate expected it to succeed. This can happen if you clear the redo stack directly on the UndoService while it is part of an aggregate.</value>
+    <value>Redo failed in subservice when aggregate expected it to succeed.</value>
   </data>
   <data name="SubServiceUndoFailure" xml:space="preserve">
-    <value>Undo failed in subservice when aggregate expected it to succeed. This can happen if you clear the undo stack directly on the UndoService while it is part of an aggregate.</value>
+    <value>Undo failed in subservice when aggregate expected it to succeed. </value>
   </data>
   <data name="UndoWithoutCanUndo" xml:space="preserve">
     <value>Nothing to undo. Check that CanUndo is true before invoking Undo().</value>

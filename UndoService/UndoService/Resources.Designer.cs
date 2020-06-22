@@ -79,6 +79,15 @@ namespace StateManagement {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A clear stack method was invoked directly on an UndoService that is part of an UndoServiceAggregate. Invoke the clear stack methods on the UndoServiceAggregate instead..
+        /// </summary>
+        internal static string ClearStackDirectlyOnSubservice {
+            get {
+                return ResourceManager.GetString("ClearStackDirectlyOnSubservice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing to redo. Check that CanRedo is true before invoking Redo()..
         /// </summary>
         internal static string RedoWithoutCanRedo {
@@ -88,7 +97,7 @@ namespace StateManagement {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Redo failed in subservice when aggregate expected it to succeed. This can happen if you clear the redo stack directly on the UndoService while it is part of an aggregate..
+        ///   Looks up a localized string similar to Redo failed in subservice when aggregate expected it to succeed..
         /// </summary>
         internal static string SubServiceRedoFailure {
             get {
@@ -97,7 +106,7 @@ namespace StateManagement {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Undo failed in subservice when aggregate expected it to succeed. This can happen if you clear the undo stack directly on the UndoService while it is part of an aggregate..
+        ///   Looks up a localized string similar to Undo failed in subservice when aggregate expected it to succeed. .
         /// </summary>
         internal static string SubServiceUndoFailure {
             get {

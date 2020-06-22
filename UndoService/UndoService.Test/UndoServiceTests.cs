@@ -118,9 +118,39 @@ namespace UndoService.Test
         }
 
         /// <summary>
-        /// Test that AggregateUndoService detects when one of its component UndoServices has nothing left in its undo stack, and that it makes that point the effective end of its own undo stack.
+        /// Test that the redo stacks of an aggregate and its subservices are cleared when a new state is recorded in any subservice.
         /// </summary>
         [Test]
+        public void AggregateClearRedoOnStateChangeTest()
+        {
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            _statefulString = "Two";
+            _subUndoServiceForString.RecordState();
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 3;
+            _subUndoServiceForInt.RecordState();
+            _statefulInt = 4;
+            _subUndoServiceForInt.RecordState();
+            _aggregateService.Undo();
+            _aggregateService.Undo();
+            Assert.IsTrue(_aggregateService.CanRedo);
+            Assert.IsTrue(_subUndoServiceForInt.CanRedo);
+
+            _statefulString = "Three";
+            _subUndoServiceForString.RecordState();
+            Assert.IsTrue(!_aggregateService.CanRedo);
+            Assert.IsTrue(!_subUndoServiceForInt.CanRedo);
+            
+        }
+
+            /// <summary>
+            /// Test that AggregateUndoService detects when one of its component UndoServices has nothing left in its undo stack, and that it makes that point the effective end of its own undo stack.
+            /// </summary>
+            [Test]
         public void AggregateUndoServiceCapacityHandlingTest()
         {
             _statefulString = "One";
@@ -346,8 +376,6 @@ namespace UndoService.Test
             Assert.IsTrue(!_aggregateService.IsStateChanged);
 
         }
-
-
         
         [Test]
         public void DirectStackClearExceptionTest()
