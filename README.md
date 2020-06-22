@@ -143,51 +143,13 @@ If you run into problems, check the following:
 
 * Invoke RecordState() after making changes, rather than before.
 * Don't invoke RecordState() in the delegate method that sets the state. Otherwise Redo() will add an extra state. (For example, don't call RecordState() a property's set accessor, and then use that set accessor in the SetData delegate method.)
-* Don't clear the stacks directly in an UndoService that is part of an UndoServiceAggregate. This can result in an exception trying to Undo/Redo.
+
+If you run into problems that aren't resolved by the above, please [raise an issue](https://github.com/peterdongan/UndoService/issues/new/choose) or send an email.
 
 ## Public Interfaces
 * IStateTracker is used to record changes to state. It is implemented by UndoService.
 * IUndoRedo is used to execute Undo and Redo operations. It is implemented by UndoService and UndoServiceAggregate.
 * IUndoService is used to both record state and perform undo/redo. It is implemented by UndoService.
-
-### IStateTracker
-```csharp
-    // Tracks changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
-    public interface IStateTracker
-    {
-        // Raised when Undo or Redo is executed.
-        event StateSetEventHandler StateSet;
-
-        // Raised when RecordState() is executed.
-        event StateRecordedEventHandler StateRecorded;
-
-        // Records the current state of the tracked objects and puts it on the undo stack
-        // If you assign a tag value, it will be in the StateSet event arguments if this state is restored.
-        void RecordState(object tag = null);
-    }
-```
-
-### IUndoRedo
-```csharp
-
-    // Performs Undo/redo actions. Used in conjunction with object(s) that implement IStateTracker
-    public interface IUndoRedo
-    {
-        bool CanUndo { get; }
-        
-        bool CanRedo { get; }
-
-        // Clear the Undo and Redo stacks.
-        void ClearStacks();
-
-        // Clear the Undo stack (but not the redo stack).
-        void ClearUndoStack();
-
-        void Undo();
-
-        void Redo();
-    }
-```
 
 
 ## Links
