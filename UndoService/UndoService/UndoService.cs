@@ -18,7 +18,7 @@ namespace StateManagement
         private readonly GetState<T> GetState;
         private readonly SetState<T> SetState;
         private readonly IStack<StateRecord<T>> _undoStack;
-        private readonly Stack<StateRecord<T>> _redoStack;    //limited by undo stack capacity already
+        private readonly IStack<StateRecord<T>> _redoStack;    //limited by undo stack capacity already
         private readonly UndoServiceValidator<StateRecord<T>> _undoServiceValidator;
         private T _originalState;
 
@@ -40,8 +40,20 @@ namespace StateManagement
             GetState(out T currentState);
             _originalState = currentState;
             _currentState = new StateRecord<T> { State = currentState };
-            _redoStack = new Stack<StateRecord<T>>();
+            _redoStack = new StandardStack<StateRecord<T>>();
             _undoServiceValidator = new UndoServiceValidator<StateRecord<T>>(_undoStack, _redoStack);
+            _undoStack.HasItemsChanged += UndoStack_HasItemsChanged;
+            _redoStack.HasItemsChanged += RedoStack_HasItemsChanged;
+        }
+
+        private void RedoStack_HasItemsChanged(object sender, EventArgs e)
+        {
+            CanRedoChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void UndoStack_HasItemsChanged(object sender, EventArgs e)
+        {
+            CanUndoChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -103,20 +115,12 @@ namespace StateManagement
         /// </summary>
         public void ClearStacks()
         {
-            if (_undoStack.Count > 0)
-            {
-                _undoStack.Clear();
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
+            _undoStack.Clear();
 
             GetState(out T currentState);
             _currentState = new StateRecord<T> { State = currentState };
 
-            if (_redoStack.Count > 0)
-            {
-                _redoStack.Clear();
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
+            _redoStack.Clear();
 
             ClearStackInvoked?.Invoke(this, new EventArgs());
         }
@@ -126,11 +130,7 @@ namespace StateManagement
         /// </summary>
         public void ClearUndoStack()
         {
-            if (_undoStack.Count > 0)
-            {
-                _undoStack.Clear();
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
+            _undoStack.Clear();
 
             ClearStackInvoked?.Invoke(this, new EventArgs());
         }
@@ -140,11 +140,7 @@ namespace StateManagement
         /// </summary>
         public void ClearRedoStack()
         {
-            if (_redoStack.Count > 0)
-            {
-                _redoStack.Clear();
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
+            _redoStack.Clear();
 
             ClearStackInvoked?.Invoke(this, new EventArgs());
         }
@@ -173,16 +169,6 @@ namespace StateManagement
             _redoStack.Push(_currentState);
             _currentState = momento;
             StateSet?.Invoke(this, args);
-
-            if (_undoStack.Count == 0)
-            {
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
-
-            if(_redoStack.Count == 1)
-            {
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
         }
 
         /// <summary>
@@ -201,14 +187,6 @@ namespace StateManagement
             var args = new StateSetEventArgs { Tag = momento.Tag, SettingAction = StateSetAction.Redo };
 
             StateSet?.Invoke(this, args);
-            if(_undoStack.Count == 1)
-            {
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
-            if (_redoStack.Count == 0)
-            {
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
         }
 
         /// <summary>
@@ -225,11 +203,6 @@ namespace StateManagement
             if(_redoStack.Count > 0)
             {
                 _redoStack.Clear();
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
-            if (_undoStack.Count == 1)
-            {
-                CanUndoChanged?.Invoke(this, new EventArgs());
             }
 
         }

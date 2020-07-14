@@ -54,6 +54,18 @@ namespace StateManagement
             }
 
             _undoServiceValidator = new UndoServiceValidator<int>(_undoStack, _redoStack);
+            _undoStack.HasItemsChanged += UndoStack_HasItemsChanged;
+            _redoStack.HasItemsChanged += RedoStack_HasItemsChanged;
+        }
+
+        private void RedoStack_HasItemsChanged(object sender, EventArgs e)
+        {
+            CanRedoChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void UndoStack_HasItemsChanged(object sender, EventArgs e)
+        {
+            CanUndoChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -120,17 +132,8 @@ namespace StateManagement
         /// </summary>
         public void ClearStacks()
         {
-            if (_undoStack.Count > 0)
-            {
-                _undoStack.Clear();
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
-
-            if (_redoStack.Count > 0)
-            {
-                _redoStack.Clear();
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
+            _undoStack.Clear();
+            _redoStack.Clear();
 
             foreach (var s in _subUndoServices)
             {
@@ -171,15 +174,6 @@ namespace StateManagement
                     ClearUndoStack();
                 }
             }
-             if (_undoStack.Count == 0)
-            {
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
-
-            if (_redoStack.Count == 1)
-            {
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
         }
 
         /// <summary>
@@ -202,16 +196,6 @@ namespace StateManagement
             }
             _isInternallySettingState = false;
             _undoStack.Push(lastServiceIndex);
-
-            if (_undoStack.Count == 1)
-            {
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
-            if (_redoStack.Count == 0)
-            {
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
-
         }
 
         /// <summary>
@@ -219,11 +203,8 @@ namespace StateManagement
         /// </summary>
         public void ClearRedoStack()
         {
-            if (_redoStack.Count > 0)
-            {
-                _redoStack.Clear();
-                CanRedoChanged?.Invoke(this, new EventArgs());
-            }
+            _redoStack.Clear();
+
             foreach (var s in _subUndoServices)
             {
                 _clearStackInvocationsCount++;
@@ -235,11 +216,8 @@ namespace StateManagement
         /// </summary>
         public void ClearUndoStack()
         {
-            if (_undoStack.Count > 0)
-            {
-                _undoStack.Clear();
-                CanUndoChanged?.Invoke(this, new EventArgs());
-            }
+            _undoStack.Clear();
+
             foreach (var s in _subUndoServices)
             {
                 _clearStackInvocationsCount++;
@@ -259,10 +237,7 @@ namespace StateManagement
         {
             var serviceId = ((SubUndoService)sender).Index;
             _undoStack.Push(serviceId);
-            if (_redoStack.Count > 0)
-            {
-                ClearRedoStack();
-            }
+            ClearRedoStack();
         }
 
         private void NextSubService_ClearStackInvoked(object sender, EventArgs e)
@@ -286,7 +261,5 @@ namespace StateManagement
             }
             StateSet?.Invoke(this, e);
         }
-
-
     }
 }

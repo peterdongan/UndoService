@@ -2,15 +2,20 @@
 // Licensed under the MIT licence. https://opensource.org/licenses/MIT
 // Project: https://github.com/peterdongan/UndoService
 
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("UndoService.Test")]
 
 namespace StateManagement.DataStructures
 {
     /// <summary>
     /// Stack<Int> with DeleteLast(int) method added.</Int>
     /// </summary>
-    class IntStackWithDelete : Stack<int> , IStack<int>
+    class IntStackWithDelete :  StandardStack<int>, IStack<int>
     {
+
         /// <summary>
         /// Deletes the last instance of a value from the stack. Does nothing if the value is not in the stack.
         /// </summary>
@@ -32,6 +37,11 @@ namespace StateManagement.DataStructures
                 while (tempStack.Count > 0)
                 {
                     Push(tempStack.Pop());
+                }
+
+                if(Count == 0)
+                {
+                    InvokeHasItemsChanged();
                 }
             }
         }

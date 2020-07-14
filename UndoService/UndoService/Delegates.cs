@@ -36,4 +36,6 @@ namespace StateManagement
     public delegate void CanUndoChangedEventHandler(object sender, EventArgs e);
 
     public delegate void CanRedoChangedEventHandler(object sender, EventArgs e);
+
+    public delegate void HasItemsChangedEventHandler(object sender, EventArgs e);
 }

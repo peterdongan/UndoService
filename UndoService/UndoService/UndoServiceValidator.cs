@@ -17,9 +17,9 @@ namespace StateManagement
     internal class UndoServiceValidator<T>
     {
         private readonly IStack<T> _undoStack;
-        private readonly Stack<T> _redoStack;
+        private readonly IStack<T> _redoStack;
 
-        internal UndoServiceValidator(IStack<T> undoStack, Stack<T> redoStack)
+        internal UndoServiceValidator(IStack<T> undoStack, IStack<T> redoStack)
         {
             _undoStack = undoStack;
             _redoStack = redoStack;

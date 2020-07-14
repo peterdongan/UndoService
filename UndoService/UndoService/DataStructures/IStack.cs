@@ -10,6 +10,8 @@ namespace StateManagement.DataStructures
     /// <typeparam name="T"></typeparam>
     interface IStack<T>
     {
+        event HasItemsChangedEventHandler HasItemsChanged;
+
         int Count { get; }
 
         void Push(T item);

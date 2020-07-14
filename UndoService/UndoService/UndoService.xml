@@ -23,7 +23,7 @@
         </member>
         <member name="T:StateManagement.DataStructures.StandardStack`1">
             <summary>
-            This is just the standard c# stack marked as implementing IStack
+            Wrapper for standard stack which raises HasItemsChanged events.
             </summary>
             <typeparam name="T"></typeparam>
         </member>
