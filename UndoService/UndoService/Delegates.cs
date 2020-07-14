@@ -32,4 +32,8 @@ namespace StateManagement
     public delegate void StateSetEventHandler(object sender, StateSetEventArgs e);
 
     public delegate void StackClearInvokedEventHandler(object sender, EventArgs e);
+
+    public delegate void CanUndoChangedEventHandler(object sender, EventArgs e);
+
+    public delegate void CanRedoChangedEventHandler(object sender, EventArgs e);
 }

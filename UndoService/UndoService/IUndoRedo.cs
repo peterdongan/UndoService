@@ -12,6 +12,16 @@ namespace StateManagement
     public interface IUndoRedo
     {
         /// <summary>
+        /// Raised when CanUndo changes.
+        /// </summary>
+        event CanUndoChangedEventHandler CanUndoChanged;
+
+        /// <summary>
+        /// Raised when CanRedo changes.
+        /// </summary>
+        event CanRedoChangedEventHandler CanRedoChanged;
+
+        /// <summary>
         /// 
         /// </summary>
         bool CanUndo { get; }

@@ -55,6 +55,16 @@ namespace StateManagement
         public event StateSetEventHandler StateSet;
 
         /// <summary>
+        /// Raised when CanUndo changes.
+        /// </summary>
+        public event CanUndoChangedEventHandler CanUndoChanged;
+
+        /// <summary>
+        /// Raised when CanRedo changes.
+        /// </summary>
+        public event CanRedoChangedEventHandler CanRedoChanged;
+
+        /// <summary>
         /// Raised when one or both of the undo and redo stacks is cleared.
         /// </summary>
         public event StackClearInvokedEventHandler ClearStackInvoked;
@@ -93,10 +103,21 @@ namespace StateManagement
         /// </summary>
         public void ClearStacks()
         {
-            _undoStack.Clear();
+            if (_undoStack.Count > 0)
+            {
+                _undoStack.Clear();
+                CanUndoChanged?.Invoke(this, new EventArgs());
+            }
+
             GetState(out T currentState);
             _currentState = new StateRecord<T> { State = currentState };
-            _redoStack.Clear();
+
+            if (_redoStack.Count > 0)
+            {
+                _redoStack.Clear();
+                CanRedoChanged?.Invoke(this, new EventArgs());
+            }
+
             ClearStackInvoked?.Invoke(this, new EventArgs());
         }
 
@@ -105,7 +126,12 @@ namespace StateManagement
         /// </summary>
         public void ClearUndoStack()
         {
-            _undoStack.Clear();
+            if (_undoStack.Count > 0)
+            {
+                _undoStack.Clear();
+                CanUndoChanged?.Invoke(this, new EventArgs());
+            }
+
             ClearStackInvoked?.Invoke(this, new EventArgs());
         }
 
@@ -114,7 +140,12 @@ namespace StateManagement
         /// </summary>
         public void ClearRedoStack()
         {
-            _redoStack.Clear();
+            if (_redoStack.Count > 0)
+            {
+                _redoStack.Clear();
+                CanRedoChanged?.Invoke(this, new EventArgs());
+            }
+
             ClearStackInvoked?.Invoke(this, new EventArgs());
         }
 
@@ -142,6 +173,16 @@ namespace StateManagement
             _redoStack.Push(_currentState);
             _currentState = momento;
             StateSet?.Invoke(this, args);
+
+            if (_undoStack.Count == 0)
+            {
+                CanUndoChanged?.Invoke(this, new EventArgs());
+            }
+
+            if(_redoStack.Count == 1)
+            {
+                CanRedoChanged?.Invoke(this, new EventArgs());
+            }
         }
 
         /// <summary>
@@ -160,6 +201,14 @@ namespace StateManagement
             var args = new StateSetEventArgs { Tag = momento.Tag, SettingAction = StateSetAction.Redo };
 
             StateSet?.Invoke(this, args);
+            if(_undoStack.Count == 1)
+            {
+                CanUndoChanged?.Invoke(this, new EventArgs());
+            }
+            if (_redoStack.Count == 0)
+            {
+                CanRedoChanged?.Invoke(this, new EventArgs());
+            }
         }
 
         /// <summary>
@@ -176,7 +225,13 @@ namespace StateManagement
             if(_redoStack.Count > 0)
             {
                 _redoStack.Clear();
+                CanRedoChanged?.Invoke(this, new EventArgs());
             }
+            if (_undoStack.Count == 1)
+            {
+                CanUndoChanged?.Invoke(this, new EventArgs());
+            }
+
         }
     }
 }

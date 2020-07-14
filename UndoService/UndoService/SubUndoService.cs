@@ -18,10 +18,12 @@ namespace StateManagement
             _undoService = undoService ?? throw new NullReferenceException();
             _undoService.StateRecorded += UndoService_StateRecorded;
             _undoService.StateSet += UndoService_StateSet;
-            _undoService.ClearStackInvoked += _undoService_ClearStackInvoked;
+            _undoService.ClearStackInvoked += UndoService_ClearStackInvoked;
+            _undoService.CanRedoChanged += UndoService_CanRedoChanged;
+            _undoService.CanUndoChanged += UndoService_CanUndoChanged;
         }
 
-        private void _undoService_ClearStackInvoked(object sender, EventArgs e)
+        private void UndoService_ClearStackInvoked(object sender, EventArgs e)
         {
             ClearStackInvoked?.Invoke(this, e);
         }
@@ -31,6 +33,16 @@ namespace StateManagement
         public event StateSetEventHandler StateSet;
 
         public event StackClearInvokedEventHandler ClearStackInvoked;
+
+        /// <summary>
+        /// Raised when CanUndo changes.
+        /// </summary>
+        public event CanUndoChangedEventHandler CanUndoChanged;
+
+        /// <summary>
+        /// Raised when CanRedo changes.
+        /// </summary>
+        public event CanRedoChangedEventHandler CanRedoChanged;
 
         /// <summary>
         /// This is used by the AggregateUndoService to keep track of where changes were made.
@@ -56,6 +68,16 @@ namespace StateManagement
         public void Redo() => _undoService.Redo();
 
         public void ClearIsChangedFlag() => _undoService.ClearIsChangedFlag();
+
+        private void UndoService_CanUndoChanged(object sender, EventArgs e)
+        {
+            CanUndoChanged?.Invoke(this, e);
+        }
+
+        private void UndoService_CanRedoChanged(object sender, EventArgs e)
+        {
+            CanRedoChanged?.Invoke(this, e);
+        }
 
         private void UndoService_StateRecorded(object sender, EventArgs e)
         {

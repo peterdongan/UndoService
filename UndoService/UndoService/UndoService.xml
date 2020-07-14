@@ -55,22 +55,27 @@
             <param name="sender"></param>
             <param name="e">StateSetEventArgs. This indicates whether it was a Redo or Undo action that raised the event, and the value of the tag if one given to the recorded state</param>
         </member>
-        <member name="T:StateManagement.IStateRecorder">
+        <member name="T:StateManagement.IStateTracker">
             <summary>
-            Records changes to a part of the application for Undo/Redo. Used in conjunction with IUndoRedo
+            Records state changes.
             </summary>
         </member>
-        <member name="E:StateManagement.IStateRecorder.StateSet">
+        <member name="E:StateManagement.IStateTracker.StateSet">
             <summary>
             Raised when Undo or Redo is executed.
             </summary>
         </member>
-        <member name="E:StateManagement.IStateRecorder.StateRecorded">
+        <member name="E:StateManagement.IStateTracker.StateRecorded">
             <summary>
             Raised when RecordState() is executed.
             </summary>
         </member>
-        <member name="M:StateManagement.IStateRecorder.RecordState(System.Object)">
+        <member name="E:StateManagement.IStateTracker.ClearStackInvoked">
+            <summary>
+            Raised when a public method to clear one or both of the undo and redo stacks is invoked.
+            </summary>
+        </member>
+        <member name="M:StateManagement.IStateTracker.RecordState(System.Object)">
             <summary>
             Records the current state of the tracked objects and puts it on the undo stack
             </summary>
@@ -78,7 +83,17 @@
         </member>
         <member name="T:StateManagement.IUndoRedo">
             <summary>
-            Performs Undo/redo actions, but not state recording.
+            Performs Undo/redo actions. Used in conjunction with an IStateTracker.
+            </summary>
+        </member>
+        <member name="E:StateManagement.IUndoRedo.CanUndoChanged">
+            <summary>
+            Raised when CanUndo changes.
+            </summary>
+        </member>
+        <member name="E:StateManagement.IUndoRedo.CanRedoChanged">
+            <summary>
+            Raised when CanRedo changes.
             </summary>
         </member>
         <member name="P:StateManagement.IUndoRedo.CanUndo">
@@ -111,6 +126,11 @@
             Clear the Undo stack (but not the redo stack).
             </summary>
         </member>
+        <member name="M:StateManagement.IUndoRedo.ClearRedoStack">
+            <summary>
+            Clear the redo stack (but not the undo stack). This is done automatically when RecordState() is invoked.
+            </summary>
+        </member>
         <member name="M:StateManagement.IUndoRedo.Undo">
             <summary>
             
@@ -125,22 +145,6 @@
             <summary>
             Performs Undo/Redo operations and state recording
             </summary>
-        </member>
-        <member name="E:StateManagement.IUndoService.StateSet">
-            <summary>
-            Raised when Undo or Redo is executed.
-            </summary>
-        </member>
-        <member name="E:StateManagement.IUndoService.StateRecorded">
-            <summary>
-            Raised when RecordState() is executed.
-            </summary>
-        </member>
-        <member name="M:StateManagement.IUndoService.RecordState(System.Object)">
-            <summary>
-            Records the current state of the tracked objects and puts it on the undo stack
-            </summary>
-            <param name="tag">When the tracked object is reverted to this state, a StateSet event will be thrown with this as a property in its arguments. </param>
         </member>
         <member name="T:StateManagement.Resources">
             <summary>
@@ -168,9 +172,24 @@
               Looks up a localized string similar to You cannot add an UndoService to an Aggregate if the service&apos;s ChangeCount is not zero. If.
             </summary>
         </member>
+        <member name="P:StateManagement.Resources.ClearStackDirectlyOnSubservice">
+            <summary>
+              Looks up a localized string similar to A clear stack method was invoked directly on an UndoService that is part of an UndoServiceAggregate. Invoke the clear stack methods on the UndoServiceAggregate instead..
+            </summary>
+        </member>
         <member name="P:StateManagement.Resources.RedoWithoutCanRedo">
             <summary>
               Looks up a localized string similar to Nothing to redo. Check that CanRedo is true before invoking Redo()..
+            </summary>
+        </member>
+        <member name="P:StateManagement.Resources.SubServiceRedoFailure">
+            <summary>
+              Looks up a localized string similar to Redo failed in subservice when aggregate expected it to succeed..
+            </summary>
+        </member>
+        <member name="P:StateManagement.Resources.SubServiceUndoFailure">
+            <summary>
+              Looks up a localized string similar to Undo failed in subservice when aggregate expected it to succeed. .
             </summary>
         </member>
         <member name="P:StateManagement.Resources.UndoWithoutCanUndo">
@@ -211,6 +230,16 @@
             This is used to track changes to a particular section of the application. It is used in conjunction with UndoServiceAggregate.
             </summary>
         </member>
+        <member name="E:StateManagement.SubUndoService.CanUndoChanged">
+            <summary>
+            Raised when CanUndo changes.
+            </summary>
+        </member>
+        <member name="E:StateManagement.SubUndoService.CanRedoChanged">
+            <summary>
+            Raised when CanRedo changes.
+            </summary>
+        </member>
         <member name="P:StateManagement.SubUndoService.Index">
             <summary>
             This is used by the AggregateUndoService to keep track of where changes were made.
@@ -240,6 +269,21 @@
             Raised when an Undo or Redo is executed.
             </summary>
         </member>
+        <member name="E:StateManagement.UndoService`1.CanUndoChanged">
+            <summary>
+            Raised when CanUndo changes.
+            </summary>
+        </member>
+        <member name="E:StateManagement.UndoService`1.CanRedoChanged">
+            <summary>
+            Raised when CanRedo changes.
+            </summary>
+        </member>
+        <member name="E:StateManagement.UndoService`1.ClearStackInvoked">
+            <summary>
+            Raised when one or both of the undo and redo stacks is cleared.
+            </summary>
+        </member>
         <member name="P:StateManagement.UndoService`1.CanUndo">
             <summary>
             
@@ -263,6 +307,11 @@
         <member name="M:StateManagement.UndoService`1.ClearUndoStack">
             <summary>
             Clear the Undo stack (but not the Redo stack).
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoService`1.ClearRedoStack">
+            <summary>
+            Clear the Redo stack (but not the Undo stack).
             </summary>
         </member>
         <member name="M:StateManagement.UndoService`1.ClearIsChangedFlag">
@@ -292,6 +341,11 @@
             Change tracking is done by the individual child UndoServices. 
             </summary>
         </member>
+        <member name="F:StateManagement.UndoServiceAggregate._clearStackInvocationsCount">
+            <summary>
+            Semaphgore counting the number of clear stack methods invoked.
+            </summary>
+        </member>
         <member name="F:StateManagement.UndoServiceAggregate._isInternallySettingState">
             <summary>
             Used by the StateSet event handler on subservices to determine if the action was invoked from here.
@@ -306,6 +360,21 @@
         <member name="E:StateManagement.UndoServiceAggregate.StateSet">
             <summary>
             Raised when Undo or Redo is performed.
+            </summary>
+        </member>
+        <member name="E:StateManagement.UndoServiceAggregate.CanUndoChanged">
+            <summary>
+            Raised when CanUndo changes.
+            </summary>
+        </member>
+        <member name="E:StateManagement.UndoServiceAggregate.CanRedoChanged">
+            <summary>
+            Raised when CanRedo changes.
+            </summary>
+        </member>
+        <member name="P:StateManagement.UndoServiceAggregate.IsStateChanged">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:StateManagement.UndoServiceAggregate.CanUndo">
@@ -333,6 +402,11 @@
             </summary>
         </member>
         <member name="M:StateManagement.UndoServiceAggregate.Redo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:StateManagement.UndoServiceAggregate.ClearRedoStack">
             <summary>
             
             </summary>
