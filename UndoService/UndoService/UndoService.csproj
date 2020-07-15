@@ -14,13 +14,13 @@
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.2.2.0</AssemblyVersion>
-    <FileVersion>2.2.2.0</FileVersion>
+    <AssemblyVersion>2.2.3.0</AssemblyVersion>
+    <FileVersion>2.2.3.0</FileVersion>
     <PackageReleaseNotes>IsStateChanged flag added.
-ClearStackInvoked event added.
+ClearStackInvoked, CanUndoChanged, CanRedoChanged events added.
 Informative exceptions added.
 Fixed issue where the redo stack was not being cleared in an aggregate when new state recorded by a subservice.</PackageReleaseNotes>
-    <Version>2.2.2-alpha</Version>
+    <Version>2.2.3-alpha</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>

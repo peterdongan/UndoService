@@ -10,6 +10,9 @@ namespace StateManagement.DataStructures
     /// <typeparam name="T"></typeparam>
     interface IStack<T>
     {
+        /// <summary>
+        /// Occurs when the stack changes from having items to not having items and vice-versa
+        /// </summary>
         event HasItemsChangedEventHandler HasItemsChanged;
 
         int Count { get; }

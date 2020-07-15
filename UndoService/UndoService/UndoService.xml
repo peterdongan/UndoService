@@ -21,6 +21,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="E:StateManagement.DataStructures.IStack`1.HasItemsChanged">
+            <summary>
+            Occurs when the stack changes from having items to not having items and vice-versa
+            </summary>
+        </member>
         <member name="T:StateManagement.DataStructures.StandardStack`1">
             <summary>
             Wrapper for standard stack which raises HasItemsChanged events.

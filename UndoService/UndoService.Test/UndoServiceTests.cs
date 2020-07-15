@@ -17,8 +17,8 @@ namespace UndoService.Test
         private IUndoService _subUndoServiceForInt;
         private string _statefulString;     //(In real use, more complex objects would be used to store state.)
         private int _statefulInt;
-        private bool _canUndoChangedFired = false;
-        private bool _canRedoChangedFired = false;
+        private int _canUndoChangedFiredCount = 0;
+        private int _canRedoChangedFiredCount = 0;
 
         private object _stateSetTag;
 
@@ -31,6 +31,8 @@ namespace UndoService.Test
             _subUndoServiceForString = new UndoService<string>(GetStringState, SetStringState, 3);
             IUndoService[] subservices = { _subUndoServiceForInt, _subUndoServiceForString };
             _aggregateService = new UndoServiceAggregate(subservices);
+            _canUndoChangedFiredCount = 0;
+            _canRedoChangedFiredCount = 0;
         }
 
         /// <summary>
@@ -86,46 +88,90 @@ namespace UndoService.Test
             _undoServiceForInt.CanRedoChanged += _undoServiceForInt_CanRedoChanged;
             _undoServiceForInt.CanUndoChanged += _undoServiceForInt_CanUndoChanged;
 
-            
             _statefulInt = 1;
             _undoServiceForInt.RecordState();
-            Assert.IsTrue(_canUndoChangedFired); //Item added to empty undo stack
-            _canUndoChangedFired = false;
+            Assert.IsTrue(_canUndoChangedFiredCount == 1); //Item added to empty undo stack
+            _canUndoChangedFiredCount = 0;
 
             
             _undoServiceForInt.Undo();
-            Assert.IsTrue(_canUndoChangedFired); //Last item removed from undo stack
-            _canUndoChangedFired = false;
+            Assert.IsTrue(_canUndoChangedFiredCount == 1); //Last item removed from undo stack
+            _canUndoChangedFiredCount = 0;
             
-            Assert.IsTrue(_canRedoChangedFired); //Item added to empty redo stack
-            _canRedoChangedFired = false;
+            Assert.IsTrue(_canRedoChangedFiredCount == 1); //Item added to empty redo stack
+            _canRedoChangedFiredCount = 0;
 
             _undoServiceForInt.ClearStacks();
-            Assert.IsTrue(_canRedoChangedFired); //Redo stack cleared
-            _canRedoChangedFired = false;
-            Assert.IsFalse(_canUndoChangedFired); //Undo Stack was already empty so there was no change
+            Assert.IsTrue(_canRedoChangedFiredCount == 1); //Redo stack cleared
+            _canRedoChangedFiredCount = 0;
+            Assert.IsTrue(_canUndoChangedFiredCount == 0); //Undo Stack was already empty so there was no change
 
             _statefulInt = 1;
             _undoServiceForInt.RecordState();
-            _canUndoChangedFired = false;
             _undoServiceForInt.Undo();
-            _canUndoChangedFired = false;
+            _canUndoChangedFiredCount = 0;
+            _canRedoChangedFiredCount = 0;
             _undoServiceForInt.Redo();
-            Assert.IsTrue(_canRedoChangedFired); //Last item removed from redo stack.
-            _canRedoChangedFired = false;
-            Assert.IsTrue(_canUndoChangedFired); //Item added to empty undo stack (via undo operation).
+            Assert.IsTrue(_canRedoChangedFiredCount == 1); //Last item removed from redo stack.
+            _canRedoChangedFiredCount = 0;
+            Assert.IsTrue(_canUndoChangedFiredCount == 1); //Item added to empty undo stack (via undo operation).
+        }
 
+        /// <summary>
+        /// Test that the canundochanged and canredochanged events fire as appropriate
+        /// </summary>
+        [Test]
+        public void CanUndoCanRedoChangedAggregateTest()
+        {
+            _aggregateService.CanUndoChanged += _aggregateService_CanUndoChanged;
+            _aggregateService.CanRedoChanged += _aggregateService_CanRedoChanged;
+            _statefulInt = 1;
+            _subUndoServiceForInt.RecordState();
+            Assert.IsTrue(_canRedoChangedFiredCount == 0);
+            Assert.IsTrue(_canUndoChangedFiredCount == 1);  //Item added to empty undo stack
 
+            _statefulString = "One";
+            _subUndoServiceForString.RecordState();
+            Assert.IsTrue(_canUndoChangedFiredCount == 1); //Adding an item to an empty sub stack does not fire the event in the aggregate per se
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_canUndoChangedFiredCount == 1); //Doesn't necessarily fire the event if the last item is removed from a subservice
+            Assert.IsTrue(_canRedoChangedFiredCount == 1); //Item added to empty redo stack
+
+            _aggregateService.Undo();
+            Assert.IsTrue(_canUndoChangedFiredCount == 2); //Last item removed from undo stack (event fires)
+            Assert.IsTrue(_canRedoChangedFiredCount == 1); //Item added to already filled redo stack (no event)
+
+            _aggregateService.ClearStacks();
+            Assert.IsTrue(_canRedoChangedFiredCount == 2); //Redo stack cleared 
+            Assert.IsTrue(_canUndoChangedFiredCount == 2); //Undo Stack was already empty so there was no change
+
+            _statefulInt = 2;
+            _subUndoServiceForInt.RecordState();          //Item added to undo stack (event count = 3)
+            _aggregateService.Undo();                     //Item added to redo stack (event count = 3), item removed from undo stack (event count = 4)
+            _aggregateService.Redo();
+            Assert.IsTrue(_canRedoChangedFiredCount == 4); //Last item removed from redo stack (event fired).
+            Assert.IsTrue(_canUndoChangedFiredCount == 5); //Item added to empty undo stack (via undo operation).
+        }
+
+        private void _aggregateService_CanRedoChanged(object sender, EventArgs e)
+        {
+            _canRedoChangedFiredCount++;
+        }
+
+        private void _aggregateService_CanUndoChanged(object sender, EventArgs e)
+        {
+            _canUndoChangedFiredCount++;
         }
 
         private void _undoServiceForInt_CanUndoChanged(object sender, EventArgs e)
         {
-            _canUndoChangedFired = true;
+            _canUndoChangedFiredCount++;
         }
 
         private void _undoServiceForInt_CanRedoChanged(object sender, EventArgs e)
         {
-            _canRedoChangedFired = true;
+            _canRedoChangedFiredCount++;
         }
 
         /// <summary>
