@@ -13,7 +13,9 @@ This is a simple undo/redo service based on the momento pattern. It generally do
 ## Usage
 The simplest approach is to use a single UndoService for application state. Alternatively you can use separate UndoServices for different sections in conjunction with an UndoServiceAggregate. This means that the whole of the application state does not need to be recorded on each change.
 
-To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() **after** making changes to the state. (Note that the initial state is recorded automatically when the UndoService is initialized.) Use CanUndo and CanRedo to enable/disable Undo/Redo commands.
+To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() **after** making changes to the state. Note that the initial state is recorded automatically when the UndoService is initialized. Reset() will clear the undo and the redo stack. Use the service's CanUndo and CanRedo properties to enable/disable Undo/Redo commands.
+
+You can use the IsStateChanged flag to keep track of any unsaved changes to your application state (if applicable). The flag is set to true when RecordState() is invoked. ClearIsStateChangedFlag() and Reset() both clear it. 
 
 ### Simple UndoService Example
 
@@ -141,8 +143,8 @@ Refer to the unit test project in the source repository for examples of other fe
 ### Checklist
 If you run into problems, check the following:
 
-* Invoke RecordState() after making changes, rather than before.
-* Don't invoke RecordState() in the delegate method that sets the state. Otherwise Redo() will add an extra state. (For example, don't call RecordState() a property's set accessor, and then use that set accessor in the SetData delegate method.)
+* Make sure you invoke RecordState() after making changes, not before.
+* Make sure you don't invoke RecordState() in the delegate method that sets the state. Otherwise it will be invoked during a Redo() operation and extra states will be added incorrectly.
 
 If you run into problems that aren't resolved by the above, please [raise an issue](https://github.com/peterdongan/UndoService/issues/new/choose) or send an email.
 
