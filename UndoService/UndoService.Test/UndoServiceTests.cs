@@ -101,7 +101,7 @@ namespace UndoService.Test
             Assert.IsTrue(_canRedoChangedFiredCount == 1); //Item added to empty redo stack
             _canRedoChangedFiredCount = 0;
 
-            _undoServiceForInt.ClearStacks();
+            _undoServiceForInt.Reset();
             Assert.IsTrue(_canRedoChangedFiredCount == 1); //Redo stack cleared
             _canRedoChangedFiredCount = 0;
             Assert.IsTrue(_canUndoChangedFiredCount == 0); //Undo Stack was already empty so there was no change
@@ -142,7 +142,7 @@ namespace UndoService.Test
             Assert.IsTrue(_canUndoChangedFiredCount == 2); //Last item removed from undo stack (event fires)
             Assert.IsTrue(_canRedoChangedFiredCount == 1); //Item added to already filled redo stack (no event)
 
-            _aggregateService.ClearStacks();
+            _aggregateService.Reset();
             Assert.IsTrue(_canRedoChangedFiredCount == 2); //Redo stack cleared 
             Assert.IsTrue(_canUndoChangedFiredCount == 2); //Undo Stack was already empty so there was no change
 
@@ -434,7 +434,7 @@ namespace UndoService.Test
             Assert.IsTrue(!undoService.IsStateChanged);
             undoService.Redo();
             Assert.IsTrue(undoService.IsStateChanged);
-            undoService.ClearIsChangedFlag();
+            undoService.ClearIsStateChangedFlag();
             Assert.IsTrue(!undoService.IsStateChanged);
             undoService.Undo();
             Assert.IsTrue(undoService.IsStateChanged);
@@ -465,7 +465,7 @@ namespace UndoService.Test
             _subUndoServiceForInt.RecordState();
             _statefulString = "One";
             _subUndoServiceForString.RecordState();
-            _aggregateService.ClearIsChangedFlag();
+            _aggregateService.ClearIsStateChangedFlag();
             Assert.IsTrue(!_aggregateService.IsStateChanged);
 
             _aggregateService.Undo();
@@ -490,7 +490,7 @@ namespace UndoService.Test
             _subUndoServiceForInt.RecordState();
             _statefulString = "Two";
             _subUndoServiceForString.RecordState();
-            _aggregateService.ClearStacks();
+            _aggregateService.Reset();
 
             _statefulInt = 1;
             _subUndoServiceForInt.RecordState();
@@ -529,7 +529,7 @@ namespace UndoService.Test
             bool exceptionWasThrown = false;
             try
             {
-                _subUndoServiceForString.ClearStacks();
+                _subUndoServiceForString.Reset();
             }
             catch (InvalidOperationException e)
             {

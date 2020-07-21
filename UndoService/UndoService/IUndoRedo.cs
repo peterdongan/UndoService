@@ -32,27 +32,33 @@ namespace StateManagement
         bool CanRedo { get; }
 
         /// <summary>
-        /// Indicates whether the state was changed from its original state or the last time ClearIsChangedFlag was invoked.
+        /// Indicates whether the state was changed from its original state or the last time ClearIsStateChangedFlag was invoked. The intended use is to flag if there are unsaved changes to the state.
         /// </summary>
         bool IsStateChanged { get; }
 
         /// <summary>
-        /// Resest the IsStateChanged flag to false.
+        /// Resets the IsStateChanged flag to false. This is intended to be invoked after saving state, to show that there are no longer unsaved changes. 
         /// </summary>
-        void ClearIsChangedFlag();
+        void ClearIsStateChangedFlag();
 
         /// <summary>
-        /// Clear the Undo and Redo stacks.
+        /// Clears the Undo and Redo stacks and sets the IsStateChanged flag to false.
         /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Clears the Undo and Redo stacks.
+        /// </summary>
+        [Obsolete("ClearStacks() is deprecated. Please use Reset() instead.")]
         void ClearStacks();
 
         /// <summary>
-        /// Clear the Undo stack (but not the redo stack).
+        /// Clears the Undo stack (but not the redo stack).
         /// </summary>
         void ClearUndoStack();
 
         /// <summary>
-        /// Clear the redo stack (but not the undo stack). This is done automatically when RecordState() is invoked.
+        /// Clears the redo stack (but not the undo stack). This is done automatically when RecordState() is invoked.
         /// </summary>
         void ClearRedoStack();
 

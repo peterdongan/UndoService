@@ -14,13 +14,15 @@
     <PackageTags>undo redo momento service .net</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.2.3.0</AssemblyVersion>
-    <FileVersion>2.2.3.0</FileVersion>
-    <PackageReleaseNotes>IsStateChanged flag added.
-ClearStackInvoked, CanUndoChanged, CanRedoChanged events added.
-Informative exceptions added.
-Fixed issue where the redo stack was not being cleared in an aggregate when new state recorded by a subservice.</PackageReleaseNotes>
-    <Version>2.2.3-alpha</Version>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
+    <PackageReleaseNotes>Added IsStateChanged flag and ClearIsStateChangedFlag() method. The intended use of these is to tell if tehre are unsaved changes.
+ClearStacks() deprecated. Reset() method added for use instead. This performs the same function but also the IsStateChanged flag.
+ClearStackInvoked event added. This may help debugging, 
+CanUndoChanged and CanRedoChanged events added. These can be used to enable/disable corresponding UI controls.
+Informative exceptions added. Some comments reworded for clarity.
+Fixed issue where the redo stack was not being cleared in an aggregate when a new state is recorded by a subservice.</PackageReleaseNotes>
+    <Version>2.3.0-alpha</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>

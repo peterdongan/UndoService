@@ -33,7 +33,7 @@ namespace StateManagement
         private bool _isInternallySettingState = false;
 
         /// <summary>
-        /// Create an aggregate of UndoServices.
+        /// Creates an aggregate of UndoServices.
         /// </summary>
         /// <param name="subUndoServices"></param>
         public UndoServiceAggregate(IUndoService[] subUndoServices)
@@ -128,7 +128,22 @@ namespace StateManagement
         }
 
         /// <summary>
-        /// Clear the Undo and Redo stacks for this object and all its subservices.
+        /// Clears the Undo and Redo stacks for this object and all its subservices and resets the IsStateChanged flag.
+        /// </summary>
+        public void Reset()
+        {
+            _undoStack.Clear();
+            _redoStack.Clear();
+
+            foreach (var s in _subUndoServices)
+            {
+                _clearStackInvocationsCount++;
+                s.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Clears the Undo and Redo stacks for this object and all its subservices.
         /// </summary>
         public void ClearStacks()
         {
@@ -138,7 +153,7 @@ namespace StateManagement
             foreach (var s in _subUndoServices)
             {
                 _clearStackInvocationsCount++;
-                s.ClearStacks();
+                s.Reset();
             }
         }
 
@@ -225,11 +240,11 @@ namespace StateManagement
             }
         }
 
-        public void ClearIsChangedFlag()
+        public void ClearIsStateChangedFlag()
         {
             foreach(var s in _subUndoServices)
             {
-                s.ClearIsChangedFlag();
+                s.ClearIsStateChangedFlag();
             }
         }
 

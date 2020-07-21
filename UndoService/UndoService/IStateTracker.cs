@@ -27,7 +27,7 @@ namespace StateManagement
         event StackClearInvokedEventHandler ClearStackInvoked;
 
         /// <summary>
-        /// Records the current state of the tracked objects and puts it on the undo stack
+        /// Records the current state of the tracked objects and puts it on the undo stack.
         /// </summary>
         /// <param name="tag">When the tracked object is reverted to this state, a StateSet event will be thrown with this as a property in its arguments. </param>
         void RecordState(object tag = null);

@@ -59,6 +59,8 @@ namespace StateManagement
 
         public void ClearStacks() => _undoService.ClearStacks();
 
+        public void Reset() => _undoService.Reset();
+
         public void ClearRedoStack() => _undoService.ClearRedoStack();
 
         public void ClearUndoStack() => _undoService.ClearUndoStack();
@@ -67,7 +69,7 @@ namespace StateManagement
 
         public void Redo() => _undoService.Redo();
 
-        public void ClearIsChangedFlag() => _undoService.ClearIsChangedFlag();
+        public void ClearIsStateChangedFlag() => _undoService.ClearIsStateChangedFlag();
 
         private void UndoService_CanUndoChanged(object sender, EventArgs e)
         {

@@ -87,7 +87,7 @@ namespace StateManagement
         public bool CanUndo => _undoServiceValidator.CanUndo;
 
         /// <summary>
-        /// Indicates whether the state was changed from its original state or the last time ClearIsChangedFlag was invoked.
+        /// Indicates whether the state was changed from its original state or the last time ClearIsStateChangedFlag was invoked.
         /// </summary>
         public bool IsStateChanged
         {
@@ -111,8 +111,25 @@ namespace StateManagement
 
 
         /// <summary>
-        /// Clear both the Undo and Redo stacks.
+        /// Clears the undo and redo stacks, clears IsStateChanged flag, considers the current state to be the original state.
         /// </summary>
+        public void Reset()
+        {
+            _undoStack.Clear();
+
+            GetState(out T currentState);
+            _currentState = new StateRecord<T> { State = currentState };
+
+            _redoStack.Clear();
+            ClearIsStateChangedFlag();
+
+            ClearStackInvoked?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// Clears the Undo and Redo stacks.
+        /// </summary>
+        [Obsolete("ClearStacks() is deprecated. Please use Reset() instead.")]
         public void ClearStacks()
         {
             _undoStack.Clear();
@@ -149,7 +166,7 @@ namespace StateManagement
         /// <summary>
         /// 
         /// </summary>
-        public void ClearIsChangedFlag()
+        public void ClearIsStateChangedFlag()
         {
             _originalState = _currentState.State;
         }
