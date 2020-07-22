@@ -27,7 +27,7 @@ CanUndoChanged and CanRedoChanged events added. These can be used to enable/disa
 Informative exceptions added. Some comments reworded for clarity.
 
 Fixed issue where the redo stack was not being cleared in an aggregate when a new state is recorded by a subservice.</PackageReleaseNotes>
-    <Version>2.3.1-alpha</Version>
+    <Version>2.3.1</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>
