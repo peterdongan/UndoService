@@ -7,11 +7,7 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Undo/redo service based on the memento pattern. It uses delegates to get and set state. 
-
-You can use different services to track different parts of the application state. The main advantage of this is that you don't have to store the whole of the application state on every change. 
-
-See the unit tests in the source repository for examples of how to use.</Description>
+    <Description>Simple undo/redo service based on the memento pattern. It uses delegates to get and set state. You can use different services to track different parts of the application state. The main advantage of this is that you don't have to store the whole of the application state on every change.</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
