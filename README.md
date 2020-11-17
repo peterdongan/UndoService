@@ -11,6 +11,15 @@ This is a simple undo/redo service based on the memento pattern. It uses delegat
 
 
 ## Usage
+
+```csharp
+var undoService = new UndoService<string>(GetStringState, SetStringState, null);
+
+undoService.RecordState();
+
+undoService.Undo();
+```
+
 The simplest approach is to use a single UndoService for application state. Alternatively you can use separate UndoServices for different sections in conjunction with an UndoServiceAggregate. This means that the whole of the application state does not need to be recorded on each change.
 
 To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() **after** making changes to the state. Note that the initial state is recorded automatically when the UndoService is initialized. Reset() will clear the undo and the redo stack. Use the service's CanUndo and CanRedo properties to enable/disable Undo/Redo commands.
