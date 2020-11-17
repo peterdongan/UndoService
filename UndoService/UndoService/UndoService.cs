@@ -181,10 +181,10 @@ namespace StateManagement
             //If tagging is used, the part of the state that will be changed by this will be tagged in _currentState (the change there will be undone).
             var args = new StateSetEventArgs { Tag = _currentState.Tag, SettingAction = StateSetAction.Undo };
 
-            var momento = _undoStack.Pop();
-            SetState(momento.State);
+            var memento = _undoStack.Pop();
+            SetState(memento.State);
             _redoStack.Push(_currentState);
-            _currentState = momento;
+            _currentState = memento;
             StateSet?.Invoke(this, args);
         }
 
@@ -195,13 +195,13 @@ namespace StateManagement
         {
             _undoServiceValidator.ValidateRedo();
 
-            var momento = _redoStack.Pop();
-            SetState(momento.State);
+            var memento = _redoStack.Pop();
+            SetState(memento.State);
             _undoStack.Push(_currentState);
-            _currentState = momento;
+            _currentState = memento;
 
-            //If tagging is used, the part of the state that will be changed by this will be tagged in momento (the change there will be applied).
-            var args = new StateSetEventArgs { Tag = momento.Tag, SettingAction = StateSetAction.Redo };
+            //If tagging is used, the part of the state that will be changed by this will be tagged in memento (the change there will be applied).
+            var args = new StateSetEventArgs { Tag = memento.Tag, SettingAction = StateSetAction.Redo };
 
             StateSet?.Invoke(this, args);
         }
@@ -212,9 +212,9 @@ namespace StateManagement
         /// <param name="tag">A tag associated with the recorded state</param>
         public void RecordState(object tag = null)
         {
-            GetState(out T momento);
+            GetState(out T memento);
             _undoStack.Push(_currentState);
-            _currentState = new StateRecord<T> { State = momento, Tag = tag };
+            _currentState = new StateRecord<T> { State = memento, Tag = tag };
             StateRecorded?.Invoke(this, new EventArgs());
 
             if(_redoStack.Count > 0)

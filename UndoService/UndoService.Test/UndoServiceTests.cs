@@ -417,7 +417,9 @@ namespace UndoService.Test
         [Test]
         public void AddSuberviceTest()
         {
-            //Add a service to an aggregate after recording state with existing services (verify this works ok)
+            _aggregateService.AddUndoService(_undoServiceForInt);
+            _statefulInt = 5;
+            _undoServiceForInt.RecordState();
         }
 
         [Test]

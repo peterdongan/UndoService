@@ -7,27 +7,21 @@
     <Authors>Peter Dongan</Authors>
     <Company />
     <PackageLicenseFile></PackageLicenseFile>
-    <Description>Simple undo/redo service based on the momento pattern. It uses delegates to access state. It can track changes to different parts of the application individually, while using one unified interface for performing undo/redo. This reduces the memory imprint and facilitates modular design. See the unit tests in the source repository for examples of how to use.</Description>
+    <Description>Undo/redo service based on the memento pattern. It uses delegates to get and set state. 
+
+You can use different services to track different parts of the application state. The main advantage of this is that you don't have to store the whole of the application state on every change. 
+
+See the unit tests in the source repository for examples of how to use.</Description>
     <Copyright>Peter Dongan</Copyright>
     <PackageProjectUrl>https://peterdongan.github.io/UndoService/</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>undo redo momento service .net</PackageTags>
+    <PackageTags>undo redo memento service .net delegates</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/peterdongan/UndoService</RepositoryUrl>
-    <AssemblyVersion>2.3.1.0</AssemblyVersion>
-    <FileVersion>2.3.1.0</FileVersion>
-    <PackageReleaseNotes>Added IsStateChanged flag and ClearIsStateChangedFlag() method. The intended use of these is to tell if there are unsaved changes.
-
-ClearStacks() deprecated. Reset() method added for use instead. This performs the same function but also the IsStateChanged flag.
-
-ClearStackInvoked event added. This may help debugging, 
-
-CanUndoChanged and CanRedoChanged events added. These can be used to enable/disable corresponding UI controls.
-
-Informative exceptions added. Some comments reworded for clarity.
-
-Fixed issue where the redo stack was not being cleared in an aggregate when a new state is recorded by a subservice.</PackageReleaseNotes>
-    <Version>2.3.1</Version>
+    <AssemblyVersion>2.3.2.0</AssemblyVersion>
+    <FileVersion>2.3.2.0</FileVersion>
+    <PackageReleaseNotes>Changes to readme, description, comments, variable names..</PackageReleaseNotes>
+    <Version>2.3.2</Version>
     <PackageIconUrl />
     <NeutralLanguage>en-IE</NeutralLanguage>
     <RootNamespace>StateManagement</RootNamespace>
