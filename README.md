@@ -30,7 +30,7 @@ To create an UndoService, pass the delegate methods that are used to get and set
 
 You can use the IsStateChanged flag to keep track of any unsaved changes to your application state (if applicable). The flag is set to true when RecordState() is invoked. ClearIsStateChangedFlag() and Reset() both clear it. 
 
-### Simple UndoService Example
+### Single UndoService Example
 
 ```csharp
 
@@ -69,7 +69,7 @@ You can use the IsStateChanged flag to keep track of any unsaved changes to your
 
 To create an UndoServiceAggregate, pass it an IUndoService array. To use it, invoke RecordState() in the child UndoServices to record changes. Generally undo and redo would be done via the UndoServiceAggregate. However, you can also do so in the child UndoServices directly to undo the last changes to specific elements.
 
-### Simple UndoServiceAggregate Example
+### UndoServiceAggregate Example
 
 ```csharp
 
