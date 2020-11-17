@@ -13,11 +13,15 @@ This is a simple undo/redo service based on the memento pattern. It uses delegat
 ## Usage
 
 ```csharp
+myString = "my original string";
+
 var undoService = new UndoService<string>(GetStringState, SetStringState, null);
+
+myString = "Something different";
 
 undoService.RecordState();
 
-undoService.Undo();
+undoService.Undo();     //myString = "my original string"
 ```
 
 The simplest approach is to use a single UndoService for application state. Alternatively you can use separate UndoServices for different sections in conjunction with an UndoServiceAggregate. This means that the whole of the application state does not need to be recorded on each change.
