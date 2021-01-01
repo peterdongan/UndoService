@@ -158,6 +158,7 @@ If you run into problems, check the following:
 
 * Make sure you invoke RecordState() after making changes, not before.
 * Make sure you don't invoke RecordState() in the delegate method that sets the state. Otherwise it will be invoked during a Redo() operation and extra states will be added incorrectly.
+* If you are loading a state and need to reset the undoservice, invoke reset() after the new state has been set.
 
 If you run into problems that aren't resolved by the above, please [raise an issue](https://github.com/peterdongan/UndoService/issues/new/choose) or send an email.
 
