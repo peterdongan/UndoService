@@ -1,5 +1,5 @@
 # UndoService
-This is a simple undo/redo service based on the memento pattern. It uses delegates to get and set state. You can use different services to track different parts of the application state. The main advantage of this is that you don't have to store the whole of the application state on every change.
+This is a simple undo/redo service based on the Memento pattern. It uses delegates to get and set state. You can use different services to track different parts of the application state. The main advantage of this is that you don't have to store the whole of the application state on every change.
 
 
 ## Features
