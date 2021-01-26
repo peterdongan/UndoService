@@ -28,6 +28,16 @@ The simplest approach is to use a single UndoService for application state. Alte
 
 To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() **after** making changes to the state. Note that the initial state is recorded automatically when the UndoService is initialized. Reset() will clear the undo and the redo stack. Use the service's CanUndo and CanRedo properties to enable/disable Undo/Redo commands.
 
+GetState() and SetState() must use deep copies. This means that they must not create shared references between their arguments and the object being tracked. (An exception is immutable objects.) Otherwise changes to the tracked object can cause changes in its saved states as well. 
+
+If you have methods for saving and loading state in place then you are likely to be able to use these via wrappers. 
+
+Methods of performing deep copies are discussed in the following links:
+
+* https://stackoverflow.com/questions/129389/how-do-you-do-a-deep-copy-of-an-object-in-net
+* https://stackoverflow.com/questions/78536/deep-cloning-objects
+
+
 You can use the IsStateChanged flag to keep track of any unsaved changes to your application state (if applicable). The flag is set to true when RecordState() is invoked. ClearIsStateChangedFlag() and Reset() both clear it. 
 
 ### Single UndoService Example
@@ -158,7 +168,8 @@ If you run into problems, check the following:
 
 * Make sure you invoke RecordState() after making changes, not before.
 * Make sure you don't invoke RecordState() in the delegate method that sets the state. Otherwise it will be invoked during a Redo() operation and extra states will be added incorrectly.
-* If you are loading a state and need to reset the undoservice, invoke reset() after the new state has been set.
+* If you are loading a state and need to reset the undoservice, invoke Reset() after the new state has been set.
+* Make sure that your GetState() and SetState() methods perform deep copies.
 
 If you run into problems that aren't resolved by the above, please [raise an issue](https://github.com/peterdongan/UndoService/issues/new/choose) or send an email.
 
