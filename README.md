@@ -28,15 +28,6 @@ The simplest approach is to use a single UndoService for application state. Alte
 
 To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() **after** making changes to the state. Note that the initial state is recorded automatically when the UndoService is initialized. Reset() will clear the undo and the redo stack. Use the service's CanUndo and CanRedo properties to enable/disable Undo/Redo commands.
 
-GetState() and SetState() must use deep copies. This means that they must not create shared references between their arguments and the object being tracked. (An exception is immutable objects.) Otherwise changes to the tracked object can cause changes in its saved states as well. 
-
-If you have methods for saving and loading state in place then you are likely to be able to use these via wrappers. 
-
-Methods of performing deep copies are discussed in the following links:
-
-* https://stackoverflow.com/questions/129389/how-do-you-do-a-deep-copy-of-an-object-in-net
-* https://stackoverflow.com/questions/78536/deep-cloning-objects
-
 
 You can use the IsStateChanged flag to keep track of any unsaved changes to your application state (if applicable). The flag is set to true when RecordState() is invoked. ClearIsStateChangedFlag() and Reset() both clear it. 
 
@@ -75,6 +66,71 @@ You can use the IsStateChanged flag to keep track of any unsaved changes to your
             undoServiceForString.Redo();
             Assert.IsTrue(_statefulString.Equals("Two"));
         }
+```
+
+GetState() and SetState() must use deep copies. This means that they must not create shared references between their arguments and the object being tracked. (An exception is immutable objects.) Otherwise changes to the tracked object can cause changes in its saved states as well. 
+
+If you have methods for saving and loading state in place then you are likely to be able to use these via wrappers. 
+
+Methods of performing deep copies are discussed in the following links:
+
+* https://stackoverflow.com/questions/129389/how-do-you-do-a-deep-copy-of-an-object-in-net
+* https://stackoverflow.com/questions/78536/deep-cloning-objects
+
+For the GetState and SetState methods, here are two examples of what not to do, and one example that works:
+
+### GetState()
+
+#### Broken GetState examples
+```
+        public void BrokenGetState1(out MyClass state)
+        {
+            state = _objectBeingTracked;    // BROKEN - Any changes to _objectBeingTracked will  be applied to the saved state as well.
+        }
+        public void BrokenGetState2(out MyClass state)
+        {
+            state = new MyClass { Id = _objectBeingTracked.Id, MutableMember = _objectBeingTracked.MutableMember };    // BROKEN - Any changes to _objectBeingTracked.MutableMember will be applied to the saved state as well.
+        }
+```
+#### Working GetState example     
+```
+        public void WorkingGetState(out string state)
+        {
+            // Any method to perform a deep copy will work here. This one was chosen for brevity.
+            
+            state = JsonConvert.SerializeObject(_objectBeingTracked, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+        }
+```
+
+### SetState()
+
+#### Broken SetState Examples
+```
+        public void BrokenSetState1(MyClass state)
+        {
+            _objectBeingTracked = state;    // BROKEN - After an undo is performed, changes to _objectBeingTracked will be applied to the saved state as well.
+        }
+
+        public void BrokenSetState2(MyClass state)
+        {
+            _objectBeingTracked.Id = state.Id;
+            _objectBeingTracked.MutableMember = state.MutableMember;    // BROKEN - After an undo is performed, changes to _objectBeingTracked.MutableMember will be applied to the saved state as well.
+        }
+```
+#### Working SetState Example
+```
+        private void WorkingSetState(string state)
+        {
+            // This approach was chosen for brevity only.
+        
+            _objectBeingTracked  = JsonConvert.DeserializeObject<MyClass>(state, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+        }
+
+```
+
+<T> in the UndoService is the type used to record state, which can be different from the type of the object being tracked. In the examples above, WorkingGetState() and WorkingSetState() serialize and deserialize the state of the tracked object to a JSON string. Therefore UndoService<string> is used. Eg:
+```        
+        _undoService = new UndoService<string>(WorkingGetState,WorkingSetState);
 ```
 
 To create an UndoServiceAggregate, pass it an IUndoService array. To use it, invoke RecordState() in the child UndoServices to record changes. Generally undo and redo would be done via the UndoServiceAggregate. However, you can also do so in the child UndoServices directly to undo the last changes to specific elements.
