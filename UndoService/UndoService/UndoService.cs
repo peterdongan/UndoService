@@ -25,10 +25,10 @@ namespace StateManagement
         private StateRecord<T> _currentState;
 
         /// <summary>
-        /// Create an UndoService.
+        /// Create an UndoService. The Type paraemter is the type used to record state, which can be different to the type of the tracked object.
         /// </summary>
-        /// <param name="getState">Method to get the state of the tracked object</param>
-        /// <param name="setState">Method to set the state of the tracked object</param>
+        /// <param name="getState">Method to get the state of the tracked object. Deep copy must be used. </param>
+        /// <param name="setState">Method to set the state of the tracked object. Deep copy must be used. </param>
         /// <param name="cap">Capacity of Undo history</param>
         public UndoService(GetState<T> getState, SetState<T> setState, int? cap = null)
         {

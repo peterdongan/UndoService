@@ -265,8 +265,8 @@
             <summary>
             Create an UndoService.
             </summary>
-            <param name="getState">Method to get the state of the tracked object</param>
-            <param name="setState">Method to set the state of the tracked object</param>
+            <param name="getState">Method to get the state of the tracked object. This must return a deep copy.</param>
+            <param name="setState">Method to set the state of the tracked object. This must perform a deep copy.</param>
             <param name="cap">Capacity of Undo history</param>
         </member>
         <member name="E:StateManagement.UndoService`1.StateRecorded">
