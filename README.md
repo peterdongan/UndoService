@@ -67,6 +67,7 @@ You can use the IsStateChanged flag to keep track of any unsaved changes to your
             Assert.IsTrue(_statefulString.Equals("Two"));
         }
 ```
+### GetState() and SetState() methods
 
 GetState() and SetState() must use deep copies. This means that they must not create shared references between their arguments and the object being tracked. (An exception is immutable objects.) Otherwise changes to the tracked object can cause changes in its saved states as well. 
 
@@ -77,7 +78,7 @@ Methods of performing deep copies are discussed in the following links:
 * https://stackoverflow.com/questions/129389/how-do-you-do-a-deep-copy-of-an-object-in-net
 * https://stackoverflow.com/questions/78536/deep-cloning-objects
 
-For the GetState and SetState methods, here are two examples of what not to do, and one example that works:
+For the GetState and SetState methods, here are two examples of what not to do, and one example that works. The full code for these examples is in the Test project.
 
 ### GetState()
 
@@ -121,14 +122,14 @@ For the GetState and SetState methods, here are two examples of what not to do, 
 ```
         private void WorkingSetState(string state)
         {
-            // This approach was chosen for brevity only.
+            // Any method of deep copy will work here. This approach was chosen for brevity.
         
             _objectBeingTracked  = JsonConvert.DeserializeObject<MyClass>(state, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
         }
 
 ```
 
-<T> in the UndoService is the type used to record state, which can be different from the type of the object being tracked. In the examples above, WorkingGetState() and WorkingSetState() serialize and deserialize the state of the tracked object to a JSON string. Therefore UndoService<string> is used. Eg:
+The type parameter of the UndoService is the type used to record state, which can be different from the type of the object being tracked. In the examples above, WorkingGetState() and WorkingSetState() serialize and deserialize the state of the tracked object to a JSON string. Therefore UndoService<string> is used. Eg:
 ```        
         _undoService = new UndoService<string>(WorkingGetState,WorkingSetState);
 ```
