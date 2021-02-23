@@ -263,10 +263,10 @@
         </member>
         <member name="M:StateManagement.UndoService`1.#ctor(StateManagement.GetState{`0},StateManagement.SetState{`0},System.Nullable{System.Int32})">
             <summary>
-            Create an UndoService.
+            Create an UndoService. The Type paraemter is the type used to record state, which can be different to the type of the tracked object.
             </summary>
-            <param name="getState">Method to get the state of the tracked object. This must return a deep copy.</param>
-            <param name="setState">Method to set the state of the tracked object. This must perform a deep copy.</param>
+            <param name="getState">Method to get the state of the tracked object. Deep copy must be used. </param>
+            <param name="setState">Method to set the state of the tracked object. Deep copy must be used. </param>
             <param name="cap">Capacity of Undo history</param>
         </member>
         <member name="E:StateManagement.UndoService`1.StateRecorded">
