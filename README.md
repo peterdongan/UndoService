@@ -240,6 +240,7 @@ If you run into problems that aren't resolved by the above, please [raise an iss
 * [Home](https://peterdongan.github.io/UndoService/)
 * [Source Repository](https://github.com/peterdongan/UndoService)
 * [Nuget Package](https://www.nuget.org/packages/UndoService)
+* [Exd Pic](https://exdpic.com) - A free Windows [app](https://www.microsoft.com/en-gb/p/exd-pic/9nnrhv8qj1j1?rtc=1&activetab=pivot:overviewtab) for making interactive pictures that uses UndoService.
 
 ***
 Copyright 2020 Peter Dongan. Licence: [MIT](https://licenses.nuget.org/MIT)
