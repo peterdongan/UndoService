@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>UndoService | Generic undo service using delegates to access state.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="UndoService" />
+<meta property="og:locale" content="en_US" />
+<meta name="google-site-verification" content="tUntZHkVFBxeXPsSr6L4rMcAIONa1K-KsovhMA_41bQ" />
+<meta name="description" content="Generic undo service using delegates to access state." />
+<meta property="og:description" content="Generic undo service using delegates to access state." />
+<link rel="canonical" href="https://peterdongan.github.io/UndoService/" />
+<meta property="og:url" content="https://peterdongan.github.io/UndoService/" />
+<meta property="og:site_name" content="UndoService" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="UndoService" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"Generic undo service using delegates to access state.","headline":"UndoService","name":"UndoService","url":"https://peterdongan.github.io/UndoService/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/UndoService/assets/css/style.css?v=6d9a2f87da64031c8ae25d727ab3b684cc39cc5e">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/UndoService/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">UndoService</h1>
+      <h2 class="project-tagline">Generic undo service using delegates to access state.</h2>
+      
+        <a href="https://github.com/peterdongan/UndoService" class="btn">View on GitHub</a>
+      
+      
+        <a href="https://github.com/peterdongan/UndoService/zipball/master" class="btn">Download .zip</a>
+        <a href="https://github.com/peterdongan/UndoService/tarball/master" class="btn">Download .tar.gz</a>
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="undoservice">UndoService</h1>
+<p>This is a simple undo/redo service based on the Memento pattern. It uses delegates to get and set state. You can use different services to track different parts of the application state. The main advantage of this is that you don’t have to store the whole of the application state on every change.</p>
+
+<h2 id="features">Features</h2>
+<ul>
+  <li>Multiple undo/redo stacks can be used concurrently, reducing memory imprint.</li>
+  <li>Undo/Redo can be performed interchangeably on the state of the application whole or on specific parts.</li>
+  <li>No requirement to write custom classes or methods as it uses generic stacks and delegate methods.</li>
+  <li>Optional cap on the size of Undo stacks.</li>
+  <li>Recorded states can be tagged. Tag values are present in the arguments of the StateSet event, which is raised on Undo or Redo.</li>
+</ul>
+
+<h2 id="usage">Usage</h2>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">myString</span> <span class="p">=</span> <span class="s">"my original string"</span><span class="p">;</span>
+
+<span class="kt">var</span> <span class="n">undoService</span> <span class="p">=</span> <span class="k">new</span> <span class="n">UndoService</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="n">GetStringState</span><span class="p">,</span> <span class="n">SetStringState</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+
+<span class="n">myString</span> <span class="p">=</span> <span class="s">"Something different"</span><span class="p">;</span>
+
+<span class="n">undoService</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+
+<span class="n">undoService</span><span class="p">.</span><span class="nf">Undo</span><span class="p">();</span>     <span class="c1">//myString = "my original string"</span>
+</code></pre></div></div>
+
+<p>The simplest approach is to use a single UndoService for application state. Alternatively you can use separate UndoServices for different sections in conjunction with an UndoServiceAggregate. This means that the whole of the application state does not need to be recorded on each change.</p>
+
+<p>To create an UndoService, pass the delegate methods that are used to get and set the state. To use it, invoke RecordState() <strong>after</strong> making changes to the state. Note that the initial state is recorded automatically when the UndoService is initialized. Reset() will clear the undo and the redo stack. Use the service’s CanUndo and CanRedo properties to enable/disable Undo/Redo commands.</p>
+
+<p>You can use the IsStateChanged flag to keep track of any unsaved changes to your application state (if applicable). The flag is set to true when RecordState() is invoked. ClearIsStateChangedFlag() and Reset() both clear it.</p>
+
+<h3 id="single-undoservice-example">Single UndoService Example</h3>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+        <span class="c1">// We will demonstrate change tracking on this string. </span>
+        <span class="k">private</span> <span class="kt">string</span> <span class="n">_statefulString</span><span class="p">;</span>     
+        
+        <span class="c1">// This is the method to get the state of the tracked object.</span>
+        <span class="c1">// (If you have an existing method, you can just put it in a wrapper to match the delegate signature.)</span>
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">GetStringState</span><span class="p">(</span><span class="k">out</span> <span class="kt">string</span> <span class="n">state</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">state</span> <span class="p">=</span> <span class="n">_statefulString</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Method to set the state.</span>
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">SetStringState</span><span class="p">(</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_statefulString</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">UndoRedoTest</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">undoServiceForString</span> <span class="p">=</span> <span class="k">new</span> <span class="n">UndoService</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="n">GetStringState</span><span class="p">,</span> <span class="n">SetStringState</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+
+            <span class="n">_statefulString</span> <span class="p">=</span> <span class="s">"One"</span><span class="p">;</span>
+            <span class="n">undoServiceForString</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+            <span class="n">_statefulString</span> <span class="p">=</span> <span class="s">"Two"</span><span class="p">;</span>
+            <span class="n">undoServiceForString</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+
+            <span class="n">undoServiceForString</span><span class="p">.</span><span class="nf">Undo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"One"</span><span class="p">));</span>
+
+            <span class="n">undoServiceForString</span><span class="p">.</span><span class="nf">Redo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"Two"</span><span class="p">));</span>
+        <span class="p">}</span>
+</code></pre></div></div>
+<h3 id="getstate-and-setstate-methods">GetState() and SetState() methods</h3>
+
+<p>GetState() and SetState() must use deep copies. This means that they must not create shared references between their arguments and the object being tracked. (An exception is immutable objects.) Otherwise changes to the tracked object can cause changes in its saved states as well.</p>
+
+<p>If you have methods for saving and loading state in place then you are likely to be able to use these via wrappers.</p>
+
+<p>Methods of performing deep copies are discussed in the following links:</p>
+
+<ul>
+  <li>https://stackoverflow.com/questions/129389/how-do-you-do-a-deep-copy-of-an-object-in-net</li>
+  <li>https://stackoverflow.com/questions/78536/deep-cloning-objects</li>
+</ul>
+
+<p>For the GetState and SetState methods, here are two examples of what not to do, and one example that works. The full code for these examples is in the Test project.</p>
+
+<h3 id="getstate">GetState()</h3>
+
+<h4 id="broken-getstate-examples">Broken GetState examples</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        public void BrokenGetState1(out MyClass state)
+        {
+            state = _objectBeingTracked;    // BROKEN - Any changes to _objectBeingTracked will  be applied to the saved state as well.
+        }
+        public void BrokenGetState2(out MyClass state)
+        {
+            state = new MyClass { Id = _objectBeingTracked.Id, MutableMember = _objectBeingTracked.MutableMember };    // BROKEN - Any changes to _objectBeingTracked.MutableMember will be applied to the saved state as well.
+        }
+</code></pre></div></div>
+<h4 id="working-getstate-example">Working GetState example</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        public void WorkingGetState(out string state)
+        {
+            // Any method to perform a deep copy will work here. This one was chosen for brevity.
+            
+            state = JsonConvert.SerializeObject(_objectBeingTracked, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+        }
+</code></pre></div></div>
+
+<h3 id="setstate">SetState()</h3>
+
+<h4 id="broken-setstate-examples">Broken SetState Examples</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        public void BrokenSetState1(MyClass state)
+        {
+            _objectBeingTracked = state;    // BROKEN - After an undo is performed, changes to _objectBeingTracked will be applied to the saved state as well.
+        }
+
+        public void BrokenSetState2(MyClass state)
+        {
+            _objectBeingTracked.Id = state.Id;
+            _objectBeingTracked.MutableMember = state.MutableMember;    // BROKEN - After an undo is performed, changes to _objectBeingTracked.MutableMember will be applied to the saved state as well.
+        }
+</code></pre></div></div>
+<h4 id="working-setstate-example">Working SetState Example</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        private void WorkingSetState(string state)
+        {
+            // Any method of deep copy will work here. This approach was chosen for brevity.
+        
+            _objectBeingTracked  = JsonConvert.DeserializeObject&lt;MyClass&gt;(state, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+        }
+
+</code></pre></div></div>
+
+<p>The type parameter of the UndoService is the type used to record state, which can be different from the type of the object being tracked. In the examples above, WorkingGetState() and WorkingSetState() serialize and deserialize the state of the tracked object to a JSON string. Therefore UndoService<string> is used. Eg:</string></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        _undoService = new UndoService&lt;string&gt;(WorkingGetState,WorkingSetState);
+</code></pre></div></div>
+
+<p>To create an UndoServiceAggregate, pass it an IUndoService array. To use it, invoke RecordState() in the child UndoServices to record changes. Generally undo and redo would be done via the UndoServiceAggregate. However, you can also do so in the child UndoServices directly to undo the last changes to specific elements.</p>
+
+<h3 id="undoserviceaggregate-example">UndoServiceAggregate Example</h3>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+        <span class="c1">// We will use an UndoService to track changes to this</span>
+        <span class="k">private</span> <span class="kt">string</span> <span class="n">_statefulString</span><span class="p">;</span>     
+
+        <span class="c1">// We will use a second UndoService to track changes to this.</span>
+        <span class="k">private</span> <span class="kt">int</span> <span class="n">_statefulInt</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">AggregateUndoServiceUndoRedoTest</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="c1">// Create the UndoServiceAggregate by passing an IUndoService array</span>
+            <span class="kt">var</span> <span class="n">undoServiceForInt</span> <span class="p">=</span> <span class="k">new</span> <span class="n">UndoService</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;(</span><span class="n">GetIntState</span><span class="p">,</span> <span class="n">SetIntState</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+            <span class="kt">var</span> <span class="n">undoServiceForString</span> <span class="p">=</span> <span class="k">new</span> <span class="n">UndoService</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="n">GetStringState</span><span class="p">,</span> <span class="n">SetStringState</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span>
+            <span class="n">IUndoService</span><span class="p">[]</span> <span class="n">subservices</span> <span class="p">=</span> <span class="p">{</span> <span class="n">undoServiceForInt</span><span class="p">,</span> <span class="n">undoServiceForString</span> <span class="p">};</span>
+            <span class="kt">var</span> <span class="n">serviceAggregate</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">UndoServiceAggregate</span><span class="p">(</span><span class="n">subservices</span><span class="p">);</span>
+
+
+           <span class="c1">// Use the Undo services to track changes to their associated objects.</span>
+            <span class="n">_statefulInt</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+            <span class="n">undoServiceForInt</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+            <span class="n">_statefulString</span> <span class="p">=</span> <span class="s">"One"</span><span class="p">;</span>
+            <span class="n">undoServiceForString</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+            <span class="n">_statefulInt</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+            <span class="n">undoServiceForInt</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+            <span class="n">_statefulInt</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
+            <span class="n">undoServiceForInt</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+            <span class="n">_statefulString</span> <span class="p">=</span> <span class="s">"Two"</span><span class="p">;</span>
+            <span class="n">undoServiceForString</span><span class="p">.</span><span class="nf">RecordState</span><span class="p">();</span>
+
+
+            <span class="c1">// Use the Service Aggregate to undo/redo the most recent changes.</span>
+            <span class="n">serviceAggregate</span><span class="p">.</span><span class="nf">Undo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"One"</span><span class="p">));</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulInt</span> <span class="p">==</span> <span class="m">3</span><span class="p">);</span>
+
+            <span class="n">serviceAggregate</span><span class="p">.</span><span class="nf">Undo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"One"</span><span class="p">));</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulInt</span> <span class="p">==</span> <span class="m">2</span><span class="p">);</span>
+
+            <span class="n">serviceAggregate</span><span class="p">.</span><span class="nf">Undo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"One"</span><span class="p">));</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulInt</span> <span class="p">==</span> <span class="m">1</span><span class="p">);</span>
+
+            <span class="n">serviceAggregate</span><span class="p">.</span><span class="nf">Redo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"One"</span><span class="p">));</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulInt</span> <span class="p">==</span> <span class="m">2</span><span class="p">);</span>
+
+            <span class="n">serviceAggregate</span><span class="p">.</span><span class="nf">Redo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"One"</span><span class="p">));</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulInt</span> <span class="p">==</span> <span class="m">3</span><span class="p">);</span>
+
+            <span class="n">serviceAggregate</span><span class="p">.</span><span class="nf">Redo</span><span class="p">();</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulString</span><span class="p">.</span><span class="nf">Equals</span><span class="p">(</span><span class="s">"Two"</span><span class="p">));</span>
+            <span class="n">Assert</span><span class="p">.</span><span class="nf">IsTrue</span><span class="p">(</span><span class="n">_statefulInt</span> <span class="p">==</span> <span class="m">3</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        
+        <span class="c1">// These are the methods to get/access state, used by the UndoServices above.</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">GetStringState</span><span class="p">(</span><span class="k">out</span> <span class="kt">string</span> <span class="n">state</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">state</span> <span class="p">=</span> <span class="n">_statefulString</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">SetStringState</span><span class="p">(</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_statefulString</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">GetIntState</span><span class="p">(</span><span class="k">out</span> <span class="kt">int</span> <span class="n">state</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">state</span> <span class="p">=</span> <span class="n">_statefulInt</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">void</span> <span class="nf">SetIntState</span><span class="p">(</span><span class="kt">int</span> <span class="k">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_statefulInt</span> <span class="p">=</span> <span class="k">value</span><span class="p">;</span>
+        <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Refer to the unit test project in the source repository for examples of other features.</p>
+
+<h3 id="checklist">Checklist</h3>
+<p>If you run into problems, check the following:</p>
+
+<ul>
+  <li>Make sure you invoke RecordState() after making changes, not before.</li>
+  <li>Make sure you don’t invoke RecordState() in the delegate method that sets the state. Otherwise it will be invoked during a Redo() operation and extra states will be added incorrectly.</li>
+  <li>If you are loading a state and need to reset the undoservice, invoke Reset() after the new state has been set.</li>
+  <li>Make sure that your GetState() and SetState() methods perform deep copies.</li>
+</ul>
+
+<p>If you run into problems that aren’t resolved by the above, please <a href="https://github.com/peterdongan/UndoService/issues/new/choose">raise an issue</a> or send an email.</p>
+
+<h2 id="public-interfaces">Public Interfaces</h2>
+<ul>
+  <li>IStateTracker is used to record changes to state. It is implemented by UndoService.</li>
+  <li>IUndoRedo is used to execute Undo and Redo operations. It is implemented by UndoService and UndoServiceAggregate.</li>
+  <li>IUndoService is used to both record state and perform undo/redo. It is implemented by UndoService.</li>
+</ul>
+
+<h2 id="links">Links</h2>
+<ul>
+  <li><a href="https://peterdongan.github.io/UndoService/">Home</a></li>
+  <li><a href="https://github.com/peterdongan/UndoService">Source Repository</a></li>
+  <li><a href="https://www.nuget.org/packages/UndoService">Nuget Package</a></li>
+  <li><a href="https://exdpic.com">Exd Pic</a> - A free Windows <a href="https://www.microsoft.com/en-gb/p/exd-pic/9nnrhv8qj1j1?rtc=1&amp;activetab=pivot:overviewtab">app</a> for making interactive pictures that uses UndoService.</li>
+</ul>
+
+<hr />
+<p>Copyright 2020 Peter Dongan. Licence: <a href="https://licenses.nuget.org/MIT">MIT</a></p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/peterdongan/UndoService">UndoService</a> is maintained by <a href="https://github.com/peterdongan">peterdongan</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
