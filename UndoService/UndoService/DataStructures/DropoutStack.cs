@@ -69,8 +69,8 @@ namespace StateManagement.DataStructures
 
         public T Peek()
         {
-            top = (items.Length + top - 1) % items.Length;
-            return items[top];
+            int peekPosition = (items.Length + top - 1) % items.Length;
+            return items[peekPosition];
         }
     }
 }

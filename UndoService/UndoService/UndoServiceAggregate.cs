@@ -115,7 +115,7 @@ namespace StateManagement
 
             var resourceManager = new ResourceManager(typeof(StateManagement.Resources));
 
-            if(subService.CanRedo || subService.CanRedo)
+            if(subService.CanUndo || subService.CanRedo)
             {
                 throw new Exception(resourceManager.GetString("AddingPopulatedSubserviceExceptionMessage", CultureInfo.CurrentCulture));
             }
